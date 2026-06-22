@@ -54,7 +54,8 @@
 
   <div class="card" style="padding:6px">
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('profile',this)">🎀 프로필</button>
+      <button class="tab-btn active" onclick="switchTab('main',this)">🏠 메인</button>
+      <button class="tab-btn" onclick="switchTab('profile',this)">🎀 프로필</button>
       <button class="tab-btn" onclick="switchTab('schedule',this)">📅 일정</button>
       <button class="tab-btn" onclick="switchTab('work',this)">⚡ 업보</button>
       <button class="tab-btn" onclick="switchTab('song',this)">🎵 노래</button>
@@ -63,8 +64,31 @@
     </div>
   </div>
 
+  <!-- 메인 탭 -->
+  <div class="tab-panel active" id="tab-main">
+    <div class="card">
+      <div class="card-title">💬 한마디 & 소개</div>
+      <div class="form-field"><label class="input-label">한마디 (메인 상단 띠 · 줄바꿈=엔터)</label><textarea class="input" id="f-quote" rows="3"></textarea></div>
+      <div class="form-field"><label class="input-label">소개 글 (About 문단 · 줄바꿈=엔터)</label><textarea class="input" id="f-intro" rows="4"></textarea></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🖼 히어로 배경 사진</div>
+      <div class="form-field"><label class="input-label">히어로 배경 사진 URL (메인 상단 큰 배경)</label><input class="input" id="f-hero-img" type="url" placeholder="https://..."></div>
+      <div style="font-size:11px;color:var(--text-soft);margin:-4px 0 10px">비워두면 기본 일러스트가 나와요.</div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏷 주목 키워드 (KEYWORDS)</div>
+      <div class="form-field"><label class="input-label">키워드 (쉼표로 구분 · 예: 국밥, 소통, 노래, 햄찌)</label><input class="input" id="f-info-tags" type="text"></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+  </div>
+
   <!-- 프로필 탭 -->
-  <div class="tab-panel active" id="tab-profile">
+  <div class="tab-panel" id="tab-profile">
     <div class="card">
       <div class="card-title">🖼 프로필 사진</div>
       <div class="form-field">
@@ -85,11 +109,6 @@
         <div style="font-size:11px;color:var(--text-soft);margin-top:6px">SOOP 아이디만 넣으면 프사가 자동으로 따라와요. 저장 버튼 누르세요.</div>
       </div>
       <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--main-light)">
-        <label class="input-label">히어로 배경 사진 URL (메인 상단 큰 배경)</label>
-        <input class="input" id="f-hero-img" type="url" placeholder="https://...">
-        <div style="font-size:11px;color:var(--text-soft);margin-top:6px">비워두면 기본 일러스트가 나와요. 저장 버튼 누르세요.</div>
-      </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--main-light)">
         <div style="font-size:11px;color:var(--text-soft);margin-bottom:8px">현재 프로필 사진</div>
         <img id="current-avatar" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--main-light);display:none">
         <span id="no-avatar" style="font-size:12px;color:var(--text-soft)">없음</span>
@@ -99,11 +118,8 @@
     </div>
 
     <div class="card">
-      <div class="card-title">💙 한마디 & 시그니처</div>
-      <div class="form-field"><label class="input-label">한마디 (줄바꿈=엔터)</label><textarea class="input" id="f-quote" rows="3"></textarea></div>
-      <div class="form-field"><label class="input-label">소개 글 (메인 인트로 문단)</label><textarea class="input" id="f-intro" rows="4"></textarea></div>
+      <div class="card-title">💎 시그니처</div>
       <div class="form-field"><label class="input-label">시그니처 컬러 문구</label><input class="input" id="f-signature" type="text" placeholder="화이트 & 청량한 블루"></div>
-      <div class="form-field"><label class="input-label">성격 태그 (쉼표로 구분 · 예: # 마이페이스, # 햄찌)</label><input class="input" id="f-info-tags" type="text"></div>
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
     </div>
 
