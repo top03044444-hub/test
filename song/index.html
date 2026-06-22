@@ -25,8 +25,11 @@ body.dark{
   --blue:#74c6e8; --blue-dark:#9ad8f0; --blue-soft:#13303d;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--ui);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;}
+html{scroll-behavior:smooth;background:#eceef1;}
+html:has(body.dark){background:#0a0e13;}
+.sheet{background:var(--bg);max-width:1200px;margin:34px auto 0;box-shadow:0 26px 80px rgba(20,30,50,.26);overflow:hidden;transition:background .25s;}
+@media(max-width:1260px){.sheet{margin:16px 14px 0;}}
+body{font-family:var(--ui);background:transparent;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;}
 a{color:inherit;text-decoration:none;}
 button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
@@ -61,7 +64,7 @@ body.dark .theme-switch .knob{top:13px;background:var(--paper);}
 .sec-head .en{font-family:var(--serif);font-weight:700;font-size:23px;}
 .sec-head .ko{font-family:var(--script-ko);font-size:24px;color:var(--pink);line-height:1;}
 .sec-head .more{margin-left:auto;font-size:11px;color:var(--soft);letter-spacing:1.5px;align-self:center;}
-footer{border-top:1px solid var(--line);text-align:center;padding:28px 0 34px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
+footer{text-align:center;padding:36px 20px 46px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
 .iq-ov{position:fixed;inset:0;background:rgba(20,40,50,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:400;padding:20px;}
 .iq-ov.on{display:flex;}
 .iq-modal{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(20,40,50,.3);}
@@ -102,6 +105,7 @@ textarea.iq-input{resize:vertical;}
 <body>
 <div id="fx"></div>
 <main>
+  <div class="sheet">
   <header class="topbar"><div class="wrap">
     <div class="social">
       <a href="#" title="YouTube">&#9654;</a>
@@ -136,6 +140,8 @@ textarea.iq-input{resize:vertical;}
       <div class="song-list" id="songList"></div>
       <div class="song-empty" id="songEmpty" style="display:none;">검색 결과가 없어요 🎵</div>
   </div></div>
+  </div><!-- /sheet -->
+
   <footer>© 2026 우히 Official.<br>비즈니스 문의 — uhi1020118@gmail.com</footer>
 </main>
 <div class="iq-ov" id="iq-ov" onclick="if(event.target===this)closeInquiry()">

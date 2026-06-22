@@ -27,8 +27,11 @@ body.dark{
   --sticky:#d9bd2e;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--ui);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;}
+html{scroll-behavior:smooth;background:#eceef1;}
+html:has(body.dark){background:#0a0e13;}
+body{font-family:var(--ui);background:transparent;color:var(--ink);-webkit-font-smoothing:antialiased;transition:color .25s;overflow-x:hidden;}
+.sheet{background:var(--bg);max-width:1200px;margin:34px auto 0;box-shadow:0 26px 80px rgba(20,30,50,.26);overflow:hidden;transition:background .25s;}
+@media(max-width:1260px){.sheet{margin:16px 14px 0;}}
 a{color:inherit;text-decoration:none;}
 button{font-family:inherit;cursor:pointer;border:none;background:none;}
 img{max-width:100%;display:block;}
@@ -155,7 +158,7 @@ body.dark .theme-switch .knob{top:13px;background:var(--paper);}
 .link-btn:hover{background:var(--pink-soft);border-color:var(--pink-soft);color:var(--pink-dark);}
 .link-btn.wide{grid-column:1/-1;background:var(--pink-soft);border-color:var(--pink-soft);color:var(--pink-dark);}
 
-footer{border-top:1px solid var(--line);text-align:center;padding:28px 0 34px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
+footer{text-align:center;padding:36px 20px 46px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
 
 /* 문의 모달 */
 .iq-ov{position:fixed;inset:0;background:rgba(40,20,30,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
@@ -196,6 +199,7 @@ textarea.iq-input{resize:vertical;}
 
 <main>
 
+  <div class="sheet">
   <!-- 상단 유틸바 -->
   <header class="topbar"><div class="wrap">
     <div class="social">
@@ -286,6 +290,7 @@ textarea.iq-input{resize:vertical;}
     </div>
 
   </div>
+  </div><!-- /sheet -->
 
   <footer>© 2026 우히 Official.<br>비즈니스 문의 — uhi1020118@gmail.com</footer>
 
