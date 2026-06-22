@@ -79,6 +79,8 @@ body.dark .theme-switch .knob{top:13px;background:var(--paper);}
 .poster-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
 .poster{cursor:pointer;}
 .poster .img{position:relative;aspect-ratio:3/4;border-radius:11px;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;font-size:52px;padding-top:34px;background:linear-gradient(150deg,var(--g1,#cdeaf9),var(--g2,#7cc6e8));box-shadow:0 12px 30px rgba(40,60,80,.14);transition:transform .18s;}
+.poster .img .pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.poster .img .badge,.poster .img .plogo,.poster .img .pmeta{z-index:1;}
 .poster:hover .img{transform:translateY(-4px);}
 .poster .plogo{position:absolute;top:9px;right:12px;font-family:var(--serif);font-weight:700;font-size:13px;color:rgba(255,255,255,.92);}
 .poster .plogo em{font-family:var(--script);font-style:normal;}
@@ -251,9 +253,8 @@ function bindPosters(){
     if(p._b)return; p._b=1;
     p.addEventListener('click',function(){
       var img=document.getElementById('lb-img');
-      while(img.firstChild && img.firstChild.nodeType===3) img.removeChild(img.firstChild);
-      if(p.dataset.img){ img.style.background='#0b1f2a url("'+p.dataset.img+'") center/contain no-repeat'; }
-      else{ img.style.background='linear-gradient(150deg,'+(p.dataset.g1||'#cdeaf9')+','+(p.dataset.g2||'#6cc4ea')+')'; img.insertAdjacentText('afterbegin',p.dataset.emoji||''); }
+      if(p.dataset.img){ img.innerHTML='<img src="'+p.dataset.img+'" referrerpolicy="no-referrer" alt="" style="width:100%;height:100%;object-fit:contain;">'; img.style.background='#0b1f2a'; }
+      else{ img.innerHTML=''; img.textContent=p.dataset.emoji||''; img.style.background='linear-gradient(150deg,'+(p.dataset.g1||'#cdeaf9')+','+(p.dataset.g2||'#6cc4ea')+')'; }
       document.getElementById('lb-title').textContent=p.dataset.title||'';
       document.getElementById('lb-date').textContent=p.dataset.date||'';
       document.getElementById('lb').classList.add('on');
@@ -274,8 +275,9 @@ async function loadDress(){
         var dt=it.created_at?String(it.created_at).slice(2,10).replace(/-/g,'.'):'';
         var im=(it.image_url||'').trim();
         var ime=im.replace(/"/g,'%22').replace(/'/g,'%27');
-        var st=im?('background-color:#dfeef6;background-image:url("'+ime+'");background-size:cover;background-position:center;background-repeat:no-repeat;'):'background:linear-gradient(150deg,#cdeaf9,#6cc4ea);';
-        return '<div class="poster" data-new="'+(nw?1:0)+'" data-cat="'+(it.category||'outfit')+'" data-img="'+ime+'" data-title="'+(it.name||'')+'" data-date="'+dt+'"><div class="img" style="'+st+'">'+(im?'':'👗')+(nw?'<span class="badge">NEW</span>':'')+'<span class="plogo">UHI<em>s</em></span><div class="pmeta"><span class="pcat">'+(k[it.category]||'의상')+'</span><div class="ptitle">'+(it.name||'')+'</div><div class="pdate">'+dt+'</div></div></div></div>';
+        var st=im?'':'background:linear-gradient(150deg,#cdeaf9,#6cc4ea);';
+        var imgTag=im?'<img src="'+ime+'" referrerpolicy="no-referrer" alt="" class="pimg">':'';
+        return '<div class="poster" data-new="'+(nw?1:0)+'" data-cat="'+(it.category||'outfit')+'" data-img="'+ime+'" data-title="'+(it.name||'')+'" data-date="'+dt+'"><div class="img" style="'+st+'">'+imgTag+(im?'':'👗')+(nw?'<span class="badge">NEW</span>':'')+'<span class="plogo">UHI<em>s</em></span><div class="pmeta"><span class="pcat">'+(k[it.category]||'의상')+'</span><div class="ptitle">'+(it.name||'')+'</div><div class="pdate">'+dt+'</div></div></div></div>';
       }).join('');
       bindPosters(); render();
     }

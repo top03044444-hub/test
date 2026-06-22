@@ -93,6 +93,10 @@ textarea.iq-input{resize:vertical;}
 .tmi-k{font-size:11.5px;font-weight:800;color:var(--soft);letter-spacing:.5px;}
 .tmi-v{display:inline-block;background:var(--blue-soft);color:var(--blue-dark);border-radius:7px;padding:4px 11px;font-size:13.5px;font-weight:600;margin:2px 4px 2px 0;}
 .likes{display:flex;flex-direction:column;gap:13px;}
+.upnext-list .ux{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px dashed var(--line);}
+.upnext-list .ux:last-child{border-bottom:none;}
+.upnext-list .ux-d{font-weight:800;color:var(--pink-dark);font-size:14px;white-space:nowrap;}
+.upnext-list .ux-t{color:var(--ink);font-size:14px;text-align:right;}
 .like-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
 .like-row .lab{font-size:14px;font-weight:800;color:var(--pink-dark);min-width:52px;}
 .chip{display:inline-flex;align-items:center;background:var(--pink-soft);color:var(--pink-dark);border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700;}
@@ -156,6 +160,8 @@ textarea.iq-input{resize:vertical;}
           <div class="info-row"><span class="k">MBTI</span><span class="v" data-pf="info-mbti">ISTP</span></div>
           <div class="info-row"><span class="k">팬애칭</span><span class="v" data-pf="info-fanname">국밥</span></div>
           <div class="info-row"><span class="k">시그니처</span><span class="v" data-pf="signature">청량 블루 💙</span></div>
+          <div class="info-row" id="fandomRow" style="display:none"><span class="k">팬닉</span><span class="v" data-pf="info-fandom"></span></div>
+          <div class="info-row" id="daysRow" style="display:none"><span class="k">방송요일</span><span class="v" id="daysVal"></span></div>
         </div>
       </section>
       <section class="sec">
@@ -171,6 +177,10 @@ textarea.iq-input{resize:vertical;}
             <div class="like-row" id="dislikesRow"><span class="lab">🚫 싫어</span><span class="chip gray">추운 거</span><span class="chip gray">무례한 말</span></div>
           </div>
         </div>
+      </section>
+      <section class="sec" id="upNextSec" style="display:none">
+        <div class="sec-head"><span class="en">Up Next</span><span class="ko">다가오는 일정</span></div>
+        <div id="upNextList" class="upnext-list"></div>
       </section>
       <section class="sec">
         <div class="sec-head"><span class="en">VOD</span><span class="ko">노래STORY · 다시보기</span><span class="more">REPLAY</span></div>
@@ -273,6 +283,23 @@ async function loadProfile(){
     _href('linkFancim',  sv['link-fancim']);
     _href('linkSoop',    sv['link-soop']);
     _href('linkHeart',   sv['link-heart']);
+
+    /* 다가오는 일정 */
+    var ux=[];
+    if((sv['sched1-date']||'').trim()||(sv['sched1-title']||'').trim()) ux.push([sv['sched1-date']||'',sv['sched1-title']||'']);
+    if((sv['sched2-date']||'').trim()||(sv['sched2-title']||'').trim()) ux.push([sv['sched2-date']||'',sv['sched2-title']||'']);
+    if(ux.length){
+      document.getElementById('upNextList').innerHTML=ux.map(function(it){return '<div class="ux"><span class="ux-d">'+_esc(it[0])+'</span><span class="ux-t">'+_esc(it[1])+'</span></div>';}).join('');
+      document.getElementById('upNextSec').style.display='';
+    }
+
+    /* 팬닉 / 방송요일 */
+    if((sv['info-fandom']||'').trim()) document.getElementById('fandomRow').style.display='';
+    if((sv.days||'').trim()){
+      var dn=['일','월','화','수','목','금','토'];
+      var ds=String(sv.days).split(',').map(function(x){return dn[parseInt(x,10)];}).filter(Boolean);
+      if(ds.length){ document.getElementById('daysVal').textContent='매주 '+ds.join('·'); document.getElementById('daysRow').style.display=''; }
+    }
   }catch(e){ console.error('loadProfile', e); }
 }
 loadProfile();
