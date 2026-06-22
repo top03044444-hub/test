@@ -191,7 +191,8 @@ textarea.iq-input{resize:vertical;}
 
       <div class="cats" id="cats">
         <button class="on" data-c="all" onclick="setCat('all')">전체</button>
-        <button data-c="hair" onclick="setCat('hair')">헤어</button>
+        <button data-c="white" onclick="setCat('white')">화이트</button>
+        <button data-c="black" onclick="setCat('black')">블랙</button>
         <button data-c="outfit" onclick="setCat('outfit')">의상</button>
         <button data-c="lens" onclick="setCat('lens')">렌즈</button>
       </div>
@@ -237,14 +238,14 @@ textarea.iq-input{resize:vertical;}
 
 /* 옷장 토글 + 분류 + 라이트박스 (데이터-드리븐 단일 렌더) */
 var mode='new', cat='all';
-var CATK={hair:'헤어',outfit:'의상',lens:'렌즈'};
+var CATK={white:'화이트',black:'블랙',outfit:'의상',lens:'렌즈'};
 /* 시안용 기본 데이터 (DB 연결되면 덮어씀) */
 var ITEMS=[
   {nw:1,cat:'outfit',emoji:'👗',g1:'#cdeaf9',g2:'#6cc4ea',title:'청량 여름 원피스',date:'2026.01.12',img:''},
-  {nw:1,cat:'hair',emoji:'💇‍♀️',g1:'#e3f4fb',g2:'#8ad0ef',title:'물결 단발 스타일',date:'2026.01.11',img:''},
+  {nw:1,cat:'white',emoji:'💇‍♀️',g1:'#e3f4fb',g2:'#8ad0ef',title:'화이트 청량 코디',date:'2026.01.11',img:''},
   {nw:1,cat:'lens',emoji:'👁️',g1:'#d7eefb',g2:'#5bb8e0',title:'아쿠아 블루 렌즈',date:'2026.01.10',img:''},
   {nw:1,cat:'outfit',emoji:'🧥',g1:'#eaf6fc',g2:'#7ccae9',title:'겨울 데뷔 코디',date:'2025.12.13',img:''},
-  {nw:0,cat:'hair',emoji:'🎀',g1:'#eef8fd',g2:'#a9def3',title:'포니테일',date:'2025.12.20',img:''},
+  {nw:0,cat:'black',emoji:'🎀',g1:'#eef8fd',g2:'#a9def3',title:'블랙 데일리룩',date:'2025.12.20',img:''},
   {nw:0,cat:'outfit',emoji:'👚',g1:'#f0f9fd',g2:'#9bd8f0',title:'데일리 니트',date:'2025.12.18',img:''},
   {nw:0,cat:'lens',emoji:'✨',g1:'#edf7fc',g2:'#88cfee',title:'기본 블루 렌즈',date:'2025.12.15',img:''}
 ];
@@ -277,8 +278,8 @@ function openLb(it){
   if(!it)return;
   var img=document.getElementById('lb-img');
   var hasImg=!!(it.img&&it.img.trim());
-  if(hasImg){ img.innerHTML='<span class="close" onclick="closeLb()">×</span><div class="pmeta"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div><img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;">'; img.style.background='#0b1f2a'; }
-  else{ img.innerHTML='<span class="close" onclick="closeLb()">×</span><div class="emoji" style="position:absolute;top:50px;left:0;right:0;text-align:center;">'+(it.emoji||'👗')+'</div><div class="pmeta"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+')'; }
+  if(hasImg){ img.innerHTML='<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='#0b1f2a'; }
+  else{ img.innerHTML='<div class="emoji" style="position:absolute;top:50px;left:0;right:0;text-align:center;z-index:1;">'+(it.emoji||'👗')+'</div><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+')'; }
   document.getElementById('lb-title').textContent=it.title||'';
   document.getElementById('lb-date').textContent=it.date||'';
   document.getElementById('lb').classList.add('on');
