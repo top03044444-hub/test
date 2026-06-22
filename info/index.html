@@ -148,13 +148,13 @@ textarea.iq-input{resize:vertical;}
       <section class="sec">
         <div class="sec-head"><span class="en">Profile</span><span class="ko">프로필 정보</span></div>
         <div class="info-table">
-          <div class="info-row"><span class="k">이름</span><span class="v" data-pf="name">우히 (UHI)</span></div>
-          <div class="info-row"><span class="k">SOOP</span><span class="v" data-pf="soop_id">1020118</span></div>
-          <div class="info-row"><span class="k">데뷔</span><span class="v" data-pf="debut">2025.12.13</span></div>
-          <div class="info-row"><span class="k">생일</span><span class="v" data-pf="birthday_text">1월 18일</span></div>
-          <div class="info-row"><span class="k">나이</span><span class="v" data-pf="age">20대</span></div>
-          <div class="info-row"><span class="k">MBTI</span><span class="v" data-pf="mbti">ISTP</span></div>
-          <div class="info-row"><span class="k">팬애칭</span><span class="v" data-pf="fan_name">국밥</span></div>
+          <div class="info-row"><span class="k">이름</span><span class="v" data-pf="info-name">우히 (UHI)</span></div>
+          <div class="info-row"><span class="k">SOOP</span><span class="v" data-pf="soop-id">1020118</span></div>
+          <div class="info-row"><span class="k">데뷔</span><span class="v" data-pf="info-debut">2025.12.13</span></div>
+          <div class="info-row"><span class="k">생일</span><span class="v" data-pf="info-birthday">1월 18일</span></div>
+          <div class="info-row"><span class="k">나이</span><span class="v" data-pf="info-age">20대</span></div>
+          <div class="info-row"><span class="k">MBTI</span><span class="v" data-pf="info-mbti">ISTP</span></div>
+          <div class="info-row"><span class="k">팬애칭</span><span class="v" data-pf="info-fanname">국밥</span></div>
           <div class="info-row"><span class="k">시그니처</span><span class="v" data-pf="signature">청량 블루 💙</span></div>
         </div>
       </section>
@@ -208,36 +208,123 @@ textarea.iq-input{resize:vertical;}
 </div>
 <script src="../supabase.js"></script>
 <script>
-document.getElementById('themeSwitch').addEventListener('click',function(){var d=document.body.classList.toggle('dark');document.getElementById('themeKnob').textContent=d?'☀️':'🌙';});
-function openInquiry(){document.getElementById('iq-ov').classList.add('on');document.getElementById('iq-nick').focus();}
-function closeInquiry(){document.getElementById('iq-ov').classList.remove('on');document.getElementById('iq-status').textContent='';}
-function sendInquiry(){var n=document.getElementById('iq-nick').value.trim();var s=document.getElementById('iq-status');if(!n){s.textContent='닉네임을 입력해 주세요!';return;}s.textContent='보냈어요! (시안 미리보기라 실제 저장은 안 돼요 💙)';setTimeout(closeInquiry,1400);}
-(function(){var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;var fx=document.getElementById('fx');if(fx&&!reduce){var g=['✦','♡','✧','✦'];for(var i=0;i<12;i++){var s=document.createElement('span');s.className='fxfb';s.textContent=g[i%g.length];s.style.left=(Math.random()*100)+'%';s.style.fontSize=(10+Math.random()*15)+'px';s.style.animationDuration=(10+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*15)+'s';fx.appendChild(s);}}})();
-function _esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function _chips(id,arr,cls){var el=document.getElementById(id);if(!el||!Array.isArray(arr)||!arr.length)return;el.innerHTML=arr.map(function(x){return '<span class="'+cls+'">'+_esc(x)+'</span>';}).join('');}
-function _chiprow(id,lab,arr,cls){var el=document.getElementById(id);if(!el||!Array.isArray(arr))return;el.innerHTML='<span class="lab">'+lab+'</span>'+arr.map(function(x){return '<span class="chip'+(cls?' '+cls:'')+'">'+_esc(x)+'</span>';}).join('');}
-function _href(id,u){if(!u)return;var el=document.getElementById(id);if(el)el.href=u;}
-async function loadProfile(){
-  if(typeof db==='undefined')return;
+/* ===== 우히 프로필 — 데이터/연출 (관리자 admin 스키마와 동일) ===== */
+function _esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* 쉼표 문자열 -> 칩 */
+function _chipsFromCsv(id, csv, cls){
+  var el = document.getElementById(id); if(!el) return;
+  var arr = (csv||'').split(',').map(function(x){return x.trim();}).filter(Boolean);
+  if(arr.length) el.innerHTML = arr.map(function(x){return '<span class="'+cls+'">'+_esc(x)+'</span>';}).join('');
+}
+/* 배열 -> 라벨+칩 한 줄 */
+function _chiprow(id, lab, arr, cls){
+  var el = document.getElementById(id); if(!el) return;
+  arr = (arr||[]).filter(function(x){return x && String(x).trim();});
+  if(arr.length) el.innerHTML = '<span class="lab">'+lab+'</span>' + arr.map(function(x){return '<span class="chip'+(cls?' '+cls:'')+'">'+_esc(x)+'</span>';}).join('');
+}
+function _href(id, u){ if(!u || u === '#') return; var el = document.getElementById(id); if(el) el.href = u; }
+
+async function loadOriginalSongs(){
+  if(typeof fetchAll !== 'function') return;
   try{
-    var r=await db.from('profile').select('data').eq('id',1);
-    var sv=(r&&r.data&&r.data[0]&&r.data[0].data)?r.data[0].data:null;
-    if(!sv)return;
-    document.querySelectorAll('[data-pf]').forEach(function(el){var k=el.getAttribute('data-pf');if(sv[k]!=null&&sv[k]!=='')el.textContent=sv[k];});
-    _chips('tmiFood',sv.tmi_food,'tmi-v');_chips('tmiSong',sv.tmi_song,'tmi-v');_chips('tmiGame',sv.tmi_game,'tmi-v');
-    _chiprow('likesRow','💙 좋아',sv.likes,'');_chiprow('dislikesRow','🚫 싫어',sv.dislikes,'gray');
-    _href('linkYoutube',sv.link_youtube);_href('linkMfancim',sv.link_mfancim);_href('linkFancim',sv.link_fancim);_href('linkSoop',sv.link_soop);_href('linkHeart',sv.link_heart);
-    if(Array.isArray(sv.vods)&&sv.vods.length){
-      var g=document.getElementById('vodGrid');
-      if(g)g.innerHTML=sv.vods.map(function(v){
-        if(v.id)return '<div class="vod-card"><div class="vod-thumb" style="padding:0;overflow:hidden"><iframe src="https://vod.sooplive.co.kr/player/'+_esc(v.id)+'/embed" style="width:100%;height:100%;border:0" allowfullscreen></iframe></div><div class="vod-title">'+_esc(v.title)+'</div></div>';
-        return '<div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">'+_esc(v.title)+'</div></div>';
-      }).join('');
-    }
-  }catch(e){console.error(e);}
+    var rows = await fetchAll('original_songs', { order: 'id', asc: false });
+    if(!Array.isArray(rows) || !rows.length) return;
+    var g = document.getElementById('vodGrid'); if(!g) return;
+    g.innerHTML = rows.map(function(v){
+      if(v.vod_id){
+        return '<div class="vod-card"><div class="vod-thumb" style="padding:0;overflow:hidden">'
+          + '<iframe src="https://vod.sooplive.co.kr/player/'+_esc(v.vod_id)+'/embed" style="width:100%;height:100%;border:0" allowfullscreen></iframe>'
+          + '</div><div class="vod-title">'+_esc(v.title||'')+'</div></div>';
+      }
+      var thumb = v.thumbnail ? ' style="background:url(\''+_esc(v.thumbnail)+'\') center/cover no-repeat"' : '';
+      return '<div class="vod-card"><div class="vod-thumb"'+thumb+'><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">'+_esc(v.title||'')+'</div></div>';
+    }).join('');
+  }catch(e){ console.error('loadOriginalSongs', e); }
+}
+
+async function loadProfile(){
+  if(typeof db === 'undefined' || !db) return;
+  try{
+    var r = await db.from('profile').select('data').eq('id', 1);
+    var sv = (r && r.data && r.data[0] && r.data[0].data) ? r.data[0].data : null;
+    if(!sv) return;
+
+    document.querySelectorAll('[data-pf]').forEach(function(el){
+      var k = el.getAttribute('data-pf');
+      if(sv[k] == null || sv[k] === '') return;
+      if(k === 'intro'){ el.innerHTML = _esc(sv[k]).replace(/\n/g,'<br>'); }
+      else { el.textContent = sv[k]; }
+    });
+
+    /* TMI (쉼표 구분 -> 칩) */
+    _chipsFromCsv('tmiFood', sv['tmi-food'], 'tmi-v');
+    _chipsFromCsv('tmiSong', sv['tmi-song'], 'tmi-v');
+    _chipsFromCsv('tmiGame', sv['tmi-game'], 'tmi-v');
+
+    /* 좋아 / 싫어 */
+    _chiprow('likesRow', '💙 좋아', [sv.like1, sv.like2, sv.like3, sv.like4], '');
+    _chiprow('dislikesRow', '🚫 싫어', [sv.dislike1, sv.dislike2], 'gray');
+
+    /* 링크 */
+    _href('linkYoutube', sv['link-youtube']);
+    _href('linkMfancim', sv['link-mfancim']);
+    _href('linkFancim',  sv['link-fancim']);
+    _href('linkSoop',    sv['link-soop']);
+    _href('linkHeart',   sv['link-heart']);
+  }catch(e){ console.error('loadProfile', e); }
 }
 loadProfile();
+loadOriginalSongs();
 
+/* 다크모드 — localStorage 유지 */
+(function(){
+  if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+  var sw = document.getElementById('themeSwitch'), knob = document.getElementById('themeKnob');
+  function refresh(){ if(knob) knob.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙'; }
+  if(sw) sw.addEventListener('click', function(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    refresh();
+  });
+  refresh();
+})();
+
+/* 문의 — 실제 저장 */
+function openInquiry(){ document.getElementById('iq-ov').classList.add('on'); document.getElementById('iq-nick').focus(); }
+function closeInquiry(){ document.getElementById('iq-ov').classList.remove('on'); var s=document.getElementById('iq-status'); if(s) s.textContent=''; }
+async function sendInquiry(){
+  var n = document.getElementById('iq-nick').value.trim();
+  var m = document.getElementById('iq-msg').value.trim();
+  var s = document.getElementById('iq-status');
+  if(!n){ if(s) s.textContent = '닉네임을 입력해 주세요!'; return; }
+  if(!m){ if(s) s.textContent = '문의 내용을 적어주세요!'; return; }
+  if(typeof insertRow !== 'function'){ if(s) s.textContent = '아직 서버 연결 전이에요 (supabase.js 설정 후 작동) 💙'; return; }
+  var ok = await insertRow('inquiries', { nickname: n, message: m });
+  if(ok){
+    if(s) s.textContent = '보냈어요! 💙';
+    document.getElementById('iq-nick').value=''; document.getElementById('iq-msg').value='';
+    setTimeout(closeInquiry, 1400);
+  } else { if(s) s.textContent = '전송 실패 ㅠㅠ 잠시 후 다시 시도해 주세요'; }
+}
+
+/* fx 입자 (.fxfb 전용) */
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fx = document.getElementById('fx');
+  if(fx && !reduce){
+    var g = ['✦','♡','✧','✦'];
+    for(var i=0;i<12;i++){
+      var s = document.createElement('span'); s.className = 'fxfb';
+      s.textContent = g[i % g.length];
+      s.style.left = (Math.random()*100)+'%';
+      s.style.fontSize = (10 + Math.random()*15)+'px';
+      s.style.animationDuration = (10 + Math.random()*9)+'s';
+      s.style.animationDelay = (-Math.random()*15)+'s';
+      fx.appendChild(s);
+    }
+  }
+})();
 </script>
 </body>
 </html>

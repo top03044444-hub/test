@@ -232,7 +232,7 @@ textarea.iq-input{resize:vertical;}
       <section class="feature" id="top">
         <div class="ticker">
           <span class="pin">TODAY</span>
-          <span class="txt" data-pf="ticker">히히, 왔구나! ＞◡＜ 오늘도 보러 와줘서 고마워 💙</span>
+          <span class="txt" data-pf="quote">히히, 왔구나! ＞◡＜ 오늘도 보러 와줘서 고마워 💙</span>
           <span class="arrow">→</span>
         </div>
         <div class="photo-wrap">
@@ -249,7 +249,7 @@ textarea.iq-input{resize:vertical;}
 
       <section class="sec about-main" id="about">
         <div class="sec-head"><span class="en">About</span><span class="ko">오늘의 우히?</span><span class="more">UHI DAILY</span></div>
-        <p class="about-text" data-pf="about">국밥들 덕분에 매일이 따뜻해 🍚 처음 온 사람도 오래 있어준 사람도 <span class="em">국밥 한 그릇 먹고 가듯</span> 편하게 쉬다 가요. 화·목·토 저녁 8시, 청량 블루 소통 방송에서 만나요 🎵</p>
+        <p class="about-text" data-pf="intro">국밥들 덕분에 매일이 따뜻해 🍚 처음 온 사람도 오래 있어준 사람도 <span class="em">국밥 한 그릇 먹고 가듯</span> 편하게 쉬다 가요. 화·목·토 저녁 8시, 청량 블루 소통 방송에서 만나요 🎵</p>
       </section>
       </div>
 
@@ -258,14 +258,14 @@ textarea.iq-input{resize:vertical;}
         <div class="bio-card" id="profile">
           <span class="bio-dday" data-dday></span>
           <div class="bio-avatar avatar" id="avatarWrap" data-soop-id="1020118" title="우히"></div>
-          <div class="bio-name" data-pf="name">우히</div>
-          <div class="bio-sig" data-pf="tagline">💎 화이트 &amp; 청량한 블루 — 햄찌 같은 국밥요정, 잔잔살벌</div>
+          <div class="bio-name" data-pf="info-name">우히</div>
+          <div class="bio-sig" data-pf="signature">💎 화이트 &amp; 청량한 블루 — 햄찌 같은 국밥요정, 잔잔살벌</div>
           <div class="bio-list">
-            <div class="bio-row"><span class="k">나이</span><span class="v" data-pf="age">20대</span></div>
-            <div class="bio-row"><span class="k">데뷔</span><span class="v" data-pf="debut">2025.12.13</span></div>
-            <div class="bio-row"><span class="k">생일</span><span class="v" data-pf="birthday_text">1월 18일</span></div>
-            <div class="bio-row"><span class="k">MBTI</span><span class="v" data-pf="mbti">ISTP</span></div>
-            <div class="bio-row"><span class="k">팬애칭</span><span class="v" data-pf="fan_name">국밥</span></div>
+            <div class="bio-row"><span class="k">나이</span><span class="v" data-pf="info-age">20대</span></div>
+            <div class="bio-row"><span class="k">데뷔</span><span class="v" data-pf="info-debut">2025.12.13</span></div>
+            <div class="bio-row"><span class="k">생일</span><span class="v" data-pf="info-birthday">1월 18일</span></div>
+            <div class="bio-row"><span class="k">MBTI</span><span class="v" data-pf="info-mbti">ISTP</span></div>
+            <div class="bio-row"><span class="k">팬애칭</span><span class="v" data-pf="info-fanname">국밥</span></div>
           </div>
         </div>
         <div class="kw">
@@ -308,90 +308,149 @@ textarea.iq-input{resize:vertical;}
 
 <script src="supabase.js"></script>
 <script>
-/* Supabase 프로필 로드 — 배포 시 동작(시안엔 supabase.js가 없어 자동 생략, 기본값 표시) */
-async function loadProfile(){
-  try{
-    var rows = await fetchAll('profile');
-    var d = (rows && rows[0] && rows[0].data) ? rows[0].data : null;
-    if(!d) return;
-    document.querySelectorAll('[data-pf]').forEach(function(el){ var k=el.dataset.pf; if(d[k]!=null && d[k]!=='') el.textContent=d[k]; });
-    if(d.hero_img) document.documentElement.style.setProperty('--hero-img', "url('"+d.hero_img+"')");
-    if(d.soop_id) setSoopAvatar(d.soop_id);
-    if(Array.isArray(d.keywords) && d.keywords.length){ var t=document.getElementById('kwTags'); if(t) t.innerHTML=d.keywords.map(function(k){return '<span class="tag">#'+k+'</span>';}).join(''); }
-    if(d.birthday) setDDay(d.birthday);
-  }catch(e){ console.error('loadProfile', e); }
-}
+/* ===== 우히 메인 — 데이터/연출 (배포 시 Supabase 연동) =====
+   프로필은 admin에서 저장한 profile(id=1).data 를 읽어옵니다.
+   ⚠️ 데이터 키는 관리자(admin)와 동일한 스키마로 맞춰져 있습니다. */
+var SOOP_ID = '1020118';
+
+function _esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 function setSoopAvatar(id){
   if(!id) return;
-  var a=document.getElementById('avatarWrap'); if(!a) return;
-  a.style.backgroundImage="url('https://profile.img.sooplive.co.kr/LOGO/"+String(id).slice(0,2)+"/"+id+"/"+id+".jpg')";
-}
-(function(){var a=document.getElementById('avatarWrap'); if(a) setSoopAvatar(a.getAttribute('data-soop-id'));})();
-if (typeof db !== 'undefined' && typeof fetchAll === 'function') loadProfile();
-
-/* 다크모드 */
-document.getElementById('themeSwitch').addEventListener('click',function(){
-  var d=document.body.classList.toggle('dark');
-  document.getElementById('themeKnob').textContent=d?'☀️':'🌙';
-});
-
-/* 문의 모달 */
-function openInquiry(){document.getElementById('iq-ov').classList.add('on');document.getElementById('iq-nick').focus();}
-function closeInquiry(){document.getElementById('iq-ov').classList.remove('on');document.getElementById('iq-status').textContent='';}
-function sendInquiry(){
-  var n=document.getElementById('iq-nick').value.trim();
-  var s=document.getElementById('iq-status');
-  if(!n){s.textContent='닉네임을 입력해 주세요!';return;}
-  s.textContent='보냈어요! (시안 미리보기라 실제 저장은 안 돼요 💙)';
-  setTimeout(closeInquiry,1400);
+  id = String(id).trim().toLowerCase();
+  if(id.length < 2) return;
+  var a = document.getElementById('avatarWrap');
+  if(a) a.style.backgroundImage = "url('https://profile.img.sooplive.co.kr/LOGO/"+id.slice(0,2)+"/"+id+"/"+id+".jpg')";
 }
 
-/* 포스트잇 = 오늘 날짜(매일 자동) + 생일 D-Day */
-var MN=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function setDDay(mmdd){
-  var t=new Date(); t.setHours(0,0,0,0);
-  var p=String(mmdd||'01-18').split('-'), mo=parseInt(p[0],10)||1, dy=parseInt(p[1],10)||18;
-  var n=new Date(t.getFullYear(),mo-1,dy); if(n<t) n.setFullYear(t.getFullYear()+1);
-  var d=Math.round((n-t)/86400000), txt=d===0?'🎂 생일 D-DAY!':'🎂 D-'+d;
-  document.querySelectorAll('[data-dday]').forEach(function(el){el.textContent=txt;});
+/* 생일 D-Day — '1월 18일' 같은 텍스트에서 숫자 두 개를 뽑아 계산(견고) */
+function paintDday(text){
+  var n = (text||'').match(/\d+/g);
+  if(!n || n.length < 2) return;
+  var mo = +n[0], da = +n[1];
+  if(!mo || !da || mo > 12 || da > 31) return;
+  var t = new Date(); t.setHours(0,0,0,0);
+  var nx = new Date(t.getFullYear(), mo-1, da);
+  if(nx < t) nx.setFullYear(t.getFullYear()+1);
+  var d = Math.round((nx - t) / 86400000);
+  var txt = d === 0 ? '🎂 생일 D-DAY!' : ('🎂 D-' + d);
+  document.querySelectorAll('[data-dday]').forEach(function(el){ el.textContent = txt; });
 }
+
+async function loadProfile(){
+  if(typeof db === 'undefined' || !db) return;
+  try{
+    var r = await db.from('profile').select('data').eq('id', 1);
+    var sv = (r && r.data && r.data[0] && r.data[0].data) ? r.data[0].data : null;
+    if(!sv) return;
+
+    /* 일반 텍스트 바인딩 (data-pf = 관리자 키) */
+    document.querySelectorAll('[data-pf]').forEach(function(el){
+      var k = el.getAttribute('data-pf');
+      if(sv[k] == null || sv[k] === '') return;
+      if(k === 'quote' || k === 'intro'){ el.innerHTML = _esc(sv[k]).replace(/\n/g,'<br>'); }
+      else { el.textContent = sv[k]; }
+    });
+
+    /* 히어로 배경 사진 */
+    if(sv['hero-img']) document.documentElement.style.setProperty('--hero-img', "url('"+sv['hero-img']+"')");
+
+    /* 프사 (관리자 soop-id, 없으면 기본값) */
+    setSoopAvatar(sv['soop-id'] || SOOP_ID);
+
+    /* 키워드: 관리자 info-tags(쉼표 구분) -> 칩 */
+    if(sv['info-tags']){
+      var t = document.getElementById('kwTags');
+      if(t){
+        var tags = sv['info-tags'].split(',').map(function(x){return x.trim().replace(/^#\s*/,'');}).filter(Boolean);
+        if(tags.length) t.innerHTML = tags.map(function(k){return '<span class="tag">#'+_esc(k)+'</span>';}).join('');
+      }
+    }
+
+    /* 생일 D-Day (DB 생일 우선) */
+    if(sv['info-birthday']) paintDday(sv['info-birthday']);
+  }catch(e){ console.error('loadProfile', e); }
+}
+
+/* 프사 기본값 즉시 표시 */
+(function(){ var a=document.getElementById('avatarWrap'); if(a) setSoopAvatar(a.getAttribute('data-soop-id')); })();
+loadProfile();
+
+/* 다크모드 — localStorage로 페이지 이동/새로고침에도 유지 */
 (function(){
-  var t=new Date(), st=document.getElementById('sticky');
-  if(st){ st.querySelector('.y').textContent=t.getFullYear(); st.querySelector('.m').textContent=MN[t.getMonth()+1]; st.querySelector('.d').textContent=t.getDate(); }
-  setDDay('01-18');
+  if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+  var sw = document.getElementById('themeSwitch'), knob = document.getElementById('themeKnob');
+  function refresh(){ if(knob) knob.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙'; }
+  if(sw) sw.addEventListener('click', function(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    refresh();
+  });
+  refresh();
 })();
 
-/* fx 입자 + 프사 톡/바운스 (시안 미리보기용 · .fxfb 전용, 배포 시 fx.js와 분리) */
+/* 문의 — 실제 Supabase inquiries 테이블에 저장 */
+function openInquiry(){ document.getElementById('iq-ov').classList.add('on'); document.getElementById('iq-nick').focus(); }
+function closeInquiry(){ document.getElementById('iq-ov').classList.remove('on'); var s=document.getElementById('iq-status'); if(s) s.textContent=''; }
+async function sendInquiry(){
+  var n = document.getElementById('iq-nick').value.trim();
+  var m = document.getElementById('iq-msg').value.trim();
+  var s = document.getElementById('iq-status');
+  if(!n){ if(s) s.textContent = '닉네임을 입력해 주세요!'; return; }
+  if(!m){ if(s) s.textContent = '문의 내용을 적어주세요!'; return; }
+  if(typeof insertRow !== 'function'){ if(s) s.textContent = '아직 서버 연결 전이에요 (supabase.js 설정 후 작동) 💙'; return; }
+  var ok = await insertRow('inquiries', { nickname: n, message: m });
+  if(ok){
+    if(s) s.textContent = '보냈어요! 💙';
+    document.getElementById('iq-nick').value=''; document.getElementById('iq-msg').value='';
+    setTimeout(closeInquiry, 1400);
+  } else { if(s) s.textContent = '전송 실패 ㅠㅠ 잠시 후 다시 시도해 주세요'; }
+}
+
+/* 포스트잇 = 오늘 날짜(매일 자동) + 생일 D-Day 기본 표시 */
+var MN = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 (function(){
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var fx=document.getElementById('fx');
+  var t = new Date(), st = document.getElementById('sticky');
+  if(st){ st.querySelector('.y').textContent = t.getFullYear(); st.querySelector('.m').textContent = MN[t.getMonth()+1]; st.querySelector('.d').textContent = t.getDate(); }
+  /* 기본 생일은 화면의 '생일' 값에서 읽어 미리 표시 (DB로 덮어씀) */
+  var b = document.querySelector('[data-pf="info-birthday"]');
+  paintDday(b ? b.textContent : '1월 18일');
+})();
+
+/* fx 입자 + 프사 톡/바운스 (이 브라우저 안에서만 · .fxfb 전용) */
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fx = document.getElementById('fx');
   if(fx && !reduce){
-    var g=['✿','✦','♡','✧'];
+    var g = ['✿','✦','♡','✧'];
     for(var i=0;i<12;i++){
-      var s=document.createElement('span');s.className='fxfb';
-      s.textContent=g[i%g.length];
-      s.style.left=(Math.random()*100)+'%';
-      s.style.fontSize=(10+Math.random()*15)+'px';
-      s.style.animationDuration=(10+Math.random()*9)+'s';
-      s.style.animationDelay=(-Math.random()*15)+'s';
+      var s = document.createElement('span'); s.className = 'fxfb';
+      s.textContent = g[i % g.length];
+      s.style.left = (Math.random()*100)+'%';
+      s.style.fontSize = (10 + Math.random()*15)+'px';
+      s.style.animationDuration = (10 + Math.random()*9)+'s';
+      s.style.animationDelay = (-Math.random()*15)+'s';
       fx.appendChild(s);
     }
   }
-  var wrap=document.getElementById('avatarWrap');
+  function popHearts(cx, cy, n){
+    if(reduce) return;
+    for(var i=0;i<n;i++){
+      var p = document.createElement('span'); p.textContent = '♡';
+      p.style.cssText = 'position:fixed;left:'+cx+'px;top:'+cy+'px;color:var(--pink);font-size:'+(12+Math.random()*10)+'px;pointer-events:none;z-index:999;transition:transform .7s ease-out,opacity .7s ease-out;opacity:1;';
+      document.body.appendChild(p);
+      var ang = Math.random()*6.283, dist = 30 + Math.random()*45;
+      (function(p, ang, dist){ requestAnimationFrame(function(){ p.style.transform = 'translate('+(Math.cos(ang)*dist)+'px,'+(Math.sin(ang)*dist-20)+'px)'; p.style.opacity='0'; }); })(p, ang, dist);
+      setTimeout((function(p){ return function(){ p.remove(); }; })(p), 760);
+    }
+  }
+  var wrap = document.getElementById('avatarWrap');
   if(wrap){
-    wrap.addEventListener('click',function(e){
-      var av=wrap.querySelector('.avatar')||wrap;
-      if(!reduce&&av.animate)av.animate([{transform:'scale(1)'},{transform:'scale(.88)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:420,easing:'ease-out'});
-      var r=wrap.getBoundingClientRect();
-      var cx=e.clientX||(r.left+r.width/2),cy=e.clientY||(r.top+r.height/2);
-      for(var i=0;i<8;i++){
-        var p=document.createElement('span');p.textContent='♡';
-        p.style.cssText='position:fixed;left:'+cx+'px;top:'+cy+'px;color:var(--pink);font-size:'+(12+Math.random()*10)+'px;pointer-events:none;z-index:999;transition:transform .7s ease-out,opacity .7s ease-out;opacity:1;';
-        document.body.appendChild(p);
-        var ang=Math.random()*6.283,dist=30+Math.random()*45;
-        (function(p,ang,dist){requestAnimationFrame(function(){p.style.transform='translate('+(Math.cos(ang)*dist)+'px,'+(Math.sin(ang)*dist-20)+'px)';p.style.opacity='0';});})(p,ang,dist);
-        setTimeout((function(p){return function(){p.remove();};})(p),760);
-      }
+    wrap.addEventListener('click', function(e){
+      var av = wrap.querySelector('.avatar') || wrap;
+      if(!reduce && av.animate) av.animate([{transform:'scale(1)'},{transform:'scale(.88)'},{transform:'scale(1.06)'},{transform:'scale(1)'}], {duration:420, easing:'ease-out'});
+      var r = wrap.getBoundingClientRect();
+      popHearts(e.clientX || (r.left + r.width/2), e.clientY || (r.top + r.height/2), 8);
     });
   }
 })();
