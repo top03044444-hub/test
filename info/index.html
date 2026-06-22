@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우히 · 정보</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Gowun+Batang:wght@400;700&family=Parisienne&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --ink:#1f2d35; --bg:#ffffff; --paper:#ffffff; --soft:#9bb0ba; --line:#e7eff3;
+  --pink:#3fbfe6; --pink-dark:#0f7aa8; --pink-soft:#e3f4fb;
+  --blue:#6fcbeb; --blue-dark:#2a93c4; --blue-soft:#eef8fd;
+  --serif:'Playfair Display','Gowun Batang',serif;
+  --serif-ko:'Gowun Batang',serif;
+  --script:'Parisienne',cursive;
+  --script-ko:'Nanum Pen Script',cursive;
+  --ui:'Pretendard','Noto Sans KR',sans-serif;
+  --max:1040px;
+}
+body.dark{
+  --ink:#e6f1f5; --bg:#0d141a; --paper:#13202a; --soft:#84a0ad; --line:#243640;
+  --pink:#5cc8ea; --pink-dark:#9adcf4; --pink-soft:#13303d;
+  --blue:#74c6e8; --blue-dark:#9ad8f0; --blue-soft:#13303d;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--ui);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
+#fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+#fx .fxfb{position:absolute;bottom:-40px;color:var(--pink);opacity:0;animation:rise linear infinite;}
+@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.4}90%{opacity:.4}100%{transform:translateY(-106vh) rotate(40deg);opacity:0}}
+@media (prefers-reduced-motion: reduce){#fx{display:none}}
+main{position:relative;z-index:1;}
+.topbar{}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:14px;gap:16px;}
+.social{display:flex;gap:8px;flex:1;}
+.social a{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--ink);transition:.16s;}
+.social a:hover{background:var(--pink-soft);color:var(--pink-dark);}
+.brand{text-align:center;line-height:1;flex-shrink:0;}
+.brand .logo{font-family:var(--serif);font-weight:700;font-size:34px;letter-spacing:.5px;}
+.brand .logo em{font-family:var(--script);font-style:normal;color:var(--pink);font-size:36px;margin-left:1px;}
+.brand .tagline{font-size:11px;color:var(--soft);margin-top:7px;}
+.topbar .right{display:flex;align-items:center;gap:12px;flex:1;justify-content:flex-end;}
+.btn-join{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:700;color:var(--ink);transition:.16s;}
+.btn-join:hover{background:var(--pink);color:#fff;border-color:var(--pink);}
+.theme-switch{width:24px;height:34px;border-radius:999px;border:1.5px solid var(--line);background:var(--pink-soft);position:relative;flex-shrink:0;padding:0;}
+.theme-switch .knob{position:absolute;left:2px;top:2px;width:17px;height:17px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;box-shadow:0 1px 4px rgba(0,0,0,.18);transition:top .22s;}
+body.dark .theme-switch .knob{top:13px;background:var(--paper);}
+.nav{}
+.nav .wrap{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;padding-top:14px;padding-bottom:14px;}
+.nav a{font-family:var(--serif-ko);font-size:16px;font-weight:700;color:var(--ink);transition:.16s;}
+.nav a:hover{color:var(--pink-dark);}
+.nav a.active{color:var(--pink-dark);}
+.nav a.script{font-family:var(--script-ko);font-size:23px;color:var(--pink);font-weight:400;}
+.sections{padding-top:34px;padding-bottom:54px;}
+.sec-head{display:flex;align-items:baseline;gap:13px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:22px;}
+.sec-head .en{font-family:var(--serif);font-weight:700;font-size:23px;}
+.sec-head .ko{font-family:var(--script-ko);font-size:24px;color:var(--pink);line-height:1;}
+.sec-head .more{margin-left:auto;font-size:11px;color:var(--soft);letter-spacing:1.5px;align-self:center;}
+footer{border-top:1px solid var(--line);text-align:center;padding:28px 0 34px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
+.iq-ov{position:fixed;inset:0;background:rgba(20,40,50,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:400;padding:20px;}
+.iq-ov.on{display:flex;}
+.iq-modal{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(20,40,50,.3);}
+.iq-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--pink-dark);}
+.iq-desc{font-size:13px;color:var(--soft);margin:6px 0 16px;}
+.iq-input{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:11px 13px;font-size:14px;font-family:inherit;margin-bottom:10px;}
+.iq-input:focus{outline:none;border-color:var(--pink);}
+textarea.iq-input{resize:vertical;}
+.iq-status{font-size:12.5px;color:var(--pink-dark);min-height:16px;margin-bottom:8px;font-weight:600;}
+.iq-btns{display:flex;gap:10px;}
+.iq-cancel,.iq-send{flex:1;border-radius:10px;padding:12px;font-size:14px;font-weight:800;}
+.iq-cancel{background:var(--line);color:var(--soft);}
+.iq-send{background:var(--pink);color:#fff;}
+@media(max-width:880px){.brand .logo{font-size:30px}.nav .wrap{gap:18px}}
+@media(max-width:560px){.topbar .wrap{flex-wrap:wrap;justify-content:center}.social,.topbar .right{flex:none}}
+
+
+.sec{margin-top:46px;} .sec:first-child{margin-top:0;}
+.about-text{font-family:var(--serif-ko);font-size:15.5px;line-height:2.05;color:var(--ink);}
+.about-text .em{color:var(--pink-dark);font-weight:700;}
+.info-table{display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px;}
+.info-row{display:flex;justify-content:space-between;padding:12px 4px;border-bottom:1px solid var(--line);font-size:14.5px;}
+.info-row .k{color:var(--soft);font-weight:600;} .info-row .v{font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+.tmi-list{display:flex;flex-direction:column;}
+.tmi-row{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line);}
+.tmi-row:last-child{border-bottom:none;}
+.tmi-ic{font-size:19px;flex-shrink:0;}
+.tmi-k{font-size:11.5px;font-weight:800;color:var(--soft);letter-spacing:.5px;}
+.tmi-v{display:inline-block;background:var(--blue-soft);color:var(--blue-dark);border-radius:7px;padding:4px 11px;font-size:13.5px;font-weight:600;margin:2px 4px 2px 0;}
+.likes{display:flex;flex-direction:column;gap:13px;}
+.like-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.like-row .lab{font-size:14px;font-weight:800;color:var(--pink-dark);min-width:52px;}
+.chip{display:inline-flex;align-items:center;background:var(--pink-soft);color:var(--pink-dark);border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700;}
+.chip.gray{background:var(--line);color:var(--soft);}
+.vod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.vod-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);transition:transform .15s;}
+.vod-card:hover{transform:translateY(-3px);}
+.vod-thumb{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--pink),var(--blue));display:flex;align-items:center;justify-content:center;}
+.vod-thumb .play{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;color:var(--pink-dark);font-size:15px;padding-left:3px;}
+.vod-thumb .tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.42);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:5px;}
+.vod-title{padding:11px 13px;font-size:14px;font-weight:700;}
+.links{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.link-btn{display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);border-radius:9px;padding:13px;font-weight:700;font-size:13.5px;transition:.16s;}
+.link-btn:hover{background:var(--pink-soft);border-color:var(--pink-soft);color:var(--pink-dark);}
+.link-btn.wide{grid-column:1/-1;background:var(--pink-soft);border-color:var(--pink-soft);color:var(--pink-dark);}
+@media(max-width:680px){.cols{grid-template-columns:1fr}.info-table{grid-template-columns:1fr}}
+@media(max-width:560px){.vod-grid{grid-template-columns:1fr 1fr}.links{grid-template-columns:1fr 1fr}}
+
+</style>
+</head>
+<body>
+<div id="fx"></div>
+<main>
+  <header class="topbar"><div class="wrap">
+    <div class="social">
+      <a href="#" title="YouTube">&#9654;</a>
+      <a href="https://www.sooplive.com/station/1020118" target="_blank" title="SOOP">S</a>
+      <a href="#" title="팬심M">M</a>
+      <a href="#" title="메일">&#9993;</a>
+    </div>
+    <div class="brand">
+      <a href="../"><div class="logo">UHI<em>story</em></div></a>
+      <div class="tagline">「잔잔살벌」 청량 블루 국밥요정의 데일리 매거진</div>
+    </div>
+    <div class="right">
+      <button class="btn-join" onclick="openInquiry()">문의</button>
+      <button class="theme-switch" id="themeSwitch" type="button" aria-label="다크모드 전환"><span class="knob" id="themeKnob">&#127769;</span></button>
+    </div>
+  </div></header>
+  <nav class="nav"><div class="wrap">
+    <a href="../">메인</a>
+    <a href="index.html" class="active">프로필</a>
+    <a href="../schedule/">일정</a>
+    <a href="../dress/">옷장</a>
+    <a href="../song/">노래책</a>
+    <a href="../work/">업보</a>
+  </div></nav>
+  <div class="wrap"><div class="sections">
+      <section class="sec">
+        <div class="sec-head"><span class="en">About</span><span class="ko">오늘의 우히?</span><span class="more">UHI DAILY</span></div>
+        <p class="about-text">국밥들 덕분에 매일이 따뜻해. 처음 온 사람도, 오래 있어준 사람도 <span class="em">국밥 한 그릇 먹고 가듯</span> 편하게 쉬다 가 — 잔잔할 땐 잔잔하게, 가끔은 살벌하게(?) 그래도 마음은 늘 말랑하니까! 저녁 8시, 화·목·토에 찾아오는 청량 블루 소통 방송에서 만나요 🎵</p>
+      </section>
+      <section class="sec">
+        <div class="sec-head"><span class="en">Profile</span><span class="ko">프로필 정보</span></div>
+        <div class="info-table">
+          <div class="info-row"><span class="k">이름</span><span class="v">우히 (UHI)</span></div>
+          <div class="info-row"><span class="k">SOOP</span><span class="v">1020118</span></div>
+          <div class="info-row"><span class="k">데뷔</span><span class="v">2025.12.13</span></div>
+          <div class="info-row"><span class="k">생일</span><span class="v">1월 18일</span></div>
+          <div class="info-row"><span class="k">나이</span><span class="v">20대</span></div>
+          <div class="info-row"><span class="k">MBTI</span><span class="v">ISTP</span></div>
+          <div class="info-row"><span class="k">팬애칭</span><span class="v">국밥</span></div>
+          <div class="info-row"><span class="k">시그니처</span><span class="v">청량 블루 💙</span></div>
+        </div>
+      </section>
+      <section class="sec">
+        <div class="sec-head"><span class="en">TMI &amp; Taste</span><span class="ko">소소한 취향</span></div>
+        <div class="cols">
+          <div class="tmi-list">
+            <div class="tmi-row"><span class="tmi-ic">🍚</span><div><div class="tmi-k">최애 음식</div><div><span class="tmi-v">국밥</span><span class="tmi-v">라면</span><span class="tmi-v">떡볶이</span></div></div></div>
+            <div class="tmi-row"><span class="tmi-ic">🎵</span><div><div class="tmi-k">요즘 듣는 노래</div><div><span class="tmi-v">아이유 - 밤편지</span></div></div></div>
+            <div class="tmi-row"><span class="tmi-ic">🎮</span><div><div class="tmi-k">요즘 하는 게임</div><div><span class="tmi-v">스타듀밸리</span><span class="tmi-v">마인크래프트</span></div></div></div>
+          </div>
+          <div class="likes">
+            <div class="like-row"><span class="lab">💙 좋아</span><span class="chip">국밥</span><span class="chip">따뜻한 거</span><span class="chip">햄스터</span><span class="chip">칭찬 듣기</span></div>
+            <div class="like-row"><span class="lab">🚫 싫어</span><span class="chip gray">추운 거</span><span class="chip gray">무례한 말</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="sec">
+        <div class="sec-head"><span class="en">VOD</span><span class="ko">노래STORY · 다시보기</span><span class="more">REPLAY</span></div>
+        <div class="vod-grid">
+          <div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">🎤 데뷔 첫 노래방송</div></div>
+          <div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">🎮 스타듀밸리</div></div>
+          <div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">🍚 먹방 잡담</div></div>
+        </div>
+      </section>
+      <section class="sec">
+        <div class="sec-head"><span class="en">Links</span><span class="ko">바로가기</span></div>
+        <div class="links">
+          <a class="link-btn" href="#" target="_blank">▶️ YouTube</a>
+          <a class="link-btn" href="#" target="_blank">📱 팬심M</a>
+          <a class="link-btn" href="#" target="_blank">💚 팬심</a>
+          <a class="link-btn" href="https://www.sooplive.com/station/1020118" target="_blank">🟦 SOOP</a>
+          <a class="link-btn wide" href="#" target="_blank">💙 팬심M 입장 코드는 문의해 주세요!</a>
+        </div>
+      </section>
+  </div></div>
+  <footer>© 2026 우히 Official.<br>비즈니스 문의 — uhi1020118@gmail.com</footer>
+</main>
+<div class="iq-ov" id="iq-ov" onclick="if(event.target===this)closeInquiry()">
+  <div class="iq-modal">
+    <div class="iq-title">✉️ 문의하기</div>
+    <div class="iq-desc">우히에게 하고 싶은 말을 남겨주세요 💙</div>
+    <input class="iq-input" id="iq-nick" placeholder="닉네임 (필수)">
+    <textarea class="iq-input" id="iq-msg" rows="4" placeholder="문의 내용을 적어주세요"></textarea>
+    <div class="iq-status" id="iq-status"></div>
+    <div class="iq-btns">
+      <button class="iq-cancel" onclick="closeInquiry()">취소</button>
+      <button class="iq-send" onclick="sendInquiry()">보내기 💙</button>
+    </div>
+  </div>
+</div>
+<script src="../supabase.js"></script>
+<script>
+document.getElementById('themeSwitch').addEventListener('click',function(){var d=document.body.classList.toggle('dark');document.getElementById('themeKnob').textContent=d?'☀️':'🌙';});
+function openInquiry(){document.getElementById('iq-ov').classList.add('on');document.getElementById('iq-nick').focus();}
+function closeInquiry(){document.getElementById('iq-ov').classList.remove('on');document.getElementById('iq-status').textContent='';}
+function sendInquiry(){var n=document.getElementById('iq-nick').value.trim();var s=document.getElementById('iq-status');if(!n){s.textContent='닉네임을 입력해 주세요!';return;}s.textContent='보냈어요! (시안 미리보기라 실제 저장은 안 돼요 💙)';setTimeout(closeInquiry,1400);}
+(function(){var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;var fx=document.getElementById('fx');if(fx&&!reduce){var g=['✦','♡','✧','✦'];for(var i=0;i<12;i++){var s=document.createElement('span');s.className='fxfb';s.textContent=g[i%g.length];s.style.left=(Math.random()*100)+'%';s.style.fontSize=(10+Math.random()*15)+'px';s.style.animationDuration=(10+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*15)+'s';fx.appendChild(s);}}})();
+
+</script>
+</body>
+</html>
