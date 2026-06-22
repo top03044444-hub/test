@@ -1,199 +1,223 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>우히 · 업보</title>
-  <link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/10/1020118/1020118.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
-  <style>
-    .upbo-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:6px; }
-    .upbo-eyebrow { font-size:12px; letter-spacing:3px; color:var(--main); font-weight:700; }
-    .upbo-title { font-size:26px; font-weight:800; color:var(--main-dark); }
-    .upbo-update { font-size:12px; color:var(--text-soft); background:#fff; border:1px solid var(--main-light); padding:6px 14px; border-radius:999px; }
-    .search-box { width:100%; padding:13px 18px; border-radius:999px; border:1.5px solid var(--main-light); font-size:14px; outline:none; background:#fff; margin:14px 0 18px; }
-    .search-box:focus { border-color:var(--main); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우히 · 업보</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Gowun+Batang:wght@400;700&family=Parisienne&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
 
-    .viewer-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-    @media (max-width:680px){ .viewer-grid{ grid-template-columns:repeat(2,1fr); gap:9px;} }
-    @media (max-width:380px){ .viewer-grid{ grid-template-columns:repeat(2,1fr); gap:8px;} .viewer-card{ padding:14px 8px;} .viewer-av,.viewer-av-fb{ width:52px; height:52px;} }
-    .viewer-card {
-      background:#fff; border:1.5px solid var(--main-light); border-radius:18px;
-      padding:20px 14px; text-align:center; cursor:pointer; transition:all .2s;
-    }
-    .viewer-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:var(--main); }
-    .viewer-av { width:62px; height:62px; border-radius:50%; object-fit:cover; margin:0 auto 10px; display:block; border:3px solid var(--main-light); background:var(--main-light); }
-    .viewer-av-fb { width:62px; height:62px; border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#9fdcf2,#5bc4ea); color:#fff; font-size:24px; font-weight:700; border:3px solid var(--main-light); }
-    .viewer-nick { font-size:14px; font-weight:700; color:var(--text); }
-    .viewer-id { font-size:11px; color:var(--text-soft); margin:2px 0 8px; }
-    .viewer-total { display:inline-block; background:var(--main); color:#fff; border-radius:999px; padding:3px 14px; font-size:12px; font-weight:700; }
+:root{
+  --ink:#1f2d35; --bg:#ffffff; --paper:#ffffff; --soft:#9bb0ba; --line:#e7eff3;
+  --pink:#3fbfe6; --pink-dark:#0f7aa8; --pink-soft:#e3f4fb;
+  --blue:#6fcbeb; --blue-dark:#2a93c4; --blue-soft:#eef8fd;
+  --serif:'Playfair Display','Gowun Batang',serif;
+  --serif-ko:'Gowun Batang',serif;
+  --script:'Parisienne',cursive;
+  --script-ko:'Nanum Pen Script',cursive;
+  --ui:'Pretendard','Noto Sans KR',sans-serif;
+  --max:1040px;
+}
+body.dark{
+  --ink:#e6f1f5; --bg:#0d141a; --paper:#13202a; --soft:#84a0ad; --line:#243640;
+  --pink:#5cc8ea; --pink-dark:#9adcf4; --pink-soft:#13303d;
+  --blue:#74c6e8; --blue-dark:#9ad8f0; --blue-soft:#13303d;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--ui);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
+#fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+#fx .fxfb{position:absolute;bottom:-40px;color:var(--pink);opacity:0;animation:rise linear infinite;}
+@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.4}90%{opacity:.4}100%{transform:translateY(-106vh) rotate(40deg);opacity:0}}
+@media (prefers-reduced-motion: reduce){#fx{display:none}}
+main{position:relative;z-index:1;}
+.topbar{}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:14px;gap:16px;}
+.social{display:flex;gap:8px;flex:1;}
+.social a{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--ink);transition:.16s;}
+.social a:hover{background:var(--pink-soft);color:var(--pink-dark);}
+.brand{text-align:center;line-height:1;flex-shrink:0;}
+.brand .logo{font-family:var(--serif);font-weight:700;font-size:34px;letter-spacing:.5px;}
+.brand .logo em{font-family:var(--script);font-style:normal;color:var(--pink);font-size:36px;margin-left:1px;}
+.brand .tagline{font-size:11px;color:var(--soft);margin-top:7px;}
+.topbar .right{display:flex;align-items:center;gap:12px;flex:1;justify-content:flex-end;}
+.btn-join{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:700;color:var(--ink);transition:.16s;}
+.btn-join:hover{background:var(--pink);color:#fff;border-color:var(--pink);}
+.theme-switch{width:24px;height:34px;border-radius:999px;border:1.5px solid var(--line);background:var(--pink-soft);position:relative;flex-shrink:0;padding:0;}
+.theme-switch .knob{position:absolute;left:2px;top:2px;width:17px;height:17px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;box-shadow:0 1px 4px rgba(0,0,0,.18);transition:top .22s;}
+body.dark .theme-switch .knob{top:13px;background:var(--paper);}
+.nav{}
+.nav .wrap{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;padding-top:14px;padding-bottom:14px;}
+.nav a{font-family:var(--serif-ko);font-size:16px;font-weight:700;color:var(--ink);transition:.16s;}
+.nav a:hover{color:var(--pink-dark);}
+.nav a.active{color:var(--pink-dark);}
+.nav a.script{font-family:var(--script-ko);font-size:23px;color:var(--pink);font-weight:400;}
+.sections{padding-top:34px;padding-bottom:54px;}
+.sec-head{display:flex;align-items:baseline;gap:13px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:22px;}
+.sec-head .en{font-family:var(--serif);font-weight:700;font-size:23px;}
+.sec-head .ko{font-family:var(--script-ko);font-size:24px;color:var(--pink);line-height:1;}
+.sec-head .more{margin-left:auto;font-size:11px;color:var(--soft);letter-spacing:1.5px;align-self:center;}
+footer{border-top:1px solid var(--line);text-align:center;padding:28px 0 34px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
+.iq-ov{position:fixed;inset:0;background:rgba(20,40,50,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:400;padding:20px;}
+.iq-ov.on{display:flex;}
+.iq-modal{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(20,40,50,.3);}
+.iq-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--pink-dark);}
+.iq-desc{font-size:13px;color:var(--soft);margin:6px 0 16px;}
+.iq-input{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:11px 13px;font-size:14px;font-family:inherit;margin-bottom:10px;}
+.iq-input:focus{outline:none;border-color:var(--pink);}
+textarea.iq-input{resize:vertical;}
+.iq-status{font-size:12.5px;color:var(--pink-dark);min-height:16px;margin-bottom:8px;font-weight:600;}
+.iq-btns{display:flex;gap:10px;}
+.iq-cancel,.iq-send{flex:1;border-radius:10px;padding:12px;font-size:14px;font-weight:800;}
+.iq-cancel{background:var(--line);color:var(--soft);}
+.iq-send{background:var(--pink);color:#fff;}
+@media(max-width:880px){.brand .logo{font-size:30px}.nav .wrap{gap:18px}}
+@media(max-width:560px){.topbar .wrap{flex-wrap:wrap;justify-content:center}.social,.topbar .right{flex:none}}
 
-    .ov { position:absolute; left:0; right:0; background:rgba(40,20,30,0.35); display:none; align-items:flex-start; justify-content:center; z-index:500; padding:16px; }
-    .ov.show { display:flex; }
-    .modal {
-      background:#fff; border-radius:22px; width:100%; max-width:420px;
-      max-height:84vh; display:flex; flex-direction:column; overflow:hidden;
-      box-shadow:0 20px 60px rgba(63,191,230,0.3); animation:pop .22s ease;
-    }
-    @keyframes pop { from{ transform:scale(.94); opacity:0;} to{ transform:scale(1); opacity:1;} }
-    .modal-top { display:flex; align-items:center; gap:12px; padding:20px 22px 16px; border-bottom:1px solid var(--main-light); position:relative; }
-    .modal-av { width:52px; height:52px; border-radius:50%; object-fit:cover; border:3px solid var(--main-light); background:var(--main-light); flex-shrink:0; }
-    .modal-av-fb { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#9fdcf2,#5bc4ea); color:#fff; font-size:20px; font-weight:700; border:3px solid var(--main-light); flex-shrink:0; }
-    .modal-nick { font-size:18px; font-weight:800; color:var(--main-dark); line-height:1.2; }
-    .modal-id { font-size:12px; color:var(--text-soft); }
-    .modal-x { position:absolute; top:16px; right:18px; background:none; border:none; font-size:22px; color:var(--text-soft); cursor:pointer; line-height:1; }
-    .modal-body { padding:14px 18px 20px; overflow-y:auto; }
-    .upbo-row {
-      display:flex; align-items:center; gap:10px; padding:11px 14px; margin-bottom:7px;
-      background:#eef7fc; border:1px solid var(--main-light); border-radius:12px;
-    }
-    .upbo-row .nm { flex:1; font-size:14px; color:var(--text); font-weight:500; }
-    .upbo-row .ev { font-size:10px; font-weight:700; color:#b07d18; background:#fff0d6; padding:2px 8px; border-radius:999px; }
-    .upbo-row .ct { font-size:13px; font-weight:800; color:var(--main-dark); background:#fff; border:1.5px solid var(--main-light); border-radius:999px; padding:3px 12px; min-width:42px; text-align:center; }
-    .modal-empty { text-align:center; color:var(--text-soft); padding:30px; font-size:14px; }
-    body.dark .upbo-update { background: var(--card); }
-    body.dark .search-box { background: var(--card); color: var(--text); }
-    body.dark .viewer-card { background: var(--card); }
-    body.dark .modal { background: var(--card); }
-    body.dark .upbo-row { background: #1b2a33; }
-    body.dark .upbo-row .ct { background: var(--card); }
-  </style>
-<style id="mag-theme">
-:root{--mag-serif:'Playfair Display','Gowun Batang',serif;--mag-serif-ko:'Gowun Batang','Nanum Myeongjo',serif;}
-.nav a.nav-logo{font-family:var(--mag-serif)!important;letter-spacing:.5px;}
-.page-title,.login-title,.card-title,.card-head{font-family:var(--mag-serif-ko)!important;}
-.card-head{letter-spacing:.2px;}
+
+.upbo-head{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:16px;}
+.upbo-head .ttl{display:flex;align-items:baseline;gap:13px;}
+.upbo-head .en{font-family:var(--serif);font-weight:700;font-size:23px;}
+.upbo-head .ko{font-family:var(--script-ko);font-size:24px;color:var(--pink);line-height:1;}
+.upbo-update{font-size:11.5px;color:var(--soft);border:1px solid var(--line);padding:5px 13px;border-radius:999px;}
+.vsearch{width:100%;border:1px solid var(--line);border-radius:999px;padding:12px 18px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--ink);margin-bottom:22px;}
+.vsearch:focus{outline:none;border-color:var(--pink);}
+.viewer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.viewer-card{background:var(--paper);border:1.5px solid var(--line);border-radius:18px;padding:20px 14px;text-align:center;cursor:pointer;transition:.2s;}
+.viewer-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(40,60,80,.13);border-color:var(--pink);}
+.vav{position:relative;width:62px;height:62px;margin:0 auto 10px;}
+.vav .fb{position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--blue),var(--pink-dark));color:#fff;font-weight:800;font-size:24px;font-family:var(--serif);border:3px solid var(--pink-soft);}
+.vav img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--pink-soft);background:var(--pink-soft);}
+.vav img.hide{display:none;}
+.viewer-nick{font-family:var(--serif-ko);font-size:14.5px;font-weight:700;}
+.viewer-id{font-size:11px;color:var(--soft);margin:2px 0 9px;}
+.viewer-total{display:inline-block;background:var(--pink);color:#fff;border-radius:999px;padding:3px 14px;font-size:12px;font-weight:800;}
+.vempty{grid-column:1/-1;text-align:center;color:var(--soft);padding:40px 0;font-family:var(--serif-ko);}
+.vm-ov{position:fixed;inset:0;background:rgba(20,40,50,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:400;padding:20px;}
+.vm-ov.on{display:flex;}
+.vm-modal{background:var(--paper);border:1px solid var(--line);border-radius:20px;width:100%;max-width:400px;max-height:82vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(20,40,50,.3);}
+.vm-top{display:flex;align-items:center;gap:13px;padding:20px 22px 16px;border-bottom:1px solid var(--line);position:relative;}
+.vm-av{width:52px;height:52px;border-radius:50%;object-fit:cover;border:3px solid var(--pink-soft);background:var(--pink-soft);flex-shrink:0;}
+.vm-av-fb{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--blue),var(--pink-dark));color:#fff;font-size:20px;font-weight:800;border:3px solid var(--pink-soft);flex-shrink:0;font-family:var(--serif);}
+.vm-nick{font-family:var(--serif-ko);font-size:18px;font-weight:800;color:var(--pink-dark);}
+.vm-id{font-size:12px;color:var(--soft);}
+.vm-x{position:absolute;top:16px;right:18px;font-size:22px;color:var(--soft);line-height:1;}
+.vm-body{padding:14px 18px 20px;overflow-y:auto;}
+.upbo-row{display:flex;align-items:center;gap:10px;padding:11px 14px;margin-bottom:7px;background:var(--pink-soft);border-radius:12px;}
+.upbo-row .nm{flex:1;font-size:14px;font-weight:600;}
+.upbo-row .ev{font-size:10px;font-weight:800;color:#b07d18;background:#fff0d6;padding:2px 8px;border-radius:999px;}
+.upbo-row .ct{font-family:var(--serif);font-size:14px;font-weight:800;color:var(--pink-dark);background:var(--bg);border:1.5px solid var(--line);border-radius:999px;padding:3px 12px;min-width:42px;text-align:center;}
+.vm-empty{text-align:center;color:var(--soft);padding:30px;font-family:var(--serif-ko);}
+body.dark .upbo-row .ev{background:#3a2f18;color:#e7c989;}
+@media(max-width:680px){.viewer-grid{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
-<nav class="nav"><div class="nav-inner">
-  <a href="../index.html" class="nav-logo"><span class="mini-badge"><i class="mc"></i></span> UHI</a>
-  <a href="../index.html">프로필</a>
-  <a href="../schedule/">일정</a>
-  <a href="../song/">노래책</a>
-  <a href="../dress/">옷장</a>
-  <a href="index.html" class="active">업보</a>
-  <button class="theme-switch" id="themeSwitch" type="button" aria-label="다크모드 전환"><span class="knob" id="themeKnob">🌙</span></button>
-</div></nav>
-
-<div class="container stagger">
-  <div class="card">
-    <div class="upbo-head">
-      <div>
-        <div class="upbo-eyebrow">UPBO</div>
-        <div class="upbo-title">업보 현황</div>
-      </div>
-      <span class="upbo-update" id="update-date"></span>
+<div id="fx"></div>
+<main>
+  <header class="topbar"><div class="wrap">
+    <div class="social">
+      <a href="#" title="YouTube">&#9654;</a>
+      <a href="https://www.sooplive.com/station/1020118" target="_blank" title="SOOP">S</a>
+      <a href="#" title="팬심M">M</a>
+      <a href="#" title="메일">&#9993;</a>
     </div>
-    <input class="search-box" id="search" placeholder="🔍 닉네임 또는 아이디 검색...">
-    <div class="viewer-grid" id="grid"><div class="spinner"></div></div>
+    <div class="brand">
+      <a href="../"><div class="logo">UHI<em>story</em></div></a>
+      <div class="tagline">「잔잔살벌」 청량 블루 국밥요정의 데일리 매거진</div>
+    </div>
+    <div class="right">
+      <button class="btn-join" onclick="openInquiry()">문의</button>
+      <button class="theme-switch" id="themeSwitch" type="button" aria-label="다크모드 전환"><span class="knob" id="themeKnob">&#127769;</span></button>
+    </div>
+  </div></header>
+  <nav class="nav"><div class="wrap">
+    <a href="../">메인</a>
+    <a href="../info/">프로필</a>
+    <a href="../schedule/">일정</a>
+    <a href="../dress/">옷장</a>
+    <a href="../song/">노래책</a>
+    <a href="index.html" class="active">업보</a>
+  </div></nav>
+  <div class="wrap"><div class="sections">
+      <div class="upbo-head">
+        <div class="ttl"><span class="en">Upbo</span><span class="ko">업보 현황</span></div>
+        <span class="upbo-update">갱신일: 2026.06.20</span>
+      </div>
+      <input class="vsearch" id="vsearch" placeholder="🔍 닉네임 또는 아이디 검색...">
+      <div class="viewer-grid" id="vgrid"></div>
+      <div class="vm-ov" id="vm-ov" onclick="if(event.target===this)closeViewer()">
+        <div class="vm-modal"><div class="vm-top" id="vm-top"></div><div class="vm-body" id="vm-body"></div></div>
+      </div>
+  </div></div>
+  <footer>© 2026 우히 Official.<br>비즈니스 문의 — uhi1020118@gmail.com</footer>
+</main>
+<div class="iq-ov" id="iq-ov" onclick="if(event.target===this)closeInquiry()">
+  <div class="iq-modal">
+    <div class="iq-title">✉️ 문의하기</div>
+    <div class="iq-desc">우히에게 하고 싶은 말을 남겨주세요 💙</div>
+    <input class="iq-input" id="iq-nick" placeholder="닉네임 (필수)">
+    <textarea class="iq-input" id="iq-msg" rows="4" placeholder="문의 내용을 적어주세요"></textarea>
+    <div class="iq-status" id="iq-status"></div>
+    <div class="iq-btns">
+      <button class="iq-cancel" onclick="closeInquiry()">취소</button>
+      <button class="iq-send" onclick="sendInquiry()">보내기 💙</button>
+    </div>
   </div>
 </div>
-
-<div class="ov" id="ov" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-top" id="modal-top"></div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
-
-<footer style="margin-top:-48px; color:#9fc3d4; font-size:12.5px; line-height:1.8; text-align:center;">© 2026 우히 Official.<br>비즈니스 문의 · uhi1020118@gmail.com</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
 <script>
-  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function soopAvatar(id){ if(!id) return null; id=String(id).trim().toLowerCase(); if(id.length<2) return null; return `https://profile.img.sooplive.co.kr/LOGO/${id.slice(0,2)}/${id}/${id}.jpg`; }
-
-  let viewers=[], types=[], counts=[];
-
-  async function init(){
-    [viewers, types, counts] = await Promise.all([
-      fetchAll('viewers', { order:'sort_order', asc:true }),
-      fetchAll('upbo_types', { order:'sort_order', asc:true }),
-      fetchAll('upbo_counts', { order:'id', asc:true })
-    ]);
-    let latest = counts.reduce((m,c)=> c.updated_at && c.updated_at>m ? c.updated_at : m, '');
-    document.getElementById('update-date').textContent = latest ? '갱신일: ' + latest.slice(0,10) : '';
-    render(viewers);
-    enableIframeAutoHeight();
-  }
-
-  function viewerTotal(vid){
-    return counts.filter(c=>c.viewer_id===vid && c.count>0).reduce((s,c)=>s+c.count,0);
-  }
-
-  function render(list){
-    const grid=document.getElementById('grid');
-    if(!list.length){ grid.innerHTML='<div style="grid-column:1/-1"><div class="empty"><div class="empty-icon">⚡</div>시청자가 없어요</div></div>'; enableIframeAutoHeight(); return; }
-    grid.innerHTML = list.map(v=>{
-      const av=soopAvatar(v.soop_id); const ini=(v.nickname||'?').charAt(0);
-      const avHtml = av ? `<img class="viewer-av" src="${av}" onerror="this.outerHTML='<div class=\\'viewer-av-fb\\'>${ini}</div>'">` : `<div class="viewer-av-fb">${ini}</div>`;
-      const total=viewerTotal(v.id);
-      return `<div class="viewer-card" onclick="openModal(${v.id})">
-        ${avHtml}
-        <div class="viewer-nick">${esc(v.nickname)}</div>
-        ${v.soop_id?`<div class="viewer-id">(${esc(v.soop_id)})</div>`:'<div class="viewer-id">&nbsp;</div>'}
-        <span class="viewer-total">업보 ${total}</span>
-      </div>`;
-    }).join('');
-    enableIframeAutoHeight();
-  }
-
-  function openModal(vid){
-    const v=viewers.find(x=>x.id===vid); if(!v) return;
-    const av=soopAvatar(v.soop_id); const ini=(v.nickname||'?').charAt(0);
-    const avHtml = av ? `<img class="modal-av" src="${av}" onerror="this.outerHTML='<div class=\\'modal-av-fb\\'>${ini}</div>'">` : `<div class="modal-av-fb">${ini}</div>`;
-    document.getElementById('modal-top').innerHTML = `
-      ${avHtml}
-      <div><div class="modal-nick">${esc(v.nickname)}</div>${v.soop_id?`<div class="modal-id">(${esc(v.soop_id)})</div>`:''}</div>
-      <button class="modal-x" onclick="closeModal()">✕</button>`;
-
-    const myCounts = {};
-    counts.filter(c=>c.viewer_id===vid).forEach(c=>{ myCounts[c.type_id]=c.count; });
-    const rows = types.filter(t=>(myCounts[t.id]||0)>0).map(t=>`
-      <div class="upbo-row">
-        <span class="nm">${esc(t.name)}</span>
-        ${t.category==='이벤트'?'<span class="ev">이벤트</span>':''}
-        <span class="ct">×${myCounts[t.id]}</span>
-      </div>`).join('');
-    document.getElementById('modal-body').innerHTML = rows || '<div class="modal-empty">아직 업보가 없어요 ♡</div>';
-    const ov = document.getElementById('ov');
-    // SOOP iframe(고정높이·스크롤off) 대응: 클릭 지점 기준으로 모달 띄움
-    const e = window.event;
-    let y = 200;
-    if (e) { y = (e.pageY != null ? e.pageY : (e.clientY||0)); }
-    ov.style.top = Math.max(10, y - 80) + 'px';
-    ov.style.height = 'auto';
-    ov.style.minHeight = '0';
-    ov.classList.add('show');
-  }
-  function closeModal(){ document.getElementById('ov').classList.remove('show'); }
-
-  document.getElementById('search').addEventListener('input', e=>{
-    const q=e.target.value.trim().toLowerCase();
-    render(viewers.filter(v=> (v.nickname||'').toLowerCase().includes(q) || (v.soop_id||'').toLowerCase().includes(q)));
-  });
-
-  init();
+(function(){var b=document.getElementById('themeSwitch'),k=document.getElementById('themeKnob');if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');if(k)k.textContent=document.body.classList.contains('dark')?'☀️':'🌙';if(b)b.addEventListener('click',function(){var d=document.body.classList.toggle('dark');localStorage.setItem('theme',d?'dark':'light');if(k)k.textContent=d?'☀️':'🌙';});})();
+function openInquiry(){document.getElementById('iq-ov').classList.add('on');document.getElementById('iq-nick').focus();}
+function closeInquiry(){document.getElementById('iq-ov').classList.remove('on');document.getElementById('iq-status').textContent='';}
+function sendInquiry(){var n=document.getElementById('iq-nick').value.trim();var s=document.getElementById('iq-status');if(!n){s.textContent='닉네임을 입력해 주세요!';return;}s.textContent='보냈어요! (시안 미리보기라 실제 저장은 안 돼요 💙)';setTimeout(closeInquiry,1400);}
+(function(){var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;var fx=document.getElementById('fx');if(fx&&!reduce){var g=['✦','♡','✧','✦'];for(var i=0;i<12;i++){var s=document.createElement('span');s.className='fxfb';s.textContent=g[i%g.length];s.style.left=(Math.random()*100)+'%';s.style.fontSize=(10+Math.random()*15)+'px';s.style.animationDuration=(10+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*15)+'s';fx.appendChild(s);}}})();
+var TYPES=[{id:1,name:'지각 입장',ev:false},{id:2,name:'채팅 도배',ev:false},{id:3,name:'졸다 걸림',ev:false},{id:4,name:'정답 맞히기',ev:true},{id:5,name:'별풍 폭격',ev:true},{id:6,name:'노래 강제신청',ev:false}];
+var VIEWERS=[{nick:'국밥수호대',soop:'gukbab01',c:{1:3,2:5,4:2}},{nick:'우히바라기',soop:'uhilove',c:{5:4,4:6,6:1}},{nick:'단무지요정',soop:'danmuji',c:{1:1,3:7}},{nick:'야식담당',soop:'',c:{2:2,6:3,1:1}},{nick:'블루베리',soop:'blueb22',c:{4:1,5:2}},{nick:'잔잔살벌팬',soop:'',c:{3:2,1:4,2:1,6:2}}];
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function soopAv(id){if(!id)return null;id=String(id).trim().toLowerCase();if(id.length<2)return null;return 'https://profile.img.sooplive.co.kr/LOGO/'+id.slice(0,2)+'/'+id+'/'+id+'.jpg';}
+function vtot(v){var s=0;for(var k in v.c)s+=v.c[k];return s;}
+function vrender(list){
+  var g=document.getElementById('vgrid');
+  if(!list.length){g.innerHTML='<div class="vempty">시청자가 없어요 ⚡</div>';return;}
+  g.innerHTML=list.map(function(v){
+    var av=soopAv(v.soop),ini=esc((v.nick||'?').charAt(0)),idx=VIEWERS.indexOf(v);
+    var avh='<div class="vav"><div class="fb">'+ini+'</div>'+(av?'<img src="'+av+'" alt="">':'')+'</div>';
+    return '<div class="viewer-card" onclick="openViewer('+idx+')">'+avh+'<div class="viewer-nick">'+esc(v.nick)+'</div>'+(v.soop?'<div class="viewer-id">('+esc(v.soop)+')</div>':'<div class="viewer-id">&nbsp;</div>')+'<span class="viewer-total">업보 '+vtot(v)+'</span></div>';
+  }).join('');
+  g.querySelectorAll('.vav img').forEach(function(im){im.onerror=function(){this.classList.add('hide');};});
+}
+function openViewer(i){
+  var v=VIEWERS[i];if(!v)return;
+  var av=soopAv(v.soop),ini=esc((v.nick||'?').charAt(0));
+  var avh=av?'<img class="vm-av" id="vmimg" src="'+av+'" alt="">':'<div class="vm-av-fb">'+ini+'</div>';
+  document.getElementById('vm-top').innerHTML=avh+'<div><div class="vm-nick">'+esc(v.nick)+'</div>'+(v.soop?'<div class="vm-id">('+esc(v.soop)+')</div>':'')+'</div><button class="vm-x" onclick="closeViewer()">✕</button>';
+  var im=document.getElementById('vmimg');if(im)im.onerror=function(){this.outerHTML='<div class="vm-av-fb">'+ini+'</div>';};
+  var rows=TYPES.filter(function(t){return (v.c[t.id]||0)>0;}).map(function(t){return '<div class="upbo-row"><span class="nm">'+esc(t.name)+'</span>'+(t.ev?'<span class="ev">이벤트</span>':'')+'<span class="ct">×'+v.c[t.id]+'</span></div>';}).join('');
+  document.getElementById('vm-body').innerHTML=rows||'<div class="vm-empty">아직 업보가 없어요 ♡</div>';
+  document.getElementById('vm-ov').classList.add('on');
+}
+function closeViewer(){document.getElementById('vm-ov').classList.remove('on');}
+document.getElementById('vsearch').addEventListener('input',function(e){var q=e.target.value.trim().toLowerCase();vrender(VIEWERS.filter(function(v){return (v.nick||'').toLowerCase().indexOf(q)>=0||(v.soop||'').toLowerCase().indexOf(q)>=0;}));});
+vrender(VIEWERS);
+async function loadWork(){
+  try{
+    var vs = await fetchAll('viewers', {order:'sort_order', asc:true});
+    var ts = await fetchAll('upbo_types', {order:'sort_order', asc:true});
+    var cs = await fetchAll('upbo_counts', {});
+    if(vs && vs.length){
+      TYPES = (ts||[]).map(function(t){return {id:t.id, name:t.name, ev:(t.category==='이벤트')};});
+      VIEWERS = vs.map(function(v){ var c={}; (cs||[]).forEach(function(x){ if(x.viewer_id===v.id && x.count>0) c[x.type_id]=x.count; }); return {nick:v.nickname, soop:v.soop_id||'', c:c}; });
+      vrender(VIEWERS);
+    }
+  }catch(err){ console.error('work', err); }
+}
+if(typeof fetchAll==='function') loadWork();
 </script>
-<script>
-(function(){
-  if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
-  var sw = document.getElementById('themeSwitch');
-  var knob = document.getElementById('themeKnob');
-  function refresh(){ if(knob) knob.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙'; }
-  if (sw) sw.addEventListener('click', function(){
-    document.body.classList.toggle('dark');
-    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    refresh();
-  });
-  refresh();
-})();
-</script>
-<!-- 공통 연출(입자·클릭하트·카드 기울기) -->
-<script src="../fx.js"></script>
 </body>
 </html>
