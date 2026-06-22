@@ -143,38 +143,38 @@ textarea.iq-input{resize:vertical;}
   <div class="wrap"><div class="sections">
       <section class="sec">
         <div class="sec-head"><span class="en">About</span><span class="ko">오늘의 우히?</span><span class="more">UHI DAILY</span></div>
-        <p class="about-text">국밥들 덕분에 매일이 따뜻해. 처음 온 사람도, 오래 있어준 사람도 <span class="em">국밥 한 그릇 먹고 가듯</span> 편하게 쉬다 가 — 잔잔할 땐 잔잔하게, 가끔은 살벌하게(?) 그래도 마음은 늘 말랑하니까! 저녁 8시, 화·목·토에 찾아오는 청량 블루 소통 방송에서 만나요 🎵</p>
+        <p class="about-text" data-pf="intro">국밥들 덕분에 매일이 따뜻해. 처음 온 사람도, 오래 있어준 사람도 <span class="em">국밥 한 그릇 먹고 가듯</span> 편하게 쉬다 가 — 잔잔할 땐 잔잔하게, 가끔은 살벌하게(?) 그래도 마음은 늘 말랑하니까! 저녁 8시, 화·목·토에 찾아오는 청량 블루 소통 방송에서 만나요 🎵</p>
       </section>
       <section class="sec">
         <div class="sec-head"><span class="en">Profile</span><span class="ko">프로필 정보</span></div>
         <div class="info-table">
-          <div class="info-row"><span class="k">이름</span><span class="v">우히 (UHI)</span></div>
-          <div class="info-row"><span class="k">SOOP</span><span class="v">1020118</span></div>
-          <div class="info-row"><span class="k">데뷔</span><span class="v">2025.12.13</span></div>
-          <div class="info-row"><span class="k">생일</span><span class="v">1월 18일</span></div>
-          <div class="info-row"><span class="k">나이</span><span class="v">20대</span></div>
-          <div class="info-row"><span class="k">MBTI</span><span class="v">ISTP</span></div>
-          <div class="info-row"><span class="k">팬애칭</span><span class="v">국밥</span></div>
-          <div class="info-row"><span class="k">시그니처</span><span class="v">청량 블루 💙</span></div>
+          <div class="info-row"><span class="k">이름</span><span class="v" data-pf="name">우히 (UHI)</span></div>
+          <div class="info-row"><span class="k">SOOP</span><span class="v" data-pf="soop_id">1020118</span></div>
+          <div class="info-row"><span class="k">데뷔</span><span class="v" data-pf="debut">2025.12.13</span></div>
+          <div class="info-row"><span class="k">생일</span><span class="v" data-pf="birthday_text">1월 18일</span></div>
+          <div class="info-row"><span class="k">나이</span><span class="v" data-pf="age">20대</span></div>
+          <div class="info-row"><span class="k">MBTI</span><span class="v" data-pf="mbti">ISTP</span></div>
+          <div class="info-row"><span class="k">팬애칭</span><span class="v" data-pf="fan_name">국밥</span></div>
+          <div class="info-row"><span class="k">시그니처</span><span class="v" data-pf="signature">청량 블루 💙</span></div>
         </div>
       </section>
       <section class="sec">
         <div class="sec-head"><span class="en">TMI &amp; Taste</span><span class="ko">소소한 취향</span></div>
         <div class="cols">
           <div class="tmi-list">
-            <div class="tmi-row"><span class="tmi-ic">🍚</span><div><div class="tmi-k">최애 음식</div><div><span class="tmi-v">국밥</span><span class="tmi-v">라면</span><span class="tmi-v">떡볶이</span></div></div></div>
-            <div class="tmi-row"><span class="tmi-ic">🎵</span><div><div class="tmi-k">요즘 듣는 노래</div><div><span class="tmi-v">아이유 - 밤편지</span></div></div></div>
-            <div class="tmi-row"><span class="tmi-ic">🎮</span><div><div class="tmi-k">요즘 하는 게임</div><div><span class="tmi-v">스타듀밸리</span><span class="tmi-v">마인크래프트</span></div></div></div>
+            <div class="tmi-row"><span class="tmi-ic">🍚</span><div><div class="tmi-k">최애 음식</div><div id="tmiFood"><span class="tmi-v">국밥</span><span class="tmi-v">라면</span><span class="tmi-v">떡볶이</span></div></div></div>
+            <div class="tmi-row"><span class="tmi-ic">🎵</span><div><div class="tmi-k">요즘 듣는 노래</div><div id="tmiSong"><span class="tmi-v">아이유 - 밤편지</span></div></div></div>
+            <div class="tmi-row"><span class="tmi-ic">🎮</span><div><div class="tmi-k">요즘 하는 게임</div><div id="tmiGame"><span class="tmi-v">스타듀밸리</span><span class="tmi-v">마인크래프트</span></div></div></div>
           </div>
           <div class="likes">
-            <div class="like-row"><span class="lab">💙 좋아</span><span class="chip">국밥</span><span class="chip">따뜻한 거</span><span class="chip">햄스터</span><span class="chip">칭찬 듣기</span></div>
-            <div class="like-row"><span class="lab">🚫 싫어</span><span class="chip gray">추운 거</span><span class="chip gray">무례한 말</span></div>
+            <div class="like-row" id="likesRow"><span class="lab">💙 좋아</span><span class="chip">국밥</span><span class="chip">따뜻한 거</span><span class="chip">햄스터</span><span class="chip">칭찬 듣기</span></div>
+            <div class="like-row" id="dislikesRow"><span class="lab">🚫 싫어</span><span class="chip gray">추운 거</span><span class="chip gray">무례한 말</span></div>
           </div>
         </div>
       </section>
       <section class="sec">
         <div class="sec-head"><span class="en">VOD</span><span class="ko">노래STORY · 다시보기</span><span class="more">REPLAY</span></div>
-        <div class="vod-grid">
+        <div class="vod-grid" id="vodGrid">
           <div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">🎤 데뷔 첫 노래방송</div></div>
           <div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">🎮 스타듀밸리</div></div>
           <div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">🍚 먹방 잡담</div></div>
@@ -183,11 +183,11 @@ textarea.iq-input{resize:vertical;}
       <section class="sec">
         <div class="sec-head"><span class="en">Links</span><span class="ko">바로가기</span></div>
         <div class="links">
-          <a class="link-btn" href="#" target="_blank">▶️ YouTube</a>
-          <a class="link-btn" href="#" target="_blank">📱 팬심M</a>
-          <a class="link-btn" href="#" target="_blank">💚 팬심</a>
-          <a class="link-btn" href="https://www.sooplive.com/station/1020118" target="_blank">🟦 SOOP</a>
-          <a class="link-btn wide" href="#" target="_blank">💙 팬심M 입장 코드는 문의해 주세요!</a>
+          <a class="link-btn" id="linkYoutube" href="#" target="_blank">▶️ YouTube</a>
+          <a class="link-btn" id="linkMfancim" href="#" target="_blank">📱 팬심M</a>
+          <a class="link-btn" id="linkFancim" href="#" target="_blank">💚 팬심</a>
+          <a class="link-btn" id="linkSoop" href="https://www.sooplive.com/station/1020118" target="_blank">🟦 SOOP</a>
+          <a class="link-btn wide" id="linkHeart" href="#" target="_blank">💙 팬심M 입장 코드는 문의해 주세요!</a>
         </div>
       </section>
   </div></div>
@@ -213,6 +213,30 @@ function openInquiry(){document.getElementById('iq-ov').classList.add('on');docu
 function closeInquiry(){document.getElementById('iq-ov').classList.remove('on');document.getElementById('iq-status').textContent='';}
 function sendInquiry(){var n=document.getElementById('iq-nick').value.trim();var s=document.getElementById('iq-status');if(!n){s.textContent='닉네임을 입력해 주세요!';return;}s.textContent='보냈어요! (시안 미리보기라 실제 저장은 안 돼요 💙)';setTimeout(closeInquiry,1400);}
 (function(){var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;var fx=document.getElementById('fx');if(fx&&!reduce){var g=['✦','♡','✧','✦'];for(var i=0;i<12;i++){var s=document.createElement('span');s.className='fxfb';s.textContent=g[i%g.length];s.style.left=(Math.random()*100)+'%';s.style.fontSize=(10+Math.random()*15)+'px';s.style.animationDuration=(10+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*15)+'s';fx.appendChild(s);}}})();
+function _esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function _chips(id,arr,cls){var el=document.getElementById(id);if(!el||!Array.isArray(arr)||!arr.length)return;el.innerHTML=arr.map(function(x){return '<span class="'+cls+'">'+_esc(x)+'</span>';}).join('');}
+function _chiprow(id,lab,arr,cls){var el=document.getElementById(id);if(!el||!Array.isArray(arr))return;el.innerHTML='<span class="lab">'+lab+'</span>'+arr.map(function(x){return '<span class="chip'+(cls?' '+cls:'')+'">'+_esc(x)+'</span>';}).join('');}
+function _href(id,u){if(!u)return;var el=document.getElementById(id);if(el)el.href=u;}
+async function loadProfile(){
+  if(typeof db==='undefined')return;
+  try{
+    var r=await db.from('profile').select('data').eq('id',1);
+    var sv=(r&&r.data&&r.data[0]&&r.data[0].data)?r.data[0].data:null;
+    if(!sv)return;
+    document.querySelectorAll('[data-pf]').forEach(function(el){var k=el.getAttribute('data-pf');if(sv[k]!=null&&sv[k]!=='')el.textContent=sv[k];});
+    _chips('tmiFood',sv.tmi_food,'tmi-v');_chips('tmiSong',sv.tmi_song,'tmi-v');_chips('tmiGame',sv.tmi_game,'tmi-v');
+    _chiprow('likesRow','💙 좋아',sv.likes,'');_chiprow('dislikesRow','🚫 싫어',sv.dislikes,'gray');
+    _href('linkYoutube',sv.link_youtube);_href('linkMfancim',sv.link_mfancim);_href('linkFancim',sv.link_fancim);_href('linkSoop',sv.link_soop);_href('linkHeart',sv.link_heart);
+    if(Array.isArray(sv.vods)&&sv.vods.length){
+      var g=document.getElementById('vodGrid');
+      if(g)g.innerHTML=sv.vods.map(function(v){
+        if(v.id)return '<div class="vod-card"><div class="vod-thumb" style="padding:0;overflow:hidden"><iframe src="https://vod.sooplive.co.kr/player/'+_esc(v.id)+'/embed" style="width:100%;height:100%;border:0" allowfullscreen></iframe></div><div class="vod-title">'+_esc(v.title)+'</div></div>';
+        return '<div class="vod-card"><div class="vod-thumb"><span class="tag">SOOP VOD</span><span class="play">▶</span></div><div class="vod-title">'+_esc(v.title)+'</div></div>';
+      }).join('');
+    }
+  }catch(e){console.error(e);}
+}
+loadProfile();
 
 </script>
 </body>
