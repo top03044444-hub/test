@@ -126,7 +126,7 @@ textarea.iq-input{resize:vertical;}
     <a href="index.html" class="active">노래책</a>
     <a href="../work/">업보</a>
   </div></nav>
-  <div class="wrap"><div class="sections">
+  <div class="wrap"><div class="sections" id="mainContent" style="opacity:0;transition:opacity .3s ease">
       <div class="sec-head"><span class="en">Songbook</span><span class="ko">노래책</span><span class="more">SONG LIST</span></div>
       <div class="song-tools">
         <input class="song-search" id="songSearch" placeholder="곡명 · 가수 검색 🔍">
@@ -186,9 +186,12 @@ async function loadSongs(){
     if(rows && rows.length){ SONGS = rows.map(function(r){return {t:r.title, a:r.artist||'', g:r.genre||'기타', d:r.difficulty||3};}); }
   }catch(err){ console.error('songs', err); }
   renderGenres(); renderSongs();
+  _reveal();
 }
+function _reveal(){var mc=document.getElementById('mainContent'); if(mc) mc.style.opacity='1';}
 renderGenres(); renderSongs();
-if(typeof fetchAll==='function') loadSongs();
+if(typeof fetchAll==='function') loadSongs(); else _reveal();
+setTimeout(_reveal, 1500);
 </script>
 </body>
 </html>

@@ -158,7 +158,7 @@ textarea.iq-input{resize:vertical;}
   </div></nav>
 
   <div class="wrap">
-    <div class="sections">
+    <div class="sections" id="mainContent" style="opacity:0;transition:opacity .3s ease">
 
       <div class="sec-head"><span class="en">Wardrobe</span><span class="ko">우히의 옷장</span><span class="more">CLOSET</span></div>
 
@@ -283,7 +283,9 @@ async function loadDress(){
     }
   }catch(e){ console.error('dress', e); }
 }
-if(typeof db!=='undefined') loadDress();
+function _reveal(){var mc=document.getElementById("mainContent");if(mc)mc.style.opacity="1";}
+if(typeof db!=='undefined') loadDress().then(_reveal).catch(_reveal); else _reveal();
+setTimeout(_reveal,1800);
 
 /* 문의 모달 */
 function openInquiry(){document.getElementById('iq-ov').classList.add('on');document.getElementById('iq-nick').focus();}

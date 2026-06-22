@@ -144,7 +144,7 @@ body.dark .upbo-row .ev{background:#3a2f18;color:#e7c989;}
     <a href="../song/">노래책</a>
     <a href="index.html" class="active">업보</a>
   </div></nav>
-  <div class="wrap"><div class="sections">
+  <div class="wrap"><div class="sections" id="mainContent" style="opacity:0;transition:opacity .3s ease">
       <div class="upbo-head">
         <div class="ttl"><span class="en">Upbo</span><span class="ko">업보 현황</span></div>
         <span class="upbo-update">갱신일: 2026.06.20</span>
@@ -218,7 +218,9 @@ async function loadWork(){
     }
   }catch(err){ console.error('work', err); }
 }
-if(typeof fetchAll==='function') loadWork();
+function _reveal(){var mc=document.getElementById("mainContent");if(mc)mc.style.opacity="1";}
+if(typeof fetchAll==='function') loadWork().then(_reveal).catch(_reveal); else _reveal();
+setTimeout(_reveal,1800);
 </script>
 </body>
 </html>

@@ -225,7 +225,7 @@ textarea.iq-input{resize:vertical;}
   </div></nav>
 
   <div class="wrap">
-    <div class="layout">
+    <div class="layout" id="mainContent" style="opacity:0;transition:opacity .3s ease">
 
       <div class="leftcol">
       <!-- 메인 히어로 -->
@@ -375,7 +375,9 @@ async function loadProfile(){
 
 /* 프사 기본값 즉시 표시 */
 (function(){ var a=document.getElementById('avatarWrap'); if(a) setSoopAvatar(a.getAttribute('data-soop-id')); })();
-loadProfile();
+function _reveal(){var mc=document.getElementById("mainContent");if(mc)mc.style.opacity="1";}
+loadProfile().then(_reveal).catch(_reveal);
+setTimeout(_reveal,1800);
 
 /* 다크모드 — localStorage로 페이지 이동/새로고침에도 유지 */
 (function(){
