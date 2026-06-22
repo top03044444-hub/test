@@ -95,7 +95,7 @@ body.dark .theme-switch .knob{top:13px;background:var(--paper);}
 .side{display:flex;flex-direction:column;gap:26px;}
 .bio-card{border:1px solid var(--line);border-radius:13px;padding:22px 20px;text-align:center;background:var(--paper);position:relative;}
 .bio-dday{position:absolute;top:13px;right:13px;background:var(--pink);color:#fff;border-radius:999px;padding:4px 11px;font-size:11px;font-weight:800;letter-spacing:.3px;}
-.bio-avatar{width:96px;height:96px;border-radius:50%;margin:0 auto 13px;background:var(--hero-img) 64% 22%/cover;border:3px solid var(--paper);box-shadow:0 0 0 1px var(--line),0 8px 20px rgba(40,30,50,.1);cursor:pointer;}
+.bio-avatar{width:96px;height:96px;border-radius:50%;margin:0 auto 13px;background:var(--pink-soft) center/cover no-repeat;border:3px solid var(--paper);box-shadow:0 0 0 1px var(--line),0 8px 20px rgba(40,30,50,.1);cursor:pointer;}
 .bio-name{font-family:var(--serif);font-size:25px;font-weight:700;}
 .bio-name em{font-family:var(--script);color:var(--pink);font-style:normal;font-size:23px;margin-left:4px;}
 .bio-sig{font-size:11.5px;color:var(--soft);margin:6px 4px 16px;line-height:1.5;}
@@ -316,19 +316,17 @@ async function loadProfile(){
     if(!d) return;
     document.querySelectorAll('[data-pf]').forEach(function(el){ var k=el.dataset.pf; if(d[k]!=null && d[k]!=='') el.textContent=d[k]; });
     if(d.hero_img) document.documentElement.style.setProperty('--hero-img', "url('"+d.hero_img+"')");
+    if(d.soop_id) setSoopAvatar(d.soop_id);
     if(Array.isArray(d.keywords) && d.keywords.length){ var t=document.getElementById('kwTags'); if(t) t.innerHTML=d.keywords.map(function(k){return '<span class="tag">#'+k+'</span>';}).join(''); }
-    if(d.birthday && String(d.birthday).indexOf('-')>0){
-      var pp=String(d.birthday).split('-'), mo=parseInt(pp[0],10), dy=parseInt(pp[1],10);
-      var mn=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      var tt=new Date(); tt.setHours(0,0,0,0);
-      var st=document.getElementById('sticky');
-      if(st){ var yr=tt.getFullYear(); var bd=new Date(yr,mo-1,dy); if(bd<tt) yr++; st.querySelector('.y').textContent=yr; st.querySelector('.m').textContent=mn[mo]||''; st.querySelector('.d').textContent=dy; }
-      var nx=new Date(tt.getFullYear(),mo-1,dy); if(nx<tt) nx.setFullYear(tt.getFullYear()+1);
-      var dd=Math.round((nx-tt)/86400000), dtxt=dd===0?'🎂 생일 D-DAY!':'🎂 D-'+dd;
-      document.querySelectorAll('[data-dday]').forEach(function(el){el.textContent=dtxt;});
-    }
+    if(d.birthday) setDDay(d.birthday);
   }catch(e){ console.error('loadProfile', e); }
 }
+function setSoopAvatar(id){
+  if(!id) return;
+  var a=document.getElementById('avatarWrap'); if(!a) return;
+  a.style.backgroundImage="url('https://profile.img.sooplive.co.kr/LOGO/"+String(id).slice(0,2)+"/"+id+"/"+id+".jpg')";
+}
+(function(){var a=document.getElementById('avatarWrap'); if(a) setSoopAvatar(a.getAttribute('data-soop-id'));})();
 if (typeof db !== 'undefined' && typeof fetchAll === 'function') loadProfile();
 
 /* 다크모드 */
@@ -348,14 +346,19 @@ function sendInquiry(){
   setTimeout(closeInquiry,1400);
 }
 
-/* 생일 D-Day (1월 18일) */
-(function(){
-  var t=new Date();t.setHours(0,0,0,0);
-  var n=new Date(t.getFullYear(),0,18);
-  if(n<t)n.setFullYear(t.getFullYear()+1);
-  var d=Math.round((n-t)/86400000);
-  var txt=d===0?'🎂 생일 D-DAY!':'🎂 D-'+d;
+/* 포스트잇 = 오늘 날짜(매일 자동) + 생일 D-Day */
+var MN=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function setDDay(mmdd){
+  var t=new Date(); t.setHours(0,0,0,0);
+  var p=String(mmdd||'01-18').split('-'), mo=parseInt(p[0],10)||1, dy=parseInt(p[1],10)||18;
+  var n=new Date(t.getFullYear(),mo-1,dy); if(n<t) n.setFullYear(t.getFullYear()+1);
+  var d=Math.round((n-t)/86400000), txt=d===0?'🎂 생일 D-DAY!':'🎂 D-'+d;
   document.querySelectorAll('[data-dday]').forEach(function(el){el.textContent=txt;});
+}
+(function(){
+  var t=new Date(), st=document.getElementById('sticky');
+  if(st){ st.querySelector('.y').textContent=t.getFullYear(); st.querySelector('.m').textContent=MN[t.getMonth()+1]; st.querySelector('.d').textContent=t.getDate(); }
+  setDDay('01-18');
 })();
 
 /* fx 입자 + 프사 톡/바운스 (시안 미리보기용 · .fxfb 전용, 배포 시 fx.js와 분리) */
