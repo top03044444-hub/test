@@ -249,7 +249,7 @@ textarea.iq-input{resize:vertical;}
         </div>
       </section>
 
-      <div class="closet-link"><a href="dress/">Closet →</a></div>
+      <div class="closet-link"><a href="dress/">👗 옷장 →</a></div>
 
       <section class="sec about-main" id="about">
         <div class="sec-head"><span class="en">About</span><span class="ko">오늘의 우히?</span><span class="more">UHI DAILY</span></div>
@@ -361,8 +361,10 @@ async function loadProfile(){
     /* 히어로 배경 사진 */
     if(sv['hero-img']) document.documentElement.style.setProperty('--hero-img', "url('"+sv['hero-img']+"')");
 
-    /* 프사 (관리자 soop-id, 없으면 기본값) */
-    setSoopAvatar(sv['soop-id'] || SOOP_ID);
+    /* 프사 (직접 avatar URL 우선, 없으면 SOOP 아이디) */
+    var a = document.getElementById('avatarWrap');
+    if(sv['avatar'] && String(sv['avatar']).trim()){ if(a) a.style.backgroundImage = "url('"+sv['avatar']+"')"; }
+    else { setSoopAvatar(sv['soop-id'] || SOOP_ID); }
 
     /* 키워드: 관리자 info-tags(쉼표 구분) -> 칩 */
     if(sv['info-tags']){

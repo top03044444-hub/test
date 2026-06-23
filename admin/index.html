@@ -22,7 +22,6 @@
     .form-grid .full { grid-column: 1 / -1; }
     .delete-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 16px; padding: 4px 8px; border-radius: 6px; transition: color 0.2s; }
     .delete-btn:hover { color: #e05; }
-    .avatar-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--main-light); display: none; }
     .ord-btn { width: 22px; height: 18px; line-height: 1; padding: 0; border: 1px solid var(--main-light); background: var(--card); color: var(--main-dark); border-radius: 5px; font-size: 9px; cursor: pointer; transition: background .2s; }
     .ord-btn:hover:not(:disabled) { background: var(--main-light); }
     .ord-btn:disabled { opacity: .3; cursor: default; }
@@ -89,89 +88,43 @@
 
   <!-- 프로필 탭 -->
   <div class="tab-panel" id="tab-profile">
+    <p style="font-size:12px;color:var(--text-soft);margin:0 0 14px">프로필 페이지(info)에 보이는 항목들이에요. 위에서 아래로 페이지 순서와 같아요.</p>
+
+    <!-- 1) 프로필 사진 (SOOP 아이디 자동 / 직접 URL) -->
     <div class="card">
       <div class="card-title">🖼 프로필 사진</div>
       <div class="form-field">
-        <label class="input-label">이미지 파일 업로드</label>
-        <input type="file" id="avatar-file" accept="image/*" class="input" onchange="previewUpload()">
-      </div>
-      <div style="display:flex;gap:14px;align-items:center;margin-top:12px">
-        <img id="avatar-preview" class="avatar-preview">
-        <div>
-          <div style="font-size:12px;color:var(--text-soft);margin-bottom:8px">파일 선택하면 미리보기</div>
-          <button class="btn btn-primary" id="upload-btn" onclick="uploadAvatar()" style="display:none">업로드 & 저장 ♥</button>
-          <div id="upload-status" style="font-size:12px;color:var(--main);margin-top:6px"></div>
-        </div>
-      </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--main-light)">
-        <label class="input-label">또는 SOOP 아이디로 프사 자동 (사진 업로드 안 했을 때 사용)</label>
+        <label class="input-label">SOOP 아이디 (프사 자동 연동)</label>
         <input class="input" id="f-soop-id" type="text" placeholder="1020118">
-        <div style="font-size:11px;color:var(--text-soft);margin-top:6px">SOOP 아이디만 넣으면 프사가 자동으로 따라와요. 저장 버튼 누르세요.</div>
+        <div style="font-size:11px;color:var(--text-soft);margin-top:6px">아이디만 넣으면 SOOP 프사가 자동으로 따라와요.</div>
       </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--main-light)">
-        <div style="font-size:11px;color:var(--text-soft);margin-bottom:8px">현재 프로필 사진</div>
-        <img id="current-avatar" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--main-light);display:none">
-        <span id="no-avatar" style="font-size:12px;color:var(--text-soft)">없음</span>
-        <button class="btn btn-outline" id="delete-avatar-btn" onclick="deleteAvatar()" style="display:none;margin-left:10px;padding:6px 14px;font-size:12px">🗑 사진 삭제</button>
+      <div class="form-field">
+        <label class="input-label">또는 직접 이미지 URL (있으면 SOOP보다 우선 · .jpg/.png/.gif)</label>
+        <input class="input" id="f-avatar" type="url" placeholder="https://...">
+        <div style="font-size:11px;color:var(--text-soft);margin-top:6px">비워두면 위 SOOP 아이디를 사용해요.</div>
       </div>
-      <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">💎 시그니처</div>
-      <div class="form-field"><label class="input-label">시그니처 컬러 문구</label><input class="input" id="f-signature" type="text" placeholder="화이트 & 청량한 블루"></div>
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
     </div>
 
+    <!-- 2) 프로필 정보 (info 페이지 '프로필 정보' 섹션) -->
     <div class="card">
-      <div class="card-title">우히 특징</div>
+      <div class="card-title">📋 프로필 정보</div>
       <div class="form-grid">
         <div class="form-field"><label class="input-label">이름</label><input class="input" id="f-info-name" type="text"></div>
-        <div class="form-field"><label class="input-label">나이</label><input class="input" id="f-info-age" type="text"></div>
-        <div class="form-field"><label class="input-label">팬애칭</label><input class="input" id="f-info-fanname" type="text"></div>
         <div class="form-field"><label class="input-label">데뷔</label><input class="input" id="f-info-debut" type="text"></div>
-        <div class="form-field"><label class="input-label">생일</label><input class="input" id="f-info-birthday" type="text"></div>
-        <div class="form-field"><label class="input-label">팬닉</label><input class="input" id="f-info-fandom" type="text"></div>
+        <div class="form-field"><label class="input-label">생일 (예: 1월 18일)</label><input class="input" id="f-info-birthday" type="text"></div>
+        <div class="form-field"><label class="input-label">나이</label><input class="input" id="f-info-age" type="text"></div>
         <div class="form-field"><label class="input-label">MBTI</label><input class="input" id="f-info-mbti" type="text"></div>
+        <div class="form-field"><label class="input-label">팬애칭</label><input class="input" id="f-info-fanname" type="text"></div>
+        <div class="form-field"><label class="input-label">팬닉 (비우면 숨김)</label><input class="input" id="f-info-fandom" type="text"></div>
       </div>
+      <div class="form-field"><label class="input-label">시그니처 문구</label><input class="input" id="f-signature" type="text" placeholder="청량 블루 💙"></div>
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
     </div>
 
+    <!-- 3) 방송 요일 -->
     <div class="card">
-      <div class="card-title">💙 좋아하는 것 · 싫어하는 것</div>
-      <div class="form-grid">
-        <div class="form-field"><label class="input-label">좋아 1</label><input class="input" id="f-like1" type="text"></div>
-        <div class="form-field"><label class="input-label">좋아 2</label><input class="input" id="f-like2" type="text"></div>
-        <div class="form-field"><label class="input-label">좋아 3</label><input class="input" id="f-like3" type="text"></div>
-        <div class="form-field"><label class="input-label">좋아 4</label><input class="input" id="f-like4" type="text"></div>
-        <div class="form-field"><label class="input-label">싫어 1</label><input class="input" id="f-dislike1" type="text"></div>
-        <div class="form-field"><label class="input-label">싫어 2</label><input class="input" id="f-dislike2" type="text"></div>
-      </div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">🍚 TMI</div>
-      <div class="form-field"><label class="input-label">최애 음식 (쉼표로 여러 개)</label><input class="input" id="f-tmi-food" type="text"></div>
-      <div class="form-field"><label class="input-label">요즘 듣는 노래 (쉼표로 여러 개)</label><input class="input" id="f-tmi-song" type="text"></div>
-      <div class="form-field"><label class="input-label">요즘 하는 게임 (쉼표로 여러 개)</label><input class="input" id="f-tmi-game" type="text"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📅 다가오는 일정 (프로필에 크게 보이는 2칸)</div>
-      <div class="form-grid">
-        <div class="form-field"><label class="input-label">1번 날짜 (예: 1/18 (일))</label><input class="input" id="f-sched1-date" type="text"></div>
-        <div class="form-field"><label class="input-label">1번 내용</label><input class="input" id="f-sched1-title" type="text"></div>
-        <div class="form-field"><label class="input-label">2번 날짜 (예: 매주 화·목·토)</label><input class="input" id="f-sched2-date" type="text"></div>
-        <div class="form-field"><label class="input-label">2번 내용</label><input class="input" id="f-sched2-title" type="text"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text-soft);margin-top:6px">※ 달력 전체 일정은 위 '일정' 탭에서 관리해요. 여기는 프로필 맨 위에 보이는 2칸만.</div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📅 방송 요일</div>
+      <div class="card-title">📅 방송 요일 (비우면 숨김)</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="day-checks">
         <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="0">일</label>
         <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="1">월</label>
@@ -185,8 +138,45 @@
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveDays()">저장 ♥</button></div>
     </div>
 
+    <!-- 4) TMI (info 페이지 'TMI & Taste' 섹션) -->
     <div class="card">
-      <div class="card-title">💙 관련 링크</div>
+      <div class="card-title">🍚 TMI</div>
+      <div class="form-field"><label class="input-label">최애 음식 (쉼표로 여러 개)</label><input class="input" id="f-tmi-food" type="text"></div>
+      <div class="form-field"><label class="input-label">요즘 듣는 노래 (쉼표로 여러 개)</label><input class="input" id="f-tmi-song" type="text"></div>
+      <div class="form-field"><label class="input-label">요즘 하는 게임 (쉼표로 여러 개)</label><input class="input" id="f-tmi-game" type="text"></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <!-- 5) 좋아/싫어 -->
+    <div class="card">
+      <div class="card-title">💙 좋아하는 것 · 싫어하는 것</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">좋아 1</label><input class="input" id="f-like1" type="text"></div>
+        <div class="form-field"><label class="input-label">좋아 2</label><input class="input" id="f-like2" type="text"></div>
+        <div class="form-field"><label class="input-label">좋아 3</label><input class="input" id="f-like3" type="text"></div>
+        <div class="form-field"><label class="input-label">좋아 4</label><input class="input" id="f-like4" type="text"></div>
+        <div class="form-field"><label class="input-label">싫어 1</label><input class="input" id="f-dislike1" type="text"></div>
+        <div class="form-field"><label class="input-label">싫어 2</label><input class="input" id="f-dislike2" type="text"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <!-- 6) 다가오는 일정 (info 'Up Next' 섹션) -->
+    <div class="card">
+      <div class="card-title">📌 다가오는 일정 (프로필 'Up Next' 2칸 · 비우면 숨김)</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">1번 날짜 (예: 1/18 (일))</label><input class="input" id="f-sched1-date" type="text"></div>
+        <div class="form-field"><label class="input-label">1번 내용</label><input class="input" id="f-sched1-title" type="text"></div>
+        <div class="form-field"><label class="input-label">2번 날짜 (예: 매주 화·목·토)</label><input class="input" id="f-sched2-date" type="text"></div>
+        <div class="form-field"><label class="input-label">2번 내용</label><input class="input" id="f-sched2-title" type="text"></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-soft);margin-top:6px">※ 달력 전체 일정은 '일정' 탭에서. 여기는 프로필에 크게 보이는 2칸만.</div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <!-- 7) 관련 링크 -->
+    <div class="card">
+      <div class="card-title">🔗 바로가기 링크</div>
       <div class="form-field"><label class="input-label">YouTube URL</label><input class="input" id="f-link-youtube" type="url" placeholder="https://"></div>
       <div class="form-field"><label class="input-label">팬심M URL</label><input class="input" id="f-link-mfancim" type="url" placeholder="https://"></div>
       <div class="form-field"><label class="input-label">팬심 URL</label><input class="input" id="f-link-fancim" type="url" placeholder="https://"></div>
@@ -404,7 +394,7 @@
   const ADMIN_PASSWORD = 'q549s159@';
 
   const profileKeys = [
-    'quote','intro','signature','soop-id','hero-img',
+    'quote','intro','signature','soop-id','avatar','hero-img',
     'info-name','info-age','info-fanname','info-debut','info-fandom','info-birthday','info-mbti','info-tags',
     'like1','like2','like3','like4','dislike1','dislike2',
     'tmi-food','tmi-song','tmi-game','days',
@@ -441,7 +431,6 @@
     // 방송 요일 체크박스
     const days = (saved.days || '').split(',').map(x=>x.trim());
     document.querySelectorAll('.day-chk').forEach(c => { c.checked = days.includes(c.value); });
-    showCurrentAvatar(saved.avatar || '');
   }
   async function saveDays() {
     const days = [...document.querySelectorAll('.day-chk:checked')].map(c=>c.value).join(',');
@@ -459,60 +448,6 @@
     if (error) { showToast('❌ 저장 실패: ' + error.message); return; }
     showToast('✅ 저장됐어요!');
   }
-  function showCurrentAvatar(url) {
-    const cur = document.getElementById('current-avatar');
-    const none = document.getElementById('no-avatar');
-    const delBtn = document.getElementById('delete-avatar-btn');
-    if (url) {
-      cur.src = url; cur.style.display = 'inline-block'; none.style.display = 'none';
-      if (delBtn) delBtn.style.display = 'inline-flex';
-    } else {
-      cur.style.display = 'none'; none.style.display = 'inline';
-      if (delBtn) delBtn.style.display = 'none';
-    }
-  }
-  async function deleteAvatar() {
-    if (!confirm('프로필 사진을 삭제할까요?\n(삭제하면 SOOP 아이디 프사가 적용돼요)')) return;
-    let saved = {};
-    try {
-      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
-      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
-    } catch(e) {}
-    saved['avatar'] = '';
-    const { error } = await db.from('profile').upsert({ id: 1, data: saved });
-    if (error) { showToast('❌ 삭제 실패: ' + error.message); return; }
-    showCurrentAvatar('');
-    showToast('🗑 사진 삭제됨! 이제 SOOP 아이디 프사가 떠요');
-  }
-  function previewUpload() {
-    const file = document.getElementById('avatar-file').files[0];
-    if (!file) return;
-    document.getElementById('avatar-preview').src = URL.createObjectURL(file);
-    document.getElementById('avatar-preview').style.display = 'block';
-    document.getElementById('upload-btn').style.display = 'inline-flex';
-  }
-  async function uploadAvatar() {
-    const file = document.getElementById('avatar-file').files[0];
-    if (!file) return;
-    const status = document.getElementById('upload-status');
-    status.textContent = '업로드 중...';
-    const ext = file.name.split('.').pop();
-    const { data, error } = await db.storage.from('uhi-img').upload('profile.' + ext, file, { upsert: true });
-    if (error) { status.textContent = '❌ 업로드 실패: ' + error.message; return; }
-    const { data: u } = db.storage.from('uhi-img').getPublicUrl('profile.' + ext);
-    const url = u.publicUrl + '?t=' + Date.now();
-    let saved = {};
-    try {
-      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
-      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
-    } catch(e) {}
-    saved['avatar'] = url;
-    await db.from('profile').upsert({ id: 1, data: saved });
-    showCurrentAvatar(url);
-    status.textContent = '✅ 완료!';
-    showToast('✅ 프로필 사진 저장!');
-  }
-
   // ── 공지 ──
   async function loadNotice() {
     const data = await fetchAll('notice', { order: 'created_at', asc: false });
