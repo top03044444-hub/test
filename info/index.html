@@ -178,10 +178,6 @@ textarea.iq-input{resize:vertical;}
           </div>
         </div>
       </section>
-      <section class="sec" id="upNextSec" style="display:none">
-        <div class="sec-head"><span class="en">Up Next</span><span class="ko">다가오는 일정</span></div>
-        <div id="upNextList" class="upnext-list"></div>
-      </section>
       <section class="sec">
         <div class="sec-head"><span class="en">VOD</span><span class="ko">노래STORY · 다시보기</span><span class="more">REPLAY</span></div>
         <div class="vod-grid" id="vodGrid">
@@ -285,15 +281,6 @@ async function loadProfile(){
     _href('linkFancim',  sv['link-fancim']);
     _href('linkSoop',    sv['link-soop']);
     _href('linkHeart',   sv['link-heart']);
-
-    /* 다가오는 일정 */
-    var ux=[];
-    if((sv['sched1-date']||'').trim()||(sv['sched1-title']||'').trim()) ux.push([sv['sched1-date']||'',sv['sched1-title']||'']);
-    if((sv['sched2-date']||'').trim()||(sv['sched2-title']||'').trim()) ux.push([sv['sched2-date']||'',sv['sched2-title']||'']);
-    if(ux.length){
-      document.getElementById('upNextList').innerHTML=ux.map(function(it){return '<div class="ux"><span class="ux-d">'+_esc(it[0])+'</span><span class="ux-t">'+_esc(it[1])+'</span></div>';}).join('');
-      document.getElementById('upNextSec').style.display='';
-    }
 
     /* 팬닉 / 방송요일 */
     if((sv['info-fandom']||'').trim()) document.getElementById('fandomRow').style.display='';
