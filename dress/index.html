@@ -111,6 +111,13 @@ body.dark .theme-switch .knob{top:13px;background:var(--paper);}
 .poster-grid.new-mode .poster .pdate{font-size:11px;opacity:.92;margin-top:9px;letter-spacing:.06em;text-shadow:0 1px 3px rgba(0,0,0,.6);}
 @media(max-width:520px){.poster-grid.new-mode .poster .ptitle{font-size:25px}}
 .empty{text-align:center;color:var(--soft);font-size:14px;padding:50px 0;font-family:var(--serif-ko);}
+.pager{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:26px;flex-wrap:wrap;}
+.pager:empty{display:none;}
+.pg-btn{min-width:36px;height:36px;padding:0 10px;border:1px solid var(--main-light);background:var(--card,#fff);color:var(--text-soft,#7a8a9a);border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;}
+.pg-btn:hover:not(:disabled):not(.on){border-color:var(--main);color:var(--main);}
+.pg-btn.on{background:var(--main);border-color:var(--main);color:#fff;}
+.pg-btn:disabled{opacity:.35;cursor:default;}
+.pg-arrow{font-size:16px;}
 
 /* 라이트박스 */
 .lb{position:fixed;inset:0;background:rgba(8,22,30,.82);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:300;padding:30px;}
@@ -190,14 +197,15 @@ textarea.iq-input{resize:vertical;}
       </div>
 
       <div class="cats" id="cats">
-        <button class="on" data-c="all" onclick="setCat('all')">전체</button>
-        <button data-c="white" onclick="setCat('white')">화이트</button>
+        <button class="on" data-c="white" onclick="setCat('white')">화이트</button>
         <button data-c="black" onclick="setCat('black')">블랙</button>
         <button data-c="outfit" onclick="setCat('outfit')">의상</button>
         <button data-c="lens" onclick="setCat('lens')">렌즈</button>
       </div>
 
       <div class="poster-grid new-mode" id="grid"></div>
+
+      <div class="pager" id="pager"></div>
 
       <div class="empty" id="empty" style="display:none;">아직 등록된 옷이 없어요 👗</div>
 
@@ -237,7 +245,8 @@ textarea.iq-input{resize:vertical;}
 (function(){var b=document.getElementById('themeSwitch'),k=document.getElementById('themeKnob');if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');if(k)k.textContent=document.body.classList.contains('dark')?'☀️':'🌙';if(b)b.addEventListener('click',function(){var d=document.body.classList.toggle('dark');localStorage.setItem('theme',d?'dark':'light');if(k)k.textContent=d?'☀️':'🌙';});})();
 
 /* 옷장 토글 + 분류 + 라이트박스 (데이터-드리븐 단일 렌더) */
-var mode='new', cat='all';
+var mode='new', cat='white', page=1;
+var PER_PAGE=6;
 var CATK={white:'화이트',black:'블랙',outfit:'의상',lens:'렌즈'};
 /* 시안용 기본 데이터 (DB 연결되면 덮어씀) */
 var ITEMS=[
@@ -250,15 +259,19 @@ var ITEMS=[
   {nw:0,cat:'lens',emoji:'✨',g1:'#edf7fc',g2:'#88cfee',title:'기본 블루 렌즈',date:'2025.12.15',img:''}
 ];
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function setMode(m){mode=m;document.getElementById('btn-new').classList.toggle('on',m==='new');document.getElementById('btn-old').classList.toggle('on',m==='old');render();}
-function setCat(c){cat=c;document.querySelectorAll('#cats button').forEach(function(b){b.classList.toggle('on',b.dataset.c===c);});render();}
+function setMode(m){mode=m;page=1;document.getElementById('btn-new').classList.toggle('on',m==='new');document.getElementById('btn-old').classList.toggle('on',m==='old');render();}
+function setCat(c){cat=c;page=1;document.querySelectorAll('#cats button').forEach(function(b){b.classList.toggle('on',b.dataset.c===c);});render();}
 function render(){
   var grid=document.getElementById('grid');
   var isNew=(mode==='new');
   grid.classList.toggle('new-mode',isNew);
-  var list=ITEMS.filter(function(it){
+  var full=ITEMS.filter(function(it){
     return ((it.nw?1:0)===(isNew?1:0)) && (cat==='all'||it.cat===cat);
   });
+  var totalPages=Math.max(1,Math.ceil(full.length/PER_PAGE));
+  if(page>totalPages) page=totalPages;
+  var start=(page-1)*PER_PAGE;
+  var list=full.slice(start,start+PER_PAGE);
   grid.innerHTML=list.map(function(it,i){
     var hasImg=!!(it.img&&it.img.trim());
     var st=hasImg?'':('background:linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+');');
@@ -272,7 +285,20 @@ function render(){
   grid.querySelectorAll('.poster').forEach(function(p){
     p.addEventListener('click',function(){ openLb(list[+p.dataset.i]); });
   });
-  document.getElementById('empty').style.display=list.length?'none':'block';
+  document.getElementById('empty').style.display=full.length?'none':'block';
+  renderPager(totalPages);
+}
+function goPage(p){ page=p; render(); var g=document.getElementById('grid'); if(g) g.scrollIntoView({behavior:'smooth',block:'start'}); }
+function renderPager(totalPages){
+  var pg=document.getElementById('pager'); if(!pg) return;
+  if(totalPages<=1){ pg.innerHTML=''; return; }
+  var h='';
+  h+='<button class="pg-btn pg-arrow" '+(page<=1?'disabled':'')+' onclick="goPage('+(page-1)+')">‹</button>';
+  for(var i=1;i<=totalPages;i++){
+    h+='<button class="pg-btn'+(i===page?' on':'')+'" onclick="goPage('+i+')">'+i+'</button>';
+  }
+  h+='<button class="pg-btn pg-arrow" '+(page>=totalPages?'disabled':'')+' onclick="goPage('+(page+1)+')">›</button>';
+  pg.innerHTML=h;
 }
 function openLb(it){
   if(!it)return;
