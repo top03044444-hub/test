@@ -25,7 +25,7 @@
     .ord-btn { width: 22px; height: 18px; line-height: 1; padding: 0; border: 1px solid var(--main-light); background: var(--card); color: var(--main-dark); border-radius: 5px; font-size: 9px; cursor: pointer; transition: background .2s; }
     .ord-btn:hover:not(:disabled) { background: var(--main-light); }
     .ord-btn:disabled { opacity: .3; cursor: default; }
-  .fxprev-glow{filter:brightness(1.12) contrast(.9) saturate(1.02) sepia(.06);}.fxprev-peach{filter:brightness(1.05) saturate(1.18) contrast(1.03) sepia(.12) hue-rotate(-8deg);}.fxprev-film{filter:contrast(1.16) saturate(.92) brightness(.98) hue-rotate(6deg);}.fxprev-honey{filter:brightness(1.04) saturate(1.32) contrast(1.05) sepia(.28) hue-rotate(-12deg);}
+  .pv-glow img{filter:contrast(.96) saturate(1.04);}.pv-glow::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,250,245,.20),rgba(255,244,250,.06));}.pv-peach img{filter:saturate(1.08);}.pv-peach::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(160deg,rgba(255,206,186,.24),rgba(255,196,214,.12));}.pv-film img{filter:contrast(1.08) saturate(.97) brightness(.99);}.pv-film::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,224,188,.16),rgba(66,108,138,.22));}.pv-honey img{filter:saturate(1.1) contrast(1.02);}.pv-honey::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,214,150,.24),rgba(255,188,128,.12));}
 </style>
 <style id="mag-theme">
 :root{--mag-serif:'Playfair Display','Gowun Batang',serif;--mag-serif-ko:'Gowun Batang','Nanum Myeongjo',serif;}
@@ -877,8 +877,9 @@
     const u = (document.getElementById('dr-url').value||'').trim();
     const box = document.getElementById('dr-preview');
     if(!box) return;
+    const key = (document.getElementById('dr-tone')||{}).value||'';
     box.innerHTML = u
-      ? `<img src="${u.replace(/"/g,'&quot;')}" alt="미리보기" class="fxprev-${(document.getElementById('dr-tone')||{}).value||''}" style="width:96px;height:128px;object-fit:cover;border-radius:8px;border:1px solid var(--main-light)" onerror="this.style.display='none'">`
+      ? `<div class="${key?('pv-'+key):''}" style="position:relative;width:96px;height:128px;border-radius:8px;overflow:hidden;border:1px solid var(--main-light)"><img src="${u.replace(/"/g,'&quot;')}" alt="미리보기" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentNode.style.display='none'"></div>`
       : '';
   }
 </script>

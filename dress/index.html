@@ -83,11 +83,15 @@ body.dark .theme-switch .knob{top:13px;background:var(--paper);}
 .poster{cursor:pointer;}
 .poster .img{position:relative;aspect-ratio:3/4;border-radius:11px;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;font-size:52px;padding-top:34px;background:linear-gradient(150deg,var(--g1,#cdeaf9),var(--g2,#7cc6e8));box-shadow:0 12px 30px rgba(40,60,80,.14);transition:transform .18s;}
 .poster .img .pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
-/* 이미지 보정 톤 (admin에서 항목별 선택) */
-.fx-glow{filter:brightness(1.12) contrast(.9) saturate(1.02) sepia(.06);}
-.fx-peach{filter:brightness(1.05) saturate(1.18) contrast(1.03) sepia(.12) hue-rotate(-8deg);}
-.fx-film{filter:contrast(1.16) saturate(.92) brightness(.98) hue-rotate(6deg);}
-.fx-honey{filter:brightness(1.04) saturate(1.32) contrast(1.05) sepia(.28) hue-rotate(-12deg);}
+/* 이미지 보정 톤 (admin에서 항목별 선택) — 색 레이어를 부드럽게 얹는 방식 */
+.poster .img.t-glow .pimg,.lb .img.t-glow img{filter:contrast(.96) saturate(1.04);}
+.t-glow::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,250,245,.20),rgba(255,244,250,.06));}
+.poster .img.t-peach .pimg,.lb .img.t-peach img{filter:saturate(1.08);}
+.t-peach::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(160deg,rgba(255,206,186,.24),rgba(255,196,214,.12));}
+.poster .img.t-film .pimg,.lb .img.t-film img{filter:contrast(1.08) saturate(.97) brightness(.99);}
+.t-film::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,224,188,.16),rgba(66,108,138,.22));}
+.poster .img.t-honey .pimg,.lb .img.t-honey img{filter:saturate(1.1) contrast(1.02);}
+.t-honey::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,214,150,.24),rgba(255,188,128,.12));}
 .poster .img .badge,.poster .img .plogo,.poster .img .pmeta{z-index:1;}
 .poster:hover .img{transform:translateY(-4px);}
 .poster .plogo{position:absolute;top:9px;right:12px;font-family:var(--serif);font-weight:700;font-size:13px;color:rgba(255,255,255,.92);}
@@ -263,7 +267,7 @@ var ITEMS=[
   {nw:0,cat:'outfit',emoji:'👚',g1:'#f0f9fd',g2:'#9bd8f0',title:'데일리 니트',date:'2025.12.18',img:''},
   {nw:0,cat:'lens',emoji:'✨',g1:'#edf7fc',g2:'#88cfee',title:'기본 블루 렌즈',date:'2025.12.15',img:''}
 ];
-var FXCLS={glow:'fx-glow',peach:'fx-peach',film:'fx-film',honey:'fx-honey'};
+var TCLS={glow:'t-glow',peach:'t-peach',film:'t-film',honey:'t-honey'};
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function setMode(m){mode=m;page=1;document.getElementById('btn-new').classList.toggle('on',m==='new');document.getElementById('btn-old').classList.toggle('on',m==='old');render();}
 function setCat(c){cat=c;page=1;document.querySelectorAll('#cats button').forEach(function(b){b.classList.toggle('on',b.dataset.c===c);});render();}
@@ -281,13 +285,13 @@ function render(){
   grid.innerHTML=list.map(function(it,i){
     var hasImg=!!(it.img&&it.img.trim());
     var st=hasImg?'':('background:linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+');');
-    var fxc=FXCLS[it.fx]||'';
-    var imgTag=hasImg?'<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="pimg '+fxc+'">':'';
+    var tcls=(hasImg&&TCLS[it.fx])?(' '+TCLS[it.fx]):'';
+    var imgTag=hasImg?'<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="pimg">':'';
     var faceEmoji=(hasImg||isNew)?'':(it.emoji||'👗');
     var badge=it.nw?'<span class="badge">NEW</span>':'';
     var line=isNew?'<span class="pcat-line"></span>':'';
     var frame=isNew?'<div class="frame"></div>':'';
-    return '<div class="poster" data-i="'+i+'"><div class="img" style="'+st+'">'+imgTag+frame+faceEmoji+badge+'<span class="plogo">UHI<em>s</em></span><div class="pmeta"><span class="pcat">'+(CATK[it.cat]||'의상')+'</span>'+line+'<div class="ptitle">'+esc(it.title)+'</div><div class="pdate">'+esc(it.date)+'</div></div></div></div>';
+    return '<div class="poster" data-i="'+i+'"><div class="img'+tcls+'" style="'+st+'">'+imgTag+frame+faceEmoji+badge+'<span class="plogo">UHI<em>s</em></span><div class="pmeta"><span class="pcat">'+(CATK[it.cat]||'의상')+'</span>'+line+'<div class="ptitle">'+esc(it.title)+'</div><div class="pdate">'+esc(it.date)+'</div></div></div></div>';
   }).join('');
   grid.querySelectorAll('.poster').forEach(function(p){
     p.addEventListener('click',function(){ openLb(list[+p.dataset.i]); });
@@ -311,8 +315,8 @@ function openLb(it){
   if(!it)return;
   var img=document.getElementById('lb-img');
   var hasImg=!!(it.img&&it.img.trim());
-  if(hasImg){ var fxc=FXCLS[it.fx]||''; img.innerHTML='<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="'+fxc+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='#0b1f2a'; }
-  else{ img.innerHTML='<div class="emoji" style="position:absolute;top:50px;left:0;right:0;text-align:center;z-index:1;">'+(it.emoji||'👗')+'</div><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+')'; }
+  if(hasImg){ img.className='img'+(TCLS[it.fx]?(' '+TCLS[it.fx]):''); img.innerHTML='<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="pimg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='#0b1f2a'; }
+  else{ img.className='img'; img.innerHTML='<div class="emoji" style="position:absolute;top:50px;left:0;right:0;text-align:center;z-index:1;">'+(it.emoji||'👗')+'</div><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+')'; }
   document.getElementById('lb-title').textContent=it.title||'';
   document.getElementById('lb-date').textContent=it.date||'';
   document.getElementById('lb').classList.add('on');
