@@ -83,6 +83,11 @@ body.dark .theme-switch .knob{top:13px;background:var(--paper);}
 .poster{cursor:pointer;}
 .poster .img{position:relative;aspect-ratio:3/4;border-radius:11px;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;font-size:52px;padding-top:34px;background:linear-gradient(150deg,var(--g1,#cdeaf9),var(--g2,#7cc6e8));box-shadow:0 12px 30px rgba(40,60,80,.14);transition:transform .18s;}
 .poster .img .pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+/* 이미지 보정 톤 (admin에서 항목별 선택) */
+.fx-warm{filter:saturate(1.12) brightness(1.03);}
+.fx-crisp{filter:contrast(1.08) saturate(1.05);}
+.fx-soft{filter:brightness(1.05) contrast(.97) saturate(1.08);}
+.fx-vintage{filter:sepia(.18) saturate(1.1) contrast(1.02);}
 .poster .img .badge,.poster .img .plogo,.poster .img .pmeta{z-index:1;}
 .poster:hover .img{transform:translateY(-4px);}
 .poster .plogo{position:absolute;top:9px;right:12px;font-family:var(--serif);font-weight:700;font-size:13px;color:rgba(255,255,255,.92);}
@@ -258,6 +263,7 @@ var ITEMS=[
   {nw:0,cat:'outfit',emoji:'👚',g1:'#f0f9fd',g2:'#9bd8f0',title:'데일리 니트',date:'2025.12.18',img:''},
   {nw:0,cat:'lens',emoji:'✨',g1:'#edf7fc',g2:'#88cfee',title:'기본 블루 렌즈',date:'2025.12.15',img:''}
 ];
+var FXCLS={warm:'fx-warm',crisp:'fx-crisp',soft:'fx-soft',vintage:'fx-vintage'};
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function setMode(m){mode=m;page=1;document.getElementById('btn-new').classList.toggle('on',m==='new');document.getElementById('btn-old').classList.toggle('on',m==='old');render();}
 function setCat(c){cat=c;page=1;document.querySelectorAll('#cats button').forEach(function(b){b.classList.toggle('on',b.dataset.c===c);});render();}
@@ -275,7 +281,8 @@ function render(){
   grid.innerHTML=list.map(function(it,i){
     var hasImg=!!(it.img&&it.img.trim());
     var st=hasImg?'':('background:linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+');');
-    var imgTag=hasImg?'<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="pimg">':'';
+    var fxc=FXCLS[it.fx]||'';
+    var imgTag=hasImg?'<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="pimg '+fxc+'">':'';
     var faceEmoji=(hasImg||isNew)?'':(it.emoji||'👗');
     var badge=it.nw?'<span class="badge">NEW</span>':'';
     var line=isNew?'<span class="pcat-line"></span>':'';
@@ -304,7 +311,7 @@ function openLb(it){
   if(!it)return;
   var img=document.getElementById('lb-img');
   var hasImg=!!(it.img&&it.img.trim());
-  if(hasImg){ img.innerHTML='<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='#0b1f2a'; }
+  if(hasImg){ var fxc=FXCLS[it.fx]||''; img.innerHTML='<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="'+fxc+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='#0b1f2a'; }
   else{ img.innerHTML='<div class="emoji" style="position:absolute;top:50px;left:0;right:0;text-align:center;z-index:1;">'+(it.emoji||'👗')+'</div><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+')'; }
   document.getElementById('lb-title').textContent=it.title||'';
   document.getElementById('lb-date').textContent=it.date||'';
@@ -321,7 +328,8 @@ async function loadDress(){
       ITEMS = data.map(function(it){
         var nw=(it.badges||[]).some(function(b){var l=(typeof b==='string')?b:(b&&b.label);return String(l||'').trim().toUpperCase()==='NEW';});
         var dt=it.created_at?String(it.created_at).slice(2,10).replace(/-/g,'.'):'';
-        return {nw:nw?1:0,cat:it.category||'outfit',emoji:'👗',g1:'#cdeaf9',g2:'#6cc4ea',title:it.name||'',date:dt,img:(it.image_url||'').trim()};
+        var fx='';(it.badges||[]).forEach(function(b){var l=(typeof b==='string')?b:(b&&b.label);l=String(l||'').trim();if(l.slice(0,3).toLowerCase()==='fx:')fx=l.slice(3).toLowerCase();});
+        return {nw:nw?1:0,cat:it.category||'outfit',emoji:'👗',g1:'#cdeaf9',g2:'#6cc4ea',title:it.name||'',date:dt,img:(it.image_url||'').trim(),fx:fx};
       });
       render();
     }

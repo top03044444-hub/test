@@ -25,7 +25,8 @@
     .ord-btn { width: 22px; height: 18px; line-height: 1; padding: 0; border: 1px solid var(--main-light); background: var(--card); color: var(--main-dark); border-radius: 5px; font-size: 9px; cursor: pointer; transition: background .2s; }
     .ord-btn:hover:not(:disabled) { background: var(--main-light); }
     .ord-btn:disabled { opacity: .3; cursor: default; }
-  </style>
+  .fxprev-warm{filter:saturate(1.12) brightness(1.03);}.fxprev-crisp{filter:contrast(1.08) saturate(1.05);}.fxprev-soft{filter:brightness(1.05) contrast(.97) saturate(1.08);}.fxprev-vintage{filter:sepia(.18) saturate(1.1) contrast(1.02);}
+</style>
 <style id="mag-theme">
 :root{--mag-serif:'Playfair Display','Gowun Batang',serif;--mag-serif-ko:'Gowun Batang','Nanum Myeongjo',serif;}
 .nav a.nav-logo{font-family:var(--mag-serif)!important;letter-spacing:.5px;}
@@ -367,6 +368,7 @@
           <div id="dr-preview" style="margin-top:8px"></div>
         </div>
         <div class="form-field full"><label><input type="checkbox" id="dr-new"> ✨ <b>새 옷</b>으로 올리기 <span style="color:var(--text-soft);font-weight:400">(체크하면 옷장 '새 옷'에 포스터로 떠요)</span></label></div>
+        <div class="form-field full"><label class="input-label">🎨 보정 톤 (사진마다 선택)</label><select class="input" id="dr-tone" onchange="drPreview()"><option value="">원본</option><option value="warm">화사</option><option value="crisp">또렷</option><option value="soft">뽀샤시</option><option value="vintage">빈티지</option></select><div style="font-size:11px;color:var(--text-soft);margin-top:5px">고른 톤이 옷장에서 그대로 입혀서 보여요. (원본 = 보정 없음)</div></div>
         <div class="form-field full" style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addDressItem()">+ 추가</button></div>
       </div>
     </div>
@@ -743,6 +745,9 @@
   let dressCache = [];
   let dressFilter = 'all';   // 'all' | 'new'(새 옷/포스터) | 'old'(기존)
   const DRESS_CATS = [['white','화이트'],['black','블랙'],['outfit','의상'],['lens','렌즈']];
+  const DRESS_TONES = [['','원본'],['warm','화사'],['crisp','또렷'],['soft','뽀샤시'],['vintage','빈티지']];
+  function getTone(d){ var t=''; (d.badges||[]).forEach(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; l=String(l).trim(); if(l.slice(0,3).toLowerCase()==='fx:') t=l.slice(3).toLowerCase(); }); return t; }
+  function badgesWithTone(badges, key){ var out=(badges||[]).filter(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().slice(0,3).toLowerCase()!=='fx:'; }); if(key) out.push({label:'fx:'+key}); return out; }
   const dressByOrder = (a,b)=> ((a.sort_order||0)-(b.sort_order||0)) || (new Date(a.created_at)-new Date(b.created_at));
   function hasNew(d){
     return (d.badges||[]).some(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().toUpperCase()==='NEW'; });
@@ -764,6 +769,7 @@
     const chip = (d) => hasNew(d)
       ? `<span style="font-size:10px;font-weight:800;color:#fff;background:var(--main);padding:2px 8px;border-radius:999px;white-space:nowrap">✨ 새옷</span>`
       : `<span style="font-size:10px;font-weight:700;color:var(--text-soft);background:var(--main-light);padding:2px 8px;border-radius:999px;white-space:nowrap">기존</span>`;
+    const toneSel = (d) => { const cur=getTone(d); return `<select onchange="setDressTone('${d.id}',this.value)" title="보정 톤" style="border:1px solid var(--main-light);background:var(--card);color:var(--main-dark);font-size:11px;font-weight:700;padding:5px 6px;border-radius:8px;cursor:pointer">`+DRESS_TONES.map(([k,l])=>`<option value="${k}" ${k===cur?'selected':''}>🎨 ${l}</option>`).join('')+`</select>`; };
     const tgl = (d) => `<button onclick="toggleDressNew('${d.id}')" title="새옷/기존 전환" style="border:1px solid var(--main-light);background:var(--card);color:var(--main-dark);font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;cursor:pointer;white-space:nowrap">${hasNew(d)?'기존으로':'새옷으로'}</button>`;
 
     const row = (d, i, len) => `
@@ -775,6 +781,7 @@
         <div style="width:42px;height:56px;border-radius:7px;background:var(--bg) center/cover no-repeat;flex-shrink:0;${d.image_url?`background-image:url('${(d.image_url||'').replace(/'/g,'%27')}')`:''}"></div>
         <span style="flex:1;font-size:14px;font-weight:600;min-width:0">${(d.name||'').replace(/</g,'&lt;')}</span>
         ${chip(d)}
+        ${toneSel(d)}
         ${tgl(d)}
         <button class="delete-btn" onclick="del('dress_items','${d.id}',loadDress)">🗑</button>
       </div>`;
@@ -797,6 +804,7 @@
           <span style="font-size:11px;font-weight:700;color:#fff;background:var(--text-soft);padding:2px 8px;border-radius:999px">${(d.category||'?')}</span>
           <span style="flex:1;font-size:14px;font-weight:600;min-width:0">${(d.name||'').replace(/</g,'&lt;')}</span>
           ${chip(d)}
+          ${toneSel(d)}
           ${tgl(d)}
           <button class="delete-btn" onclick="del('dress_items','${d.id}',loadDress)">🗑</button>
         </div>`).join('');
@@ -804,6 +812,13 @@
     el.innerHTML = html;
   }
   function setDressFilter(f){ dressFilter = f; loadDress(); }
+  async function setDressTone(id, key){
+    const d = dressCache.find(x=>x.id===id); if(!d) return;
+    const badges = badgesWithTone(d.badges, key);
+    showToast(key ? '🎨 보정 톤 적용...' : '🎨 원본으로...');
+    await updateRow('dress_items', id, { badges });
+    loadDress();
+  }
   async function toggleDressNew(id){
     const d = dressCache.find(x=>x.id===id); if(!d) return;
     const had = hasNew(d);
@@ -833,7 +848,9 @@
     if(!name){ showToast('❗ 이름 필수!'); return; }
     const cat = document.getElementById('dr-cat').value;
     const image_url = document.getElementById('dr-url').value.trim();
-    const badges = document.getElementById('dr-new').checked ? [{label:'NEW'}] : [];
+    const tone = document.getElementById('dr-tone').value;
+    let badges = document.getElementById('dr-new').checked ? [{label:'NEW'}] : [];
+    badges = badgesWithTone(badges, tone);
     const orderRaw = (document.getElementById('dr-order').value||'').trim();
     let sort_order;
     if(orderRaw !== ''){
@@ -850,7 +867,7 @@
     if(ok){
       showToast('✅ 추가됐어요!');
       document.getElementById('dr-name').value=''; document.getElementById('dr-desc').value='';
-      document.getElementById('dr-url').value=''; document.getElementById('dr-new').checked=false;
+      document.getElementById('dr-url').value=''; document.getElementById('dr-new').checked=false; document.getElementById('dr-tone').value='';
       document.getElementById('dr-order').value='';
       document.getElementById('dr-preview').innerHTML='';
       loadDress();
@@ -861,7 +878,7 @@
     const box = document.getElementById('dr-preview');
     if(!box) return;
     box.innerHTML = u
-      ? `<img src="${u.replace(/"/g,'&quot;')}" alt="미리보기" style="width:96px;height:128px;object-fit:cover;border-radius:8px;border:1px solid var(--main-light)" onerror="this.style.display='none'">`
+      ? `<img src="${u.replace(/"/g,'&quot;')}" alt="미리보기" class="fxprev-${(document.getElementById('dr-tone')||{}).value||''}" style="width:96px;height:128px;object-fit:cover;border-radius:8px;border:1px solid var(--main-light)" onerror="this.style.display='none'">`
       : '';
   }
 </script>
