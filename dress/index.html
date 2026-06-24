@@ -168,10 +168,9 @@
   }
 
   function viewItems(){
-    if (curMode === 'new'){
-      return allItems.filter(i => i.category === curCat && isNew(i)).slice().sort((a,b)=> new Date(b.created_at||0) - new Date(a.created_at||0));
-    }
-    return allItems.filter(i => i.category === curCat && !isNew(i));
+    // 관리자(admin)와 동일하게 sort_order → created_at 순서를 따른다 (▲▼ 순서가 그대로 반영됨)
+    var arr = allItems.filter(i => i.category === curCat && (curMode === 'new' ? isNew(i) : !isNew(i)));
+    return arr.slice().sort(function(a,b){ return ((a.sort_order||0)-(b.sort_order||0)) || (new Date(a.created_at||0)-new Date(b.created_at||0)); });
   }
 
   function buildTabs(){
