@@ -268,7 +268,7 @@ footer.paperfoot{max-width:1120px;margin:16px auto 46px;text-align:center;color:
     if(I.agency) rows.push(['소속', esc(I.agency)]);
     if(I.fan_name) rows.push(['팬닉', esc(I.fan_name)]);
     document.getElementById('m-tbl').innerHTML = rows.map(function(r){return '<div><span>'+r[0]+'</span><b>'+r[1]+'</b></div>';}).join('');
-    var L=I.links||{}; var defs=[['SOOP',L.soop],['YT',L.youtube],['X',L.x]];
+    var L=I.links||{}; var defs=[['SOOP',L.soop],['YouTube',L.youtube],['X',L.x]];
     document.getElementById('m-links').innerHTML = defs.map(function(d){ var u=d[1]||'#'; var ext=d[1]?' target="_blank" rel="noreferrer"':''; return '<a href="'+esc(u)+'"'+ext+'>'+d[0]+'</a>'; }).join('');
     // 인용 카드
     setText('m-qlabel', M.quote_label);
