@@ -680,7 +680,10 @@
     t.innerHTML = data.map(s => {
       const isOff = s.type === '휴방';
       const badge = isOff ? '<span class="badge" style="background:#eceef1;color:#6b7280">휴방</span>' : '<span class="badge" style="background:#d6f0e4;color:#1f7a52">방송</span>';
-      return `<tr><td>${s.date}</td><td>${s.time||'-'}</td><td>${badge}</td><td>${s.title||'-'}</td><td><button class="delete-btn" onclick="del('schedule',${s.id},loadSchedule)">🗑</button></td></tr>`;
+      const has2 = !!(s.time2 || s.title2);
+      const timeCell = (s.time||'-') + (has2 ? ` <span style="color:var(--text-soft);font-size:11px">/ 2부 ${s.time2||'-'}</span>` : '');
+      const titleCell = (s.title||'-') + (has2 ? ` <span style="color:var(--text-soft);font-size:11px">/ ${s.title2||'2부'}</span>` : '');
+      return `<tr><td>${s.date}</td><td>${timeCell}</td><td>${badge}</td><td>${titleCell}</td><td><button class="delete-btn" onclick="del('schedule',${s.id},loadSchedule)">🗑</button></td></tr>`;
     }).join('');
   }
   async function addSchedule() {
