@@ -448,7 +448,7 @@
       <div class="card-title">👗 옷장 항목 추가</div>
       <div class="form-grid">
         <div class="form-field"><label class="input-label">분류</label>
-          <select class="input" id="dr-cat"><option value="hair">헤어</option><option value="outfit">의상</option><option value="lens">렌즈</option></select>
+          <select class="input" id="dr-cat"><option value="outfit">의상</option><option value="hair">헤어</option><option value="lens">렌즈</option></select>
         </div>
         <div class="form-field"><label class="input-label">순서 (작을수록 앞 · 비우면 맨 뒤)</label>
           <input class="input" id="dr-order" type="number" min="0" placeholder="비워두면 맨 뒤">
@@ -960,7 +960,7 @@
   // ── 옷장 ──
   let dressCache = [];
   let dressFilter = 'all';   // 'all' | 'new'(새 옷/포스터) | 'old'(기존)
-  const DRESS_CATS = [['hair','헤어'],['outfit','의상'],['lens','렌즈']];   // 관리자 목록의 분류·순서 (분류를 바꿀 땐 위 select 옵션 + 옷장 페이지 탭도 함께 수정)
+  const DRESS_CATS = [['outfit','의상'],['hair','헤어'],['lens','렌즈']];   // 관리자 목록의 분류·순서 (분류를 바꿀 땐 위 select 옵션 + 옷장 페이지 탭도 함께 수정)
   const dressByOrder = (a,b)=> ((a.sort_order||0)-(b.sort_order||0)) || (new Date(a.created_at)-new Date(b.created_at));
   function hasNew(d){
     return (d.badges||[]).some(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().toUpperCase()==='NEW'; });
