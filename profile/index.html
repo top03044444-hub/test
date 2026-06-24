@@ -45,6 +45,16 @@
   /* 어록 */
   .quotes{display:flex;flex-direction:column;gap:10px}
   .quote{border-left:3px solid var(--main);background:var(--cream);border-radius:0 10px 10px 0;padding:12px 16px;font-family:var(--serif);font-size:15px;color:var(--text)}
+  /* 진행한 컨텐츠 */
+  .contents{display:flex;flex-direction:column;gap:8px}
+  .citem{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 16px;border:1px solid var(--rule);border-radius:10px;background:var(--card);font-size:14.5px;font-weight:600;color:var(--ink);text-decoration:none}
+  a.citem:hover{border-color:var(--main);background:var(--cream)}
+  .citem .carrow{color:var(--main-dark);font-size:13px;flex-shrink:0}
+  .cpg{display:flex;justify-content:center;gap:6px;margin-top:16px;flex-wrap:wrap}
+  .cpgb{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--card);color:var(--text-mid);font-size:13px;font-weight:700;cursor:pointer}
+  .cpgb:hover{border-color:var(--main)}
+  .cpgb.on{background:var(--main);color:#2f4d10;border-color:var(--main)}
+  body.dark .cpgb.on{color:#16210b}
 
   /* 이벤트 */
   .evcard{border:1.5px solid var(--main);border-radius:10px;padding:18px 20px;position:relative;background:var(--cream)}
@@ -124,7 +134,7 @@
     <section class="sec" id="sec-stats"><div class="seclabel"><b>능력치</b><span class="ln"></span></div><div class="stats" id="stats"></div></section>
 
     <!-- 어록 -->
-    <section class="sec" id="sec-quotes"><div class="seclabel"><b>어록</b><span class="ln"></span></div><div class="quotes" id="quotes"></div></section>
+    <section class="sec" id="sec-contents"><div class="seclabel"><b>진행한 컨텐츠</b><span class="ln"></span></div><div class="contents" id="contents"></div><div class="cpg" id="contents-pg"></div></section>
 
     <!-- 지금 진행 중 이벤트 -->
     <section class="sec" id="sec-event"><div class="seclabel"><b>지금 진행 중</b><span class="ln"></span></div><div id="event"></div></section>
@@ -160,6 +170,7 @@ const DEFAULTS = {
   likes:['소통','게임','하잎이','마크'],
   dislikes:['거미','매운거'],
   quotes:['오늘도 하잎이 보고 싶었어 🍀','우리 마크하러 가자~'],
+  contents:[{title:'예시 컨텐츠 (관리자에서 수정)',url:''}],
   stats:[{label:'먹성',value:80},{label:'텐션',value:95},{label:'다정함',value:90},{label:'허당',value:85}],
   event:{title:'',code:'',note:''},
   goal:{label:'',current:0,target:0,next:''},
@@ -205,7 +216,7 @@ function render(d){
     return `<div class="stat"><div class="sl">${esc(s.label)}<em>${v}</em></div><div class="bar"><i style="width:${v}%"></i></div></div>`;
   }).join('');});
   // 어록
-  const q=arr(d.quotes); sec('sec-quotes', q.length, ()=>{document.getElementById('quotes').innerHTML=q.map(x=>`<div class="quote">“${esc(x)}”</div>`).join('');});
+  const cts=(d.contents||[]).filter(c=>c&&c.title); sec('sec-contents', cts.length, ()=>renderContents(cts));
   // 이벤트
   const ev=d.event||{}; sec('sec-event', !!ev.title, ()=>{document.getElementById('event').innerHTML=
     `<div class="evcard"><span class="now">NOW</span><div class="evt">${esc(ev.title)}</div>${ev.code?`<div class="evcode">${esc(ev.code)}</div>`:''}${ev.note?`<div class="evnote">${esc(ev.note)}</div>`:''}</div>`;});
@@ -222,6 +233,20 @@ function render(d){
   sec('sec-links', links.length, ()=>{document.getElementById('links').innerHTML=links.map(x=>`<a href="${esc(x[2])}" target="_blank" rel="noreferrer">${x[1]}</a>`).join('');});
 }
 function sec(id,show,fill){ const el=document.getElementById(id); if(show){el.hidden=false;fill();} else {el.hidden=true;} }
+var CONTENTS=[], CPAGE=1; const CPER=5;
+function renderContents(items){ CONTENTS=items; CPAGE=1; drawContents(); }
+function drawContents(){
+  const total=Math.ceil(CONTENTS.length/CPER)||1; if(CPAGE>total) CPAGE=1;
+  const slice=CONTENTS.slice((CPAGE-1)*CPER, CPAGE*CPER);
+  document.getElementById('contents').innerHTML = slice.map(function(c){
+    const t=esc(c.title);
+    return c.url ? `<a class="citem" href="${esc(c.url)}" target="_blank" rel="noreferrer">${t}<span class="carrow">↗</span></a>` : `<div class="citem">${t}</div>`;
+  }).join('');
+  const pg=document.getElementById('contents-pg');
+  if(total>1){ let s=''; for(let i=1;i<=total;i++) s+=`<button class="cpgb${i===CPAGE?' on':''}" onclick="goContents(${i})">${i}</button>`; pg.innerHTML=s; }
+  else pg.innerHTML='';
+}
+function goContents(n){ CPAGE=n; drawContents(); }
 
 async function loadOriginalSongs(){
   const grid=document.getElementById('ovod-grid'); if(!grid) return;

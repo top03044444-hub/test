@@ -196,8 +196,9 @@
     </div>
 
     <div class="card">
-      <div class="card-title">💬 어록 (한 줄에 하나씩)</div>
-      <div class="form-field"><textarea class="input" id="f-quotes" rows="3" placeholder="자주 하는 말&#10;유행어"></textarea></div>
+      <div class="card-title">🎬 진행한 컨텐츠 (한 줄에 하나 · <b>제목 | 링크</b>)</div>
+      <div class="form-field"><textarea class="input" id="f-contents" rows="6" placeholder="콜라보 방송 | https://...&#10;노래 커버 라이브 | https://...&#10;합방 (링크 없어도 됨)"></textarea></div>
+      <div style="font-size:11px;color:var(--text-soft);margin-top:-4px;margin-bottom:8px">링크는 선택 — 제목만 써도 돼요. 링크를 넣으면 프로필 목록에서 눌러 이동돼요. <b>5개 넘으면 자동으로 1·2·3 페이지</b>로 나뉘어요.</div>
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
 
@@ -542,7 +543,7 @@
     document.getElementById('f-tmi').value      = (d.tmi||[]).join('\n');
     document.getElementById('f-likes').value    = (d.likes||[]).join('\n');
     document.getElementById('f-dislikes').value = (d.dislikes||[]).join('\n');
-    document.getElementById('f-quotes').value   = (d.quotes||[]).join('\n');
+    document.getElementById('f-contents').value = (d.contents||[]).map(function(c){ return c.url ? (c.title+' | '+c.url) : c.title; }).join('\n');
     document.getElementById('f-stats').value    = (d.stats||[]).map(s=>`${s.label},${s.value}`).join('\n');
     const ev=d.event||{}; document.getElementById('f-event-title').value=ev.title||''; document.getElementById('f-event-code').value=ev.code||''; document.getElementById('f-event-note').value=ev.note||'';
     const g=d.goal||{};  document.getElementById('f-goal-label').value=g.label||''; document.getElementById('f-goal-current').value=(g.current!=null?g.current:''); document.getElementById('f-goal-target').value=(g.target!=null?g.target:''); document.getElementById('f-goal-next').value=g.next||'';
@@ -566,7 +567,8 @@
   async function saveProfile(){
     const d = await fetchProfile();
     PSAVE.forEach(k=>{ d[k]=v('f-'+k); });
-    d.tmi=lns('f-tmi'); d.likes=lns('f-likes'); d.dislikes=lns('f-dislikes'); d.quotes=lns('f-quotes');
+    d.tmi=lns('f-tmi'); d.likes=lns('f-likes'); d.dislikes=lns('f-dislikes');
+    d.contents = lns('f-contents').map(function(line){ var i=line.indexOf('|'); if(i<0) return {title:line.trim(), url:''}; return {title:line.slice(0,i).trim(), url:line.slice(i+1).trim()}; });
     d.stats = lns('f-stats').map(row=>{ const i=row.lastIndexOf(','); if(i<0) return {label:row,value:0}; return {label:row.slice(0,i).trim(), value:Math.max(0,Math.min(100,parseInt(row.slice(i+1))||0))}; });
     d.event = { title:v('f-event-title'), code:v('f-event-code'), note:v('f-event-note') };
     d.goal  = { label:v('f-goal-label'), current:Number(v('f-goal-current'))||0, target:Number(v('f-goal-target'))||0, next:v('f-goal-next') };
