@@ -186,8 +186,7 @@
     </div>
 
     <div class="card">
-      <div class="card-title">♥ TMI · 좋아 · 싫어 (한 줄에 하나씩)</div>
-      <div class="form-field"><label class="input-label">TMI</label><textarea class="input" id="f-tmi" rows="3" placeholder="오후 12시 칼출근&#10;마크 좋아함"></textarea></div>
+      <div class="card-title">♥ 좋아 · 싫어 (한 줄에 하나씩)</div>
       <div class="form-grid">
         <div class="form-field"><label class="input-label">좋아하는 것</label><textarea class="input" id="f-likes" rows="3" placeholder="소통&#10;게임"></textarea></div>
         <div class="form-field"><label class="input-label">싫어하는 것</label><textarea class="input" id="f-dislikes" rows="3" placeholder="거미&#10;매운거"></textarea></div>
@@ -583,7 +582,6 @@
   async function loadProfileFields(){
     const d = await fetchProfile();
     PSAVE.forEach(k=>{ const el=document.getElementById('f-'+k); if(el) el.value = d[k]||''; });
-    document.getElementById('f-tmi').value      = (d.tmi||[]).join('\n');
     document.getElementById('f-likes').value    = (d.likes||[]).join('\n');
     document.getElementById('f-dislikes').value = (d.dislikes||[]).join('\n');
     document.getElementById('f-stats').value    = (d.stats||[]).map(s=>`${s.label},${s.value}`).join('\n');
@@ -609,7 +607,7 @@
   async function saveProfile(){
     const d = await fetchProfile();
     PSAVE.forEach(k=>{ d[k]=v('f-'+k); });
-    d.tmi=lns('f-tmi'); d.likes=lns('f-likes'); d.dislikes=lns('f-dislikes');
+    d.likes=lns('f-likes'); d.dislikes=lns('f-dislikes');
     d.stats = lns('f-stats').map(row=>{ const i=row.lastIndexOf(','); if(i<0) return {label:row,value:0}; return {label:row.slice(0,i).trim(), value:Math.max(0,Math.min(100,parseInt(row.slice(i+1))||0))}; });
     d.event = { title:v('f-event-title'), code:v('f-event-code'), note:v('f-event-note') };
     d.goal  = { label:v('f-goal-label'), current:Number(v('f-goal-current'))||0, target:Number(v('f-goal-target'))||0, next:v('f-goal-next') };

@@ -124,8 +124,6 @@
     <!-- 소개 -->
     <section class="sec" id="sec-intro"><div class="seclabel"><b>소개</b><span class="ln"></span></div><p class="intro" id="intro"></p></section>
 
-    <!-- TMI -->
-    <section class="sec" id="sec-tmi"><div class="seclabel"><b>TMI</b><span class="ln"></span></div><div class="chips" id="tmi"></div></section>
 
     <!-- 좋아 / 싫어 -->
     <section class="sec" id="sec-pref"><div class="seclabel"><b>좋아 · 싫어</b><span class="ln"></span></div>
@@ -206,8 +204,6 @@ function render(d){
 
   // 소개
   sec('sec-intro', !!d.intro, ()=>{document.getElementById('intro').textContent=d.intro;});
-  // TMI
-  const tmi=arr(d.tmi); sec('sec-tmi', tmi.length, ()=>{document.getElementById('tmi').innerHTML=tmi.map(t=>`<span class="pill">${esc(t)}</span>`).join('');});
   // 좋아/싫어
   const likes=arr(d.likes),dis=arr(d.dislikes);
   sec('sec-pref', likes.length||dis.length, ()=>{
