@@ -490,13 +490,19 @@
         banner.innerHTML = '⚠️ <b>supabase.js</b> 상단 2줄(프로젝트 URL · anon 키)이 아직 안 채워졌어요. 채우기 전에는 저장이 안 돼요.';
         banner.style.display = 'block'; return;
       }
-      var { error } = await db.from('profile').select('id').limit(1);
-      if (error) {
-        banner.innerHTML = '⚠️ DB 연결 오류: <b>' + error.message + '</b><br>대부분 ① SQL(supabase_setup.sql)을 안 돌렸거나 ② URL/키가 안 맞아서예요.';
-        banner.style.display = 'block';
-      } else {
-        banner.style.display = 'none';
+      // 1) 읽기 테스트
+      var rd = await db.from('profile').select('id').limit(1);
+      if (rd.error) {
+        banner.innerHTML = '⚠️ <b>읽기 실패</b>: ' + rd.error.message + '<br>→ 대개 <b>supabase_setup.sql</b>을 안 돌렸거나(테이블 없음), URL/키가 안 맞아서예요.';
+        banner.style.display = 'block'; return;
       }
+      // 2) 쓰기 테스트 (profile 행 updated_at만 갱신 — 데이터 변화 없음)
+      var wt = await db.from('profile').update({ updated_at: new Date().toISOString() }).eq('id', 1);
+      if (wt.error) {
+        banner.innerHTML = '⚠️ <b>저장(쓰기) 실패</b>: ' + wt.error.message + '<br>→ 읽기는 되는데 저장이 안 되면 <b>RLS 정책</b> 문제예요. Supabase SQL Editor에 <b>supabase_setup.sql 전체</b>를 다시 Run 하세요(정책까지 다시 생성됨).';
+        banner.style.display = 'block'; return;
+      }
+      banner.style.display = 'none';
     } catch (e) {
       banner.innerHTML = '⚠️ DB에 연결하지 못했어요: <b>' + (e && e.message ? e.message : e) + '</b><br>supabase.js의 URL/키를 확인하고, 배포본(또는 인터넷 연결)에서 열어주세요. (로컬 파일 미리보기는 저장이 안 될 수 있어요)';
       banner.style.display = 'block';
@@ -963,7 +969,8 @@
       ? (d.badges||[]).filter(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().toUpperCase()!=='NEW'; })
       : (d.badges||[]).concat([{label:'NEW'}]);
     showToast(had ? '🗂 기존으로 이동...' : '✨ 새 옷으로 이동...');
-    await updateRow('dress_items', id, { badges });
+    var ok = await updateRow('dress_items', id, { badges });
+    if(ok===false){ showToast('❌ 전환 실패: ' + (window.__dbErr||'권한/SQL 확인')); }
     loadDress();
   }
 
@@ -977,7 +984,8 @@
     if(j<0 || j>=arr.length) return;
     [arr[i], arr[j]] = [arr[j], arr[i]];
     showToast('↕ 순서 변경 중...');
-    await Promise.all(arr.map((d,idx)=> updateRow('dress_items', d.id, { sort_order: idx })));
+    var rs = await Promise.all(arr.map((d,idx)=> updateRow('dress_items', d.id, { sort_order: idx })));
+    if(rs.some(function(r){return r===false;})){ showToast('❌ 순서 저장 실패: ' + (window.__dbErr||'권한(RLS)/SQL 확인')); }
     loadDress();
   }
   async function addDressItem(){
