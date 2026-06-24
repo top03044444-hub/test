@@ -3,8 +3,8 @@
    ✅ 이 파일 상단 두 줄만 본인 값으로 교체!
    ============================================= */
 
-const SUPABASE_URL  = 'https://evuszheracvnzjtbzxec.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dXN6aGVyYWN2bnpqdGJ6eGVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMDk5MjYsImV4cCI6MjA5NzY4NTkyNn0.uEGBJZnaGHXIysGePIs9i4UpRVkrsbRZUArmof2JL_s';
+const SUPABASE_URL  = 'https://{{SUPABASE프로젝트ID}}.supabase.co';
+const SUPABASE_ANON = '{{SUPABASE_ANON_KEY}}';
 
 // ── Supabase 클라이언트 초기화 ──
 const { createClient } = supabase;
@@ -94,11 +94,11 @@ async function uploadImage(file, folder = 'uploads') {
     const blob = await compressImage(file);
     const rand = Math.random().toString(36).slice(2, 8);
     const path = `${folder}/${Date.now()}_${rand}.jpg`;
-    const { error } = await db.storage.from('uhi-img').upload(path, blob, {
+    const { error } = await db.storage.from('{{버킷이름}}').upload(path, blob, {
       upsert: true, contentType: 'image/jpeg'
     });
     if (error) { console.error('uploadImage 오류:', error); return null; }
-    const { data } = db.storage.from('uhi-img').getPublicUrl(path);
+    const { data } = db.storage.from('{{버킷이름}}').getPublicUrl(path);
     return data?.publicUrl || null;
   } catch (e) {
     console.error('uploadImage 예외:', e);
@@ -126,3 +126,8 @@ function initIframeResize() {
   send();
   new ResizeObserver(send).observe(document.body);
 }
+
+/* ─ 호환용 별칭 ─
+   일정/노래/일기/업보 페이지는 enableIframeAutoHeight() 라는 이름으로 호출합니다.
+   이 별칭이 없으면 그 페이지들에서 "함수 없음" 에러가 나고 iframe 높이가 자동조절되지 않습니다. */
+function enableIframeAutoHeight() { initIframeResize(); }

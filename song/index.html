@@ -3,201 +3,141 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>우히 · 노래책</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Gowun+Batang:wght@400;700&family=Parisienne&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<title>하요 · 노래책</title>
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/ha/hayodayong/hayodayong.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
 <style>
-
-:root{
-  --ink:#1f2d35; --bg:#ffffff; --paper:#ffffff; --soft:#9bb0ba; --line:#e7eff3;
-  --pink:#3fbfe6; --pink-dark:#0f7aa8; --pink-soft:#e3f4fb;
-  --blue:#6fcbeb; --blue-dark:#2a93c4; --blue-soft:#eef8fd;
-  --serif:'Playfair Display','Gowun Batang',serif;
-  --serif-ko:'Gowun Batang',serif;
-  --script:'Parisienne',cursive;
-  --script-ko:'Nanum Pen Script',cursive;
-  --ui:'Pretendard','Noto Sans KR',sans-serif;
-  --max:1040px;
-}
-body.dark{
-  --ink:#e6f1f5; --bg:#0d141a; --paper:#13202a; --soft:#84a0ad; --line:#243640;
-  --pink:#5cc8ea; --pink-dark:#9adcf4; --pink-soft:#13303d;
-  --blue:#74c6e8; --blue-dark:#9ad8f0; --blue-soft:#13303d;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;background:#eceef1;}
-html:has(body.dark){background:#0a0e13;}
-.sheet{background:var(--bg);max-width:1200px;margin:34px auto 0;box-shadow:0 26px 80px rgba(20,30,50,.26);overflow:hidden;transition:background .25s;}
-@media(max-width:1260px){.sheet{margin:16px 14px 0;}}
-body{font-family:var(--ui);background:transparent;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;}
-a{color:inherit;text-decoration:none;}
-button{font-family:inherit;cursor:pointer;border:none;background:none;}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
-#fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
-#fx .fxfb{position:absolute;bottom:-40px;color:var(--pink);opacity:0;animation:rise linear infinite;}
-@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.4}90%{opacity:.4}100%{transform:translateY(-106vh) rotate(40deg);opacity:0}}
-@media (prefers-reduced-motion: reduce){#fx{display:none}}
-main{position:relative;z-index:1;}
-.topbar{}
-.topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:14px;gap:16px;}
-.social{display:flex;gap:8px;flex:1;}
-.social a{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--ink);transition:.16s;}
-.social a:hover{background:var(--pink-soft);color:var(--pink-dark);}
-.brand{text-align:center;line-height:1;flex-shrink:0;}
-.brand .logo{font-family:var(--serif);font-weight:700;font-size:34px;letter-spacing:.5px;}
-.brand .logo em{font-family:var(--script);font-style:normal;color:var(--pink);font-size:36px;margin-left:1px;}
-.brand .tagline{font-size:11px;color:var(--soft);margin-top:7px;}
-.topbar .right{display:flex;align-items:center;gap:12px;flex:1;justify-content:flex-end;}
-.btn-join{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:700;color:var(--ink);transition:.16s;}
-.btn-join:hover{background:var(--pink);color:#fff;border-color:var(--pink);}
-.theme-switch{width:24px;height:34px;border-radius:999px;border:1.5px solid var(--line);background:var(--pink-soft);position:relative;flex-shrink:0;padding:0;}
-.theme-switch .knob{position:absolute;left:2px;top:2px;width:17px;height:17px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;box-shadow:0 1px 4px rgba(0,0,0,.18);transition:top .22s;}
-body.dark .theme-switch .knob{top:13px;background:var(--paper);}
-.nav{}
-.nav .wrap{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;padding-top:14px;padding-bottom:14px;}
-.nav a{font-family:var(--serif-ko);font-size:16px;font-weight:700;color:var(--ink);transition:.16s;}
-.nav a:hover{color:var(--pink-dark);}
-.nav a.active{color:var(--pink-dark);}
-.nav a.script{font-family:var(--script-ko);font-size:23px;color:var(--pink);font-weight:400;}
-.sections{padding-top:34px;padding-bottom:54px;}
-.sec-head{display:flex;align-items:baseline;gap:13px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:22px;}
-.sec-head .en{font-family:var(--serif);font-weight:700;font-size:23px;}
-.sec-head .ko{font-family:var(--script-ko);font-size:24px;color:var(--pink);line-height:1;}
-.sec-head .more{margin-left:auto;font-size:11px;color:var(--soft);letter-spacing:1.5px;align-self:center;}
-footer{text-align:center;padding:36px 20px 46px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
-.iq-ov{position:fixed;inset:0;background:rgba(20,40,50,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:400;padding:20px;}
-.iq-ov.on{display:flex;}
-.iq-modal{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(20,40,50,.3);}
-.iq-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--pink-dark);}
-.iq-desc{font-size:13px;color:var(--soft);margin:6px 0 16px;}
-.iq-input{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:11px 13px;font-size:14px;font-family:inherit;margin-bottom:10px;}
-.iq-input:focus{outline:none;border-color:var(--pink);}
-textarea.iq-input{resize:vertical;}
-.iq-status{font-size:12.5px;color:var(--pink-dark);min-height:16px;margin-bottom:8px;font-weight:600;}
-.iq-btns{display:flex;gap:10px;}
-.iq-cancel,.iq-send{flex:1;border-radius:10px;padding:12px;font-size:14px;font-weight:800;}
-.iq-cancel{background:var(--line);color:var(--soft);}
-.iq-send{background:var(--pink);color:#fff;}
-@media(max-width:880px){.brand .logo{font-size:30px}.nav .wrap{gap:18px}}
-@media(max-width:560px){.topbar .wrap{flex-wrap:wrap;justify-content:center}.social,.topbar .right{flex:none}}
-
-
-.song-tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
-.song-search{flex:1;min-width:200px;border:1px solid var(--line);border-radius:999px;padding:11px 18px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--ink);}
-.song-search:focus{outline:none;border-color:var(--pink);}
-.song-count{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--soft);white-space:nowrap;}
-.genres{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:13px;}
-.genres button{font-family:var(--serif-ko);font-weight:700;font-size:15px;color:var(--soft);transition:.16s;}
-.genres button.on{color:var(--pink-dark);border-bottom:2px solid var(--pink);}
-.song-list{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;}
-.song-row{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--line);}
-.song-row .no{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--pink-dark);min-width:26px;}
-.song-row .info{flex:1;min-width:0;}
-.song-row .t{font-family:var(--serif-ko);font-weight:700;font-size:15.5px;}
-.song-row .a{font-size:12.5px;color:var(--soft);margin-top:1px;}
-.song-row .g{font-size:11px;font-weight:800;color:var(--blue-dark);background:var(--blue-soft);border-radius:5px;padding:3px 8px;flex-shrink:0;}
-.song-row .lv{font-size:11px;color:var(--pink);letter-spacing:.5px;flex-shrink:0;white-space:nowrap;}
-.song-empty{text-align:center;color:var(--soft);font-size:14px;padding:40px 0;font-family:var(--serif-ko);}
-@media(max-width:680px){.song-list{grid-template-columns:1fr}}
-
+  .filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+  .search-box{flex:1;min-width:200px;padding:12px 18px;border-radius:999px;border:1.5px solid var(--rule);font-size:14px;outline:none;background:var(--bg);color:var(--text)}
+  .search-box:focus{border-color:var(--main)}
+  .genre-tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .gt{padding:8px 15px;border-radius:999px;border:1.5px solid var(--rule);background:var(--card);color:var(--text-soft);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+  .gt:hover{border-color:var(--main)}
+  .gt.active{background:var(--main);color:#2f4d10;border-color:var(--main)}
+  body.dark .gt.active{color:#16210b}
+  .count-line{font-size:13px;color:var(--text-soft);margin:14px 0 6px}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:12px;font-weight:700;color:var(--main-dark);padding:10px 12px;background:var(--main-light)}
+  thead th:first-child{border-radius:8px 0 0 8px}thead th:last-child{border-radius:0 8px 8px 0}
+  tbody td{padding:13px 12px;border-bottom:1px solid var(--rule);font-size:14px;color:var(--text)}
+  tbody tr:hover td{background:var(--main-light)}
+  .s-num{color:var(--text-soft);font-size:13px;width:36px}
+  .s-title{font-weight:600;color:var(--ink)}
+  .s-genre{font-size:11px;background:var(--main-light);color:var(--main-dark);padding:3px 10px;border-radius:999px;white-space:nowrap;display:inline-block}
+  .s-diff{display:inline-flex;gap:3px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--main-light)}
+  .dot.on{background:var(--main-dark)}
+  .pagination{display:flex;justify-content:center;gap:6px;margin-top:16px;flex-wrap:wrap}
+  .pg{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--rule);background:var(--card);color:var(--text-mid);font-size:13px;font-weight:600;cursor:pointer}
+  .pg:hover{border-color:var(--main)}
+  .pg.active{background:var(--main);color:#2f4d10;border-color:var(--main)}
+  body.dark .pg.active{color:#16210b}
+  @media(max-width:560px){
+    .hide-m{display:none}
+    thead th{padding:9px 8px;font-size:11px}
+    tbody td{padding:11px 6px;font-size:13px}
+    .s-num{width:24px;font-size:12px}.s-genre{font-size:10px;padding:2px 8px}.dot{width:7px;height:7px}
+  }
 </style>
 </head>
 <body>
-<div id="fx"></div>
-<main>
-  <div class="sheet">
-  <header class="topbar"><div class="wrap">
-    <div class="social">
-      <a href="#" title="YouTube">&#9654;</a>
-      <a href="https://www.sooplive.com/station/1020118" target="_blank" title="SOOP">S</a>
-      <a href="#" title="팬심M">M</a>
-      <a href="#" title="메일">&#9993;</a>
-    </div>
-    <div class="brand">
-      <a href="../"><div class="logo">UHI<em>story</em></div></a>
-      <div class="tagline">「잔잔살벌」 청량 블루 국밥요정의 데일리 매거진</div>
-    </div>
-    <div class="right">
-      <button class="btn-join" onclick="openInquiry()">문의</button>
-      <button class="theme-switch" id="themeSwitch" type="button" aria-label="다크모드 전환"><span class="knob" id="themeKnob">&#127769;</span></button>
-    </div>
-  </div></header>
-  <nav class="nav"><div class="wrap">
-    <a href="../">메인</a>
-    <a href="../info/">프로필</a>
-    <a href="../schedule/">일정</a>
-    <a href="../dress/">옷장</a>
-    <a href="index.html" class="active">노래책</a>
-    <a href="../work/">업보</a>
-  </div></nav>
-  <div class="wrap"><div class="sections" id="mainContent" style="opacity:0;transition:opacity .3s ease">
-      <div class="sec-head"><span class="en">Songbook</span><span class="ko">노래책</span><span class="more">SONG LIST</span></div>
-      <div class="song-tools">
-        <input class="song-search" id="songSearch" placeholder="곡명 · 가수 검색 🔍">
-        <span class="song-count" id="songCount"></span>
-      </div>
-      <div class="genres" id="genres"></div>
-      <div class="song-list" id="songList"></div>
-      <div class="song-empty" id="songEmpty" style="display:none;">검색 결과가 없어요 🎵</div>
-  </div></div>
-  </div><!-- /sheet -->
+<div class="wrap">
+  <header>
+    <div class="mast"><div class="logo"><span class="scr">Hayo</span><span class="sub">V T U B E R · D A I L Y</span></div></div>
+    <div class="navrule"><nav class="nav">
+      <a href="../index.html">메인</a>
+      <a href="../profile/">프로필</a>
+      <a href="../notice/">공지</a>
+      <a href="../schedule/">일정</a>
+      <a href="../dress/">옷장</a>
+      <a href="../work/">업보</a>
+      <a href="index.html" class="on">노래책</a>
+      <div class="actions"><button class="tsw" id="tsw" type="button" aria-label="다크"><span class="kn" id="kn">🌙</span></button></div>
+    </nav></div>
+  </header>
 
-  <footer>© 2026 우히 Official.<br>비즈니스 문의 — uhi1020118@gmail.com</footer>
-</main>
-<div class="iq-ov" id="iq-ov" onclick="if(event.target===this)closeInquiry()">
-  <div class="iq-modal">
-    <div class="iq-title">✉️ 문의하기</div>
-    <div class="iq-desc">우히에게 하고 싶은 말을 남겨주세요 💙</div>
-    <input class="iq-input" id="iq-nick" placeholder="닉네임 (필수)">
-    <textarea class="iq-input" id="iq-msg" rows="4" placeholder="문의 내용을 적어주세요"></textarea>
-    <div class="iq-status" id="iq-status"></div>
-    <div class="iq-btns">
-      <button class="iq-cancel" onclick="closeInquiry()">취소</button>
-      <button class="iq-send" onclick="sendInquiry()">보내기 💙</button>
+  <div class="kicker"><span class="cat">SONGBOOK · 🎵</span><span class="date dbox"></span></div>
+  <h1 class="headline">노래책</h1>
+  <div class="byline">하요가 부를 수 있는 노래들이에요. 신청곡 고를 때 참고해요 🍀</div>
+
+  <div class="card">
+    <div class="filter-row">
+      <input class="search-box" id="search" placeholder="🔍 곡명 · 아티스트 검색...">
     </div>
+    <div class="genre-tabs" id="genre-tabs"></div>
+    <div class="count-line" id="count"></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="s-num">#</th><th>제목</th><th class="hide-m">아티스트</th><th>장르</th><th>난이도</th></tr></thead>
+        <tbody id="song-body"><tr><td colspan="5"><div class="spinner"></div></td></tr></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
   </div>
+
+  <footer>© 2026 하요 Official.<br>비즈니스 문의 — hayodayong@gmail.com</footer>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
 <script>
-(function(){var b=document.getElementById('themeSwitch'),k=document.getElementById('themeKnob');if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');if(k)k.textContent=document.body.classList.contains('dark')?'☀️':'🌙';if(b)b.addEventListener('click',function(){var d=document.body.classList.toggle('dark');localStorage.setItem('theme',d?'dark':'light');if(k)k.textContent=d?'☀️':'🌙';});})();
-function openInquiry(){document.getElementById('iq-ov').classList.add('on');document.getElementById('iq-nick').focus();}
-function closeInquiry(){document.getElementById('iq-ov').classList.remove('on');document.getElementById('iq-status').textContent='';}
-function sendInquiry(){var n=document.getElementById('iq-nick').value.trim();var s=document.getElementById('iq-status');if(!n){s.textContent='닉네임을 입력해 주세요!';return;}s.textContent='보냈어요! (시안 미리보기라 실제 저장은 안 돼요 💙)';setTimeout(closeInquiry,1400);}
-(function(){var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;var fx=document.getElementById('fx');if(fx&&!reduce){var g=['✦','♡','✧','✦'];for(var i=0;i<12;i++){var s=document.createElement('span');s.className='fxfb';s.textContent=g[i%g.length];s.style.left=(Math.random()*100)+'%';s.style.fontSize=(10+Math.random()*15)+'px';s.style.animationDuration=(10+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*15)+'s';fx.appendChild(s);}}})();
-var SONGS=[{t:'밤편지',a:'아이유',g:'발라드',d:2},{t:'좋은 날',a:'아이유',g:'팝',d:3},{t:'Ditto',a:'뉴진스',g:'팝',d:4},{t:'LOVE DIVE',a:'아이브',g:'팝',d:5},{t:'신호등',a:'이무진',g:'발라드',d:2},{t:'모든 날, 모든 순간',a:'폴킴',g:'발라드',d:3},{t:'紅蓮華',a:'LiSA',g:'애니',d:4},{t:'아이돌',a:'YOASOBI',g:'애니',d:5},{t:'그건 아마 우리의 잘못은 아닐 거야',a:'백예린',g:'발라드',d:2},{t:'블루밍',a:'아이유',g:'팝',d:3},{t:'사계',a:'태연',g:'팝',d:4},{t:'감사',a:'김동률',g:'OST',d:5}];
-var genre='전체', kw='';
-function uniq(a){var o={},r=[];a.forEach(function(x){if(x&&!o[x]){o[x]=1;r.push(x);}});return r;}
-function stars(d){d=Math.max(1,Math.min(5,d||3));return '★'.repeat(d)+'☆'.repeat(5-d);}
-function renderGenres(){
-  var gs=['전체'].concat(uniq(SONGS.map(function(s){return s.g||'기타';})));
-  document.getElementById('genres').innerHTML=gs.map(function(g){return '<button class="'+(g===genre?'on':'')+'" onclick="setGenre('+JSON.stringify(g)+')">'+g+'</button>';}).join('');
-}
-function setGenre(g){genre=g;renderGenres();renderSongs();}
-function renderSongs(){
-  var q=kw.toLowerCase(),n=0,html='';
-  SONGS.forEach(function(s){
-    var okG=(genre==='전체'||(s.g||'기타')===genre);
-    var okQ=(!q||((s.t||'')+' '+(s.a||'')).toLowerCase().indexOf(q)>=0);
-    if(okG&&okQ){ n++; html+='<div class="song-row"><span class="no">'+n+'</span><div class="info"><div class="t">'+(s.t||'')+'</div><div class="a">'+(s.a||'')+'</div></div><span class="lv" title="난이도">'+stars(s.d)+'</span><span class="g">'+(s.g||'기타')+'</span></div>'; }
-  });
-  document.getElementById('songList').innerHTML=html;
-  document.getElementById('songCount').textContent=n+'곡';
-  document.getElementById('songEmpty').style.display=n?'none':'block';
-}
-document.getElementById('songSearch').addEventListener('input',function(e){kw=e.target.value.trim();renderSongs();});
-async function loadSongs(){
-  try{
-    var rows = await fetchAll('songs', {order:'id', asc:true});
-    if(rows && rows.length){ SONGS = rows.map(function(r){return {t:r.title, a:r.artist||'', g:r.genre||'기타', d:r.difficulty||3};}); }
-  }catch(err){ console.error('songs', err); }
-  renderGenres(); renderSongs();
-  _reveal();
-}
-function _reveal(){var mc=document.getElementById('mainContent'); if(mc) mc.style.opacity='1';}
-renderGenres(); renderSongs();
-if(typeof fetchAll==='function') loadSongs(); else _reveal();
-setTimeout(_reveal, 1500);
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  const GENRES = ['전체','K-Pop','J-Pop','Pop','애교송','기타'];
+  const PAGE = 30;
+  let songs = [], curGenre = '전체', curPage = 1, keyword = '';
+  async function init() {
+    songs = await fetchAll('songs', { order: 'id', asc: true });
+    renderGenres(); render();
+    if (typeof enableIframeAutoHeight==='function') enableIframeAutoHeight();
+  }
+  function renderGenres() {
+    document.getElementById('genre-tabs').innerHTML = GENRES.map(g =>
+      `<button class="gt ${g===curGenre?'active':''}" onclick="selGenre('${g}')">${g}</button>`).join('');
+  }
+  function selGenre(g){ curGenre=g; curPage=1; renderGenres(); render(); if(typeof enableIframeAutoHeight==='function')enableIframeAutoHeight(); }
+  function filtered() {
+    return songs.filter(s => {
+      const okG = curGenre==='전체' || s.genre===curGenre;
+      const q = keyword.toLowerCase();
+      const okQ = !q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q);
+      return okG && okQ;
+    });
+  }
+  function render() {
+    const list = filtered();
+    const totalPages = Math.max(1, Math.ceil(list.length / PAGE));
+    if (curPage > totalPages) curPage = 1;
+    const pageItems = list.slice((curPage-1)*PAGE, curPage*PAGE);
+    document.getElementById('count').textContent = `총 ${list.length}곡 · ${curPage}/${totalPages} 페이지`;
+    const body = document.getElementById('song-body');
+    if (!list.length) { body.innerHTML = '<tr><td colspan="5"><div class="empty"><div class="empty-icon">🎵</div>노래가 없어요</div></td></tr>'; document.getElementById('pagination').innerHTML=''; return; }
+    body.innerHTML = pageItems.map((s, i) => {
+      const num = (curPage-1)*PAGE + i + 1;
+      const diff = parseInt(s.difficulty)||0;
+      let dots=''; for(let k=1;k<=5;k++) dots+=`<span class="dot${k<=diff?' on':''}"></span>`;
+      return `<tr>
+        <td class="s-num">${num}</td>
+        <td class="s-title">${esc(s.title)}</td>
+        <td class="hide-m">${esc(s.artist)||'-'}</td>
+        <td><span class="s-genre">${esc(s.genre)||'기타'}</span></td>
+        <td><span class="s-diff">${dots}</span></td>
+      </tr>`;
+    }).join('');
+    const pg = document.getElementById('pagination'); pg.innerHTML='';
+    if (totalPages>1) for(let i=1;i<=totalPages;i++){
+      const b=document.createElement('button'); b.className='pg'+(i===curPage?' active':''); b.textContent=i;
+      b.onclick=()=>{ curPage=i; render(); if(typeof enableIframeAutoHeight==='function')enableIframeAutoHeight(); window.scrollTo(0,0); };
+      pg.appendChild(b);
+    }
+  }
+  document.getElementById('search').addEventListener('input', e=>{ keyword=e.target.value.trim(); curPage=1; render(); if(typeof enableIframeAutoHeight==='function')enableIframeAutoHeight(); });
+  init();
+  (function(){var M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];var t=new Date();var s=t.getFullYear()+' · '+M[t.getMonth()]+' '+t.getDate();document.querySelectorAll('.dbox').forEach(function(e){e.textContent=s});})();
 </script>
+<script>
+(function(){if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');var sw=document.getElementById('tsw'),kn=document.getElementById('kn');function r(){if(kn)kn.textContent=document.body.classList.contains('dark')?'☀️':'🌙';}if(sw)sw.addEventListener('click',function(){document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');r();});r();})();
+</script>
+<script src="../fx.js"></script>
 </body>
 </html>

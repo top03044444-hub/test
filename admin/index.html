@@ -3,14 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔐 우히 Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
+  <title>🔐 하요 Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:ital,wght@0,600;0,700&family=Sacramento&display=swap" rel="stylesheet">
+  <style>
+    /* ── 자체 내장 라임 디자인 시스템 (admin 전용) ── */
+    :root{
+      --main:#a2f058; --main-dark:#4f9d1c; --main-deep:#2f4d10; --main-light:#e9fbcf;
+      --bg:#f4f7ec; --card:#ffffff; --logo:#5aa11f; --ink:#2b2a26;
+      --text:#3d3a2c; --text-mid:#6b6857; --text-soft:#9a9784;
+      --radius-lg:18px; --radius-md:14px; --radius-sm:10px;
+      --shadow:0 4px 20px rgba(90,130,40,.12); --shadow-hover:0 8px 28px rgba(90,130,40,.20);
+      --transition:.2s ease;
+      --pen:'Noto Sans KR',sans-serif; --mag:'Playfair Display',serif; --script:'Sacramento',cursive;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:var(--pen);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+    .container{max-width:1000px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:16px}
+    .page-title{font-family:var(--pen);font-weight:800;font-size:30px;color:var(--main-dark);text-align:center;margin-bottom:4px}
+    .page-subtitle{font-size:13px;color:var(--text-soft);text-align:center;margin-bottom:8px}
+    .card{background:var(--card);border-radius:var(--radius-lg);border:1.5px solid var(--main-light);box-shadow:var(--shadow);padding:22px}
+    .card-title{font-size:12px;font-weight:800;color:var(--main-dark);letter-spacing:.08em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .card-title::before{content:'';display:block;width:3px;height:14px;background:var(--main);border-radius:999px;flex-shrink:0}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;border:none;text-decoration:none;transition:all var(--transition)}
+    .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+    .btn-primary{background:var(--main);color:var(--main-deep)}.btn-primary:hover{background:var(--main-dark);color:#fff}
+    .badge{display:inline-block;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600}
+    .badge-pink{background:var(--main-light);color:var(--main-dark)}
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{padding:10px 12px;background:var(--main-light);color:var(--main-deep);font-weight:700;text-align:left;font-size:12px}
+    th:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm)}th:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+    td{padding:12px;border-bottom:1px solid var(--main-light);color:var(--text-mid);vertical-align:middle}
+    tr:last-child td{border-bottom:none}tr:hover td{background:var(--main-light)}
+    .input{width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--main-light);font-size:14px;font-family:inherit;outline:none;background:#fff;color:var(--text);transition:border-color var(--transition)}
+    .input:focus{border-color:var(--main)}
+    .input-label{display:block;font-size:11px;font-weight:700;color:var(--main-dark);letter-spacing:.04em;margin-bottom:5px}
+    .form-field{margin-bottom:12px}
+    .empty{text-align:center;padding:40px 20px;color:var(--text-soft);font-size:14px}.empty-icon{font-size:36px;margin-bottom:10px}
+    .spinner{width:28px;height:28px;border:3px solid var(--main-light);border-top-color:var(--main-dark);border-radius:50%;animation:spin .8s linear infinite;margin:30px auto}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    footer{text-align:center;padding:24px;font-size:12px;color:var(--text-soft);line-height:1.7}
+  </style>
   <style>
     .login-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 999; }
     .login-box { background: var(--card); border-radius: 24px; border: 1.5px solid var(--main-light); box-shadow: var(--shadow-hover); padding: 40px 36px; text-align: center; width: 320px; }
-    .login-title { font-family: 'Nanum Pen Script', cursive; font-size: 32px; color: var(--main-dark); margin-bottom: 6px; }
+    .login-title { font-family: 'Pretendard','Noto Sans KR',sans-serif; font-size: 32px; color: var(--main-dark); margin-bottom: 6px; }
     .login-sub { font-size: 13px; color: var(--text-soft); margin-bottom: 24px; }
     .login-err { color: #e05; font-size: 13px; margin-top: 10px; min-height: 20px; }
     .tabs { display: flex; gap: 3px; background: var(--main-light); border-radius: 14px; padding: 4px; flex-wrap: wrap; }
@@ -22,17 +59,11 @@
     .form-grid .full { grid-column: 1 / -1; }
     .delete-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 16px; padding: 4px 8px; border-radius: 6px; transition: color 0.2s; }
     .delete-btn:hover { color: #e05; }
+    .avatar-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--main-light); display: none; }
     .ord-btn { width: 22px; height: 18px; line-height: 1; padding: 0; border: 1px solid var(--main-light); background: var(--card); color: var(--main-dark); border-radius: 5px; font-size: 9px; cursor: pointer; transition: background .2s; }
     .ord-btn:hover:not(:disabled) { background: var(--main-light); }
     .ord-btn:disabled { opacity: .3; cursor: default; }
-  .pv-glow img{filter:contrast(.96) saturate(1.04);}.pv-glow::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,250,245,.20),rgba(255,244,250,.06));}.pv-peach img{filter:saturate(1.08);}.pv-peach::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(160deg,rgba(255,206,186,.24),rgba(255,196,214,.12));}.pv-film img{filter:contrast(1.08) saturate(.97) brightness(.99);}.pv-film::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,224,188,.16),rgba(66,108,138,.22));}.pv-honey img{filter:saturate(1.1) contrast(1.02);}.pv-honey::after{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,214,150,.24),rgba(255,188,128,.12));}
-</style>
-<style id="mag-theme">
-:root{--mag-serif:'Playfair Display','Gowun Batang',serif;--mag-serif-ko:'Gowun Batang','Nanum Myeongjo',serif;}
-.nav a.nav-logo{font-family:var(--mag-serif)!important;letter-spacing:.5px;}
-.page-title,.login-title,.card-title,.card-head{font-family:var(--mag-serif-ko)!important;}
-.card-head{letter-spacing:.2px;}
-</style>
+  </style>
 </head>
 <body>
 
@@ -54,8 +85,8 @@
 
   <div class="card" style="padding:6px">
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('main',this)">🏠 메인</button>
-      <button class="tab-btn" onclick="switchTab('profile',this)">🎀 프로필</button>
+      <button class="tab-btn active" onclick="switchTab('profile',this)">🎀 프로필</button>
+      <button class="tab-btn" onclick="switchTab('notice',this)">📢 공지</button>
       <button class="tab-btn" onclick="switchTab('schedule',this)">📅 일정</button>
       <button class="tab-btn" onclick="switchTab('work',this)">⚡ 업보</button>
       <button class="tab-btn" onclick="switchTab('song',this)">🎵 노래</button>
@@ -64,126 +95,123 @@
     </div>
   </div>
 
-  <!-- 메인 탭 -->
-  <div class="tab-panel active" id="tab-main">
-    <div class="card">
-      <div class="card-title">💬 한마디 & 소개</div>
-      <div class="form-field"><label class="input-label">한마디 (메인 상단 띠 · 줄바꿈=엔터)</label><textarea class="input" id="f-quote" rows="3"></textarea></div>
-      <div class="form-field"><label class="input-label">소개 글 (About 문단 · 줄바꿈=엔터)</label><textarea class="input" id="f-intro" rows="4"></textarea></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">🖼 히어로 배경 사진</div>
-      <div class="form-field"><label class="input-label">히어로 배경 사진 URL (메인 상단 큰 배경)</label><input class="input" id="f-hero-img" type="url" placeholder="https://..."></div>
-      <div style="font-size:11px;color:var(--text-soft);margin:-4px 0 10px">비워두면 기본 일러스트가 나와요.</div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">🏷 주목 키워드 (KEYWORDS)</div>
-      <div class="form-field"><label class="input-label">키워드 (쉼표로 구분 · 예: 국밥, 소통, 노래, 햄찌)</label><input class="input" id="f-info-tags" type="text"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-  </div>
-
   <!-- 프로필 탭 -->
-  <div class="tab-panel" id="tab-profile">
-    <p style="font-size:12px;color:var(--text-soft);margin:0 0 14px">프로필 페이지(info)에 보이는 항목들이에요. 위에서 아래로 페이지 순서와 같아요.</p>
-
-    <!-- 1) 프로필 사진 (SOOP 아이디 자동 / 직접 URL) -->
+  <div class="tab-panel active" id="tab-profile">
     <div class="card">
       <div class="card-title">🖼 프로필 사진</div>
       <div class="form-field">
-        <label class="input-label">SOOP 아이디 (프사 자동 연동)</label>
-        <input class="input" id="f-soop-id" type="text" placeholder="1020118">
-        <div style="font-size:11px;color:var(--text-soft);margin-top:6px">아이디만 넣으면 SOOP 프사가 자동으로 따라와요.</div>
+        <label class="input-label">프사 이미지 링크 (URL) — 비우면 SOOP 프사 자동</label>
+        <input class="input" id="f-avatar" type="url" placeholder="https://.../image.png" oninput="previewAvatar()">
       </div>
       <div class="form-field">
-        <label class="input-label">또는 직접 이미지 URL (있으면 SOOP보다 우선 · .jpg/.png/.gif)</label>
-        <input class="input" id="f-avatar" type="url" placeholder="https://...">
-        <div style="font-size:11px;color:var(--text-soft);margin-top:6px">비워두면 위 SOOP 아이디를 사용해요.</div>
+        <label class="input-label">SOOP 아이디</label>
+        <input class="input" id="f-soop_id" type="text" placeholder="hayodayong" oninput="previewAvatar()">
       </div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+        <div style="width:64px;height:64px;border-radius:50%;overflow:hidden;background:var(--main-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px">
+          <img id="av-preview" alt="" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;display:none" onerror="this.style.display='none';var q=document.getElementById('av-ph');if(q)q.style.display='flex'">
+          <span id="av-ph">🐰</span>
+        </div>
+        <span style="font-size:12px;color:var(--text-soft)">← 표시될 프사 미리보기</span>
+        <button class="btn btn-primary" style="margin-left:auto" onclick="saveProfile()">저장 ♥</button>
+      </div>
     </div>
 
-    <!-- 2) 프로필 정보 (info 페이지 '프로필 정보' 섹션) -->
     <div class="card">
-      <div class="card-title">📋 프로필 정보</div>
+      <div class="card-title">🐰 기본 정보</div>
       <div class="form-grid">
-        <div class="form-field"><label class="input-label">이름</label><input class="input" id="f-info-name" type="text"></div>
-        <div class="form-field"><label class="input-label">데뷔</label><input class="input" id="f-info-debut" type="text"></div>
-        <div class="form-field"><label class="input-label">생일 (예: 1월 18일)</label><input class="input" id="f-info-birthday" type="text"></div>
-        <div class="form-field"><label class="input-label">나이</label><input class="input" id="f-info-age" type="text"></div>
-        <div class="form-field"><label class="input-label">MBTI</label><input class="input" id="f-info-mbti" type="text"></div>
-        <div class="form-field"><label class="input-label">팬애칭</label><input class="input" id="f-info-fanname" type="text"></div>
-        <div class="form-field"><label class="input-label">팬닉 (비우면 숨김)</label><input class="input" id="f-info-fandom" type="text"></div>
+        <div class="form-field"><label class="input-label">이름 (한글)</label><input class="input" id="f-name" placeholder="하요"></div>
+        <div class="form-field"><label class="input-label">이름 (영문)</label><input class="input" id="f-name_en" placeholder="HAYO"></div>
+        <div class="form-field"><label class="input-label">생일 (MM-DD)</label><input class="input" id="f-birthday" placeholder="02-21"></div>
+        <div class="form-field"><label class="input-label">데뷔</label><input class="input" id="f-debut" placeholder="2026.04.11"></div>
+        <div class="form-field"><label class="input-label">소속</label><input class="input" id="f-agency" placeholder="개인세"></div>
+        <div class="form-field"><label class="input-label">MBTI</label><input class="input" id="f-mbti" placeholder="ENFP"></div>
+        <div class="form-field"><label class="input-label">나이 (선택)</label><input class="input" id="f-age" placeholder=""></div>
+        <div class="form-field"><label class="input-label">팬닉</label><input class="input" id="f-fan_name" placeholder="하잎이"></div>
+        <div class="form-field full"><label class="input-label">한마디 (태그라인)</label><input class="input" id="f-tagline" placeholder="짧은 인사 한 줄"></div>
+        <div class="form-field full"><label class="input-label">소개 (문단)</label><textarea class="input" id="f-intro" rows="3"></textarea></div>
       </div>
-      <div class="form-field"><label class="input-label">시그니처 문구</label><input class="input" id="f-signature" type="text" placeholder="청량 블루 💙"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
 
-    <!-- 3) 방송 요일 -->
     <div class="card">
-      <div class="card-title">📅 방송 요일 (비우면 숨김)</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="day-checks">
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="0">일</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="1">월</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="2">화</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="3">수</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="4">목</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="5">금</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="6">토</label>
-      </div>
-      <input type="hidden" id="f-days">
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveDays()">저장 ♥</button></div>
-    </div>
-
-    <!-- 4) TMI (info 페이지 'TMI & Taste' 섹션) -->
-    <div class="card">
-      <div class="card-title">🍚 TMI</div>
-      <div class="form-field"><label class="input-label">최애 음식 (쉼표로 여러 개)</label><input class="input" id="f-tmi-food" type="text"></div>
-      <div class="form-field"><label class="input-label">요즘 듣는 노래 (쉼표로 여러 개)</label><input class="input" id="f-tmi-song" type="text"></div>
-      <div class="form-field"><label class="input-label">요즘 하는 게임 (쉼표로 여러 개)</label><input class="input" id="f-tmi-game" type="text"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-
-    <!-- 5) 좋아/싫어 -->
-    <div class="card">
-      <div class="card-title">💙 좋아하는 것 · 싫어하는 것</div>
+      <div class="card-title">♥ TMI · 좋아 · 싫어 (한 줄에 하나씩)</div>
+      <div class="form-field"><label class="input-label">TMI</label><textarea class="input" id="f-tmi" rows="3" placeholder="오후 12시 칼출근&#10;마크 좋아함"></textarea></div>
       <div class="form-grid">
-        <div class="form-field"><label class="input-label">좋아 1</label><input class="input" id="f-like1" type="text"></div>
-        <div class="form-field"><label class="input-label">좋아 2</label><input class="input" id="f-like2" type="text"></div>
-        <div class="form-field"><label class="input-label">좋아 3</label><input class="input" id="f-like3" type="text"></div>
-        <div class="form-field"><label class="input-label">좋아 4</label><input class="input" id="f-like4" type="text"></div>
-        <div class="form-field"><label class="input-label">싫어 1</label><input class="input" id="f-dislike1" type="text"></div>
-        <div class="form-field"><label class="input-label">싫어 2</label><input class="input" id="f-dislike2" type="text"></div>
+        <div class="form-field"><label class="input-label">좋아하는 것</label><textarea class="input" id="f-likes" rows="3" placeholder="소통&#10;게임"></textarea></div>
+        <div class="form-field"><label class="input-label">싫어하는 것</label><textarea class="input" id="f-dislikes" rows="3" placeholder="거미&#10;매운거"></textarea></div>
       </div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
 
-    <!-- 6) 관련 링크 -->
     <div class="card">
-      <div class="card-title">🔗 바로가기 링크</div>
-      <div class="form-field"><label class="input-label">YouTube URL</label><input class="input" id="f-link-youtube" type="url" placeholder="https://"></div>
-      <div class="form-field"><label class="input-label">팬심M URL</label><input class="input" id="f-link-mfancim" type="url" placeholder="https://"></div>
-      <div class="form-field"><label class="input-label">팬심 URL</label><input class="input" id="f-link-fancim" type="url" placeholder="https://"></div>
-      <div class="form-field"><label class="input-label">SOOP URL</label><input class="input" id="f-link-soop" type="url" placeholder="https://www.sooplive.com/station/1020118"></div>
-      <div class="form-field"><label class="input-label">팬심M 입장코드 버튼 URL</label><input class="input" id="f-link-heart" type="url" placeholder="https://"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div class="card-title">💬 어록 (한 줄에 하나씩)</div>
+      <div class="form-field"><textarea class="input" id="f-quotes" rows="3" placeholder="자주 하는 말&#10;유행어"></textarea></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
 
-    <!-- 8) 다시보기/클립 (VOD) -->
     <div class="card">
-      <div class="card-title">📺 다시보기 / 클립 (VOD)</div>
-      <p style="font-size:12px;color:var(--text-soft);margin:0 0 12px">프로필 'VOD' 섹션에 표시돼요. SOOP 주소 <code>sooplive.com/아이디/v/<b>194780409</b></code> 의 <b>숫자 ID</b>만 입력하세요.</p>
+      <div class="card-title">📊 능력치 (한 줄에 <b>라벨,숫자(0~100)</b>)</div>
+      <div class="form-field"><textarea class="input" id="f-stats" rows="4" placeholder="먹성,80&#10;텐션,95&#10;다정함,90"></textarea></div>
+      <div style="font-size:11px;color:var(--text-soft);margin-top:-4px;margin-bottom:8px">예: <b>텐션,95</b> — 비워두면 능력치 섹션이 숨겨져요</div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📣 지금 진행 중 이벤트 (제목 비우면 숨김)</div>
+      <div class="form-field"><label class="input-label">이벤트 제목</label><input class="input" id="f-event-title" placeholder="예: 팔로우 이벤트"></div>
+      <div class="form-field"><label class="input-label">입장 코드 / 키워드 (선택)</label><input class="input" id="f-event-code" placeholder="예: HAYO"></div>
+      <div class="form-field"><label class="input-label">설명 (선택)</label><textarea class="input" id="f-event-note" rows="2"></textarea></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 목표 (목표치 0이면 숨김)</div>
       <div class="form-grid">
-        <div class="form-field full"><label class="input-label">제목 *</label><input class="input" id="os-title" placeholder="예: 🎤 데뷔 첫 노래방송"></div>
-        <div class="form-field"><label class="input-label">VOD / 클립 ID *</label><input class="input" id="os-vod" placeholder="194780409"></div>
-        <div class="form-field"><label class="input-label">썸네일 URL (선택)</label><input class="input" id="os-thumb" type="url" placeholder="https://... (비우면 ▶ 카드)"></div>
+        <div class="form-field full"><label class="input-label">목표 이름</label><input class="input" id="f-goal-label" placeholder="예: 팔로워"></div>
+        <div class="form-field"><label class="input-label">현재</label><input class="input" id="f-goal-current" type="number" placeholder="0"></div>
+        <div class="form-field"><label class="input-label">목표</label><input class="input" id="f-goal-target" type="number" placeholder="1000"></div>
+        <div class="form-field full"><label class="input-label">다음 목표 (선택)</label><input class="input" id="f-goal-next" placeholder="예: 2000명"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎵 다시보기 / 클립 (VOD)</div>
+      <div class="form-grid">
+        <div class="form-field full"><label class="input-label">영상 제목 *</label><input class="input" id="os-title" placeholder="예: 노래 제목"></div>
+        <div class="form-field full"><label class="input-label">SOOP VOD ID *</label><input class="input" id="os-vod" placeholder="194780409"></div>
+        <div class="form-field full"><label class="input-label">썸네일 URL (선택)</label><input class="input" id="os-thumb" placeholder="https:// (선택)"></div>
+        <div class="form-field full" style="font-size:12px;color:var(--text-soft)">💡 sooplive.com/아이디/v/<b>194780409</b> 에서 숫자만 입력</div>
         <div class="form-field full" style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addOriginalSong()">+ 추가</button></div>
       </div>
-      <div id="os-list" style="margin-top:6px"><div class="spinner"></div></div>
+      <div id="os-list" style="margin-top:6px"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔗 관련 링크</div>
+      <div class="form-field"><label class="input-label">SOOP URL</label><input class="input" id="f-link-soop" type="url" placeholder="https://ch.sooplive.co.kr/hayodayong"></div>
+      <div class="form-field"><label class="input-label">YouTube URL</label><input class="input" id="f-link-youtube" type="url" placeholder="https://"></div>
+      <div class="form-field"><label class="input-label">X (트위터) URL</label><input class="input" id="f-link-x" type="url" placeholder="https://"></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
+    </div>
+  </div>
+
+  <!-- 공지 탭 -->
+  <div class="tab-panel" id="tab-notice">
+    <div class="card">
+      <div class="card-title">공지 추가</div>
+      <div class="form-field"><label class="input-label">제목 *</label><input class="input" id="noti-title"></div>
+      <div class="form-field"><label class="input-label">내용</label><textarea class="input" id="noti-content" rows="4"></textarea></div>
+      <div class="form-field"><label class="input-label">이미지 링크 (여러 개면 줄바꿈으로 붙여넣기)</label><textarea id="noti-image-url" class="input" rows="2" placeholder="https://... (한 줄에 하나씩)"></textarea></div>
+      <div class="form-field full" style="font-size:11px;color:var(--text-soft);margin-top:-4px">💡 SOOP에 <b>비공개 게시판</b>을 만들어 이미지를 올린 뒤 → 이미지 <b>우클릭 → "이미지 주소 복사"</b> → 위 칸에 붙여넣기 (글 주소 말고 <b>이미지 주소</b>)</div>
+      <div class="form-field"><label><input type="checkbox" id="noti-pin"> 📌 고정 공지</label></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addNotice()">+ 추가</button></div>
+    </div>
+    <div class="card">
+      <div class="card-title">등록된 공지</div>
+      <div class="table-wrap"><table><thead><tr><th>제목</th><th>고정</th><th>날짜</th><th>삭제</th></tr></thead>
+      <tbody id="noti-list"><tr><td colspan="4"><div class="spinner"></div></td></tr></tbody></table></div>
     </div>
   </div>
 
@@ -242,7 +270,7 @@
       .subpanel { display:none; } .subpanel.active { display:block; }
       .vbtn { background:var(--main-light); color:var(--main-dark); border:none; padding:5px 12px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; }
       .vbtn:hover { background:var(--main); color:#fff; }
-      .vbtn.del { background:#ffe0e0; color:#e05; } .vbtn.del:hover { background:#e05; color:#fff; }
+      .vbtn.del { background:#eceef1; color:#cf5b5b; } .vbtn.del:hover { background:#cf5b5b; color:#fff; }
       .vrow { display:flex; align-items:center; gap:8px; padding:11px 14px; background:#fff; border:1px solid var(--main-light); border-radius:12px; margin-bottom:8px; }
       .vrow .vn { flex:1; font-size:14px; font-weight:600; color:var(--text); }
       .vrow .vid { font-size:12px; color:var(--text-soft); }
@@ -351,24 +379,16 @@
       <div class="card-title">👗 옷장 항목 추가</div>
       <div class="form-grid">
         <div class="form-field"><label class="input-label">분류</label>
-          <select class="input" id="dr-cat"><option value="white">화이트</option><option value="black">블랙</option><option value="outfit">의상</option><option value="lens">렌즈</option></select>
+          <select class="input" id="dr-cat"><option value="hair">헤어</option><option value="outfit">의상</option><option value="lens">렌즈</option></select>
         </div>
         <div class="form-field"><label class="input-label">순서 (작을수록 앞 · 비우면 맨 뒤)</label>
           <input class="input" id="dr-order" type="number" min="0" placeholder="비워두면 맨 뒤">
         </div>
-        <div class="form-field full"><label class="input-label">이름 *</label><input class="input" id="dr-name" placeholder="예: 화이트 드레스"></div>
+        <div class="form-field full"><label class="input-label">이름 *</label><input class="input" id="dr-name" placeholder="예: 기본 헤어"></div>
         <div class="form-field full"><label class="input-label">설명 (선택)</label><input class="input" id="dr-desc" placeholder="짧은 설명"></div>
-        <div class="form-field full">
-          <label class="input-label">이미지 링크 (주소 붙여넣기)</label>
-          <input class="input" id="dr-url" placeholder="https://stimg.sooplive.com/.../xxxx.png" oninput="drPreview()">
-          <div style="font-size:11px;color:var(--text-soft);margin-top:5px;line-height:1.6">
-            SOOP 게시판에 이미지를 올린 뒤 <b>이미지 우클릭 → "이미지 주소 복사"</b> 해서 붙여넣으세요.<br>
-            (글 주소가 아니라 <b>.png/.jpg 로 끝나는 직접 이미지 주소</b>) · 권장 비율 <b>세로 3:4</b> (예: 900×1200)
-          </div>
-          <div id="dr-preview" style="margin-top:8px"></div>
-        </div>
+        <div class="form-field full"><label class="input-label">이미지 링크 (이미지 주소 붙여넣기)</label><input type="url" id="dr-img-url" class="input" placeholder="https://... 이미지 주소"></div>
+        <div class="form-field full" style="font-size:11px;color:var(--text-soft);margin-top:-4px">💡 SOOP <b>비공개 게시판</b>에 이미지 올린 뒤 → <b>우클릭 → "이미지 주소 복사"</b> → 위 칸에 붙여넣기. 권장 크기 <b>세로 3:4 (900×1200px)</b></div>
         <div class="form-field full"><label><input type="checkbox" id="dr-new"> ✨ <b>새 옷</b>으로 올리기 <span style="color:var(--text-soft);font-weight:400">(체크하면 옷장 '새 옷'에 포스터로 떠요)</span></label></div>
-        <div class="form-field full"><label class="input-label">🎨 보정 톤 (사진마다 선택)</label><select class="input" id="dr-tone" onchange="drPreview()"><option value="">원본</option><option value="glow">뽀얀</option><option value="peach">피치</option><option value="film">시네마</option><option value="honey">허니</option></select><div style="font-size:11px;color:var(--text-soft);margin-top:5px">고른 톤이 옷장에서 그대로 입혀서 보여요. (원본 = 보정 없음)</div></div>
         <div class="form-field full" style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addDressItem()">+ 추가</button></div>
       </div>
     </div>
@@ -387,28 +407,20 @@
   </div>
 
 </div>
-<footer>© 2026 우히 관리자 ♥</footer>
+<footer>© 2026 Hayo 관리자 ♥</footer>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
 <script>
-  const ADMIN_PASSWORD = 'q549s159@';
-
-  const profileKeys = [
-    'quote','intro','signature','soop-id','avatar','hero-img',
-    'info-name','info-age','info-fanname','info-debut','info-fandom','info-birthday','info-mbti','info-tags',
-    'like1','like2','like3','like4','dislike1','dislike2',
-    'tmi-food','tmi-song','tmi-game','days',
-    'link-youtube','link-mfancim','link-fancim','link-soop','link-heart'
-  ];
+  const ADMIN_PASSWORD = 'hayo2026';
 
   function tryLogin() {
     if (document.getElementById('pwInput').value === ADMIN_PASSWORD) {
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('adminBody').style.display = 'flex';
-      loadProfileFields(); loadOriginalSongs();
-      loadSchedule(); loadWork(); loadSong(); loadDress(); loadInquiry();
+      loadProfileFields();
+      loadNotice(); loadSchedule(); loadWork(); loadSong(); loadDress(); loadInquiry(); loadOriginalSongs();
     } else {
       document.getElementById('loginErr').textContent = '비밀번호가 틀렸어요 >﹏<';
     }
@@ -421,34 +433,105 @@
     btn.classList.add('active');
   }
 
-  // ── 프로필 ──
-  async function loadProfileFields() {
-    let saved = {};
-    try {
-      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
-      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
-    } catch(e) {}
-    profileKeys.forEach(k => { const el = document.getElementById('f-' + k); if (el) el.value = saved[k] || ''; });
-    // 방송 요일 체크박스
-    const days = (saved.days || '').split(',').map(x=>x.trim());
-    document.querySelectorAll('.day-chk').forEach(c => { c.checked = days.includes(c.value); });
+  // ── 프로필 (프로필 페이지 모델과 동일 키) ──
+  const PSAVE = ['name','name_en','soop_id','avatar','tagline','intro','birthday','debut','agency','mbti','age','fan_name'];
+  const v  = id => (document.getElementById(id)?.value || '').trim();
+  const lns = id => (document.getElementById(id)?.value || '').split('\n').map(s=>s.trim()).filter(Boolean);
+  async function fetchProfile(){ try{ const {data:rows}=await db.from('profile').select('data').eq('id',1); if(rows&&rows[0]&&rows[0].data) return rows[0].data; }catch(e){} return {}; }
+  async function loadProfileFields(){
+    const d = await fetchProfile();
+    PSAVE.forEach(k=>{ const el=document.getElementById('f-'+k); if(el) el.value = d[k]||''; });
+    document.getElementById('f-tmi').value      = (d.tmi||[]).join('\n');
+    document.getElementById('f-likes').value    = (d.likes||[]).join('\n');
+    document.getElementById('f-dislikes').value = (d.dislikes||[]).join('\n');
+    document.getElementById('f-quotes').value   = (d.quotes||[]).join('\n');
+    document.getElementById('f-stats').value    = (d.stats||[]).map(s=>`${s.label},${s.value}`).join('\n');
+    const ev=d.event||{}; document.getElementById('f-event-title').value=ev.title||''; document.getElementById('f-event-code').value=ev.code||''; document.getElementById('f-event-note').value=ev.note||'';
+    const g=d.goal||{};  document.getElementById('f-goal-label').value=g.label||''; document.getElementById('f-goal-current').value=(g.current!=null?g.current:''); document.getElementById('f-goal-target').value=(g.target!=null?g.target:''); document.getElementById('f-goal-next').value=g.next||'';
+    const L=d.links||{}; document.getElementById('f-link-soop').value=L.soop||''; document.getElementById('f-link-youtube').value=L.youtube||''; document.getElementById('f-link-x').value=L.x||'';
+    previewAvatar();
   }
-  async function saveDays() {
-    const days = [...document.querySelectorAll('.day-chk:checked')].map(c=>c.value).join(',');
-    document.getElementById('f-days').value = days;
-    await saveLocalProfile();
+  function soopAvatarUrl(id) {
+    id = (id || '').trim().toLowerCase();
+    if (id.length < 2) return '';
+    return `https://profile.img.sooplive.co.kr/LOGO/${id.slice(0,2)}/${id}/${id}.jpg`;
   }
-  async function saveLocalProfile() {
-    let saved = {};
-    try {
-      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
-      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
-    } catch(e) {}
-    profileKeys.forEach(k => { const el = document.getElementById('f-' + k); if (el) saved[k] = el.value; });
-    const { error } = await db.from('profile').upsert({ id: 1, data: saved });
-    if (error) { showToast('❌ 저장 실패: ' + error.message); return; }
+  function previewAvatar() {
+    const direct = (document.getElementById('f-avatar')?.value || '').trim();
+    const url = direct || soopAvatarUrl(document.getElementById('f-soop-id')?.value);
+    const img = document.getElementById('av-preview');
+    const ph = document.getElementById('av-ph');
+    if (!img) return;
+    if (url) { img.src = url; img.style.display = 'block'; if (ph) ph.style.display = 'none'; }
+    else { img.style.display = 'none'; if (ph) ph.style.display = 'flex'; }
+  }
+  async function saveProfile(){
+    const d = await fetchProfile();
+    PSAVE.forEach(k=>{ d[k]=v('f-'+k); });
+    d.tmi=lns('f-tmi'); d.likes=lns('f-likes'); d.dislikes=lns('f-dislikes'); d.quotes=lns('f-quotes');
+    d.stats = lns('f-stats').map(row=>{ const i=row.lastIndexOf(','); if(i<0) return {label:row,value:0}; return {label:row.slice(0,i).trim(), value:Math.max(0,Math.min(100,parseInt(row.slice(i+1))||0))}; });
+    d.event = { title:v('f-event-title'), code:v('f-event-code'), note:v('f-event-note') };
+    d.goal  = { label:v('f-goal-label'), current:Number(v('f-goal-current'))||0, target:Number(v('f-goal-target'))||0, next:v('f-goal-next') };
+    d.links = { soop:v('f-link-soop'), youtube:v('f-link-youtube'), x:v('f-link-x') };
+    const { error } = await db.from('profile').upsert({ id:1, data:d });
+    if(error){ showToast('❌ 저장 실패: '+error.message); return; }
     showToast('✅ 저장됐어요!');
   }
+  function showCurrentAvatar(url) {
+    const cur = document.getElementById('current-avatar');
+    const none = document.getElementById('no-avatar');
+    const delBtn = document.getElementById('delete-avatar-btn');
+    if (!cur || !none) return;   // 프사는 SOOP 연동 전용 → 업로드/미리보기 UI 없음
+    if (url) {
+      cur.src = url; cur.style.display = 'inline-block'; none.style.display = 'none';
+      if (delBtn) delBtn.style.display = 'inline-flex';
+    } else {
+      cur.style.display = 'none'; none.style.display = 'inline';
+      if (delBtn) delBtn.style.display = 'none';
+    }
+  }
+  async function deleteAvatar() {
+    if (!confirm('프로필 사진을 삭제할까요?\n(삭제하면 SOOP 아이디 프사가 적용돼요)')) return;
+    let saved = {};
+    try {
+      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
+      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
+    } catch(e) {}
+    saved['avatar'] = '';
+    const { error } = await db.from('profile').upsert({ id: 1, data: saved });
+    if (error) { showToast('❌ 삭제 실패: ' + error.message); return; }
+    showCurrentAvatar('');
+    showToast('🗑 사진 삭제됨! 이제 SOOP 아이디 프사가 떠요');
+  }
+  function previewUpload() {
+    const file = document.getElementById('avatar-file').files[0];
+    if (!file) return;
+    document.getElementById('avatar-preview').src = URL.createObjectURL(file);
+    document.getElementById('avatar-preview').style.display = 'block';
+    document.getElementById('upload-btn').style.display = 'inline-flex';
+  }
+  async function uploadAvatar() {
+    const file = document.getElementById('avatar-file').files[0];
+    if (!file) return;
+    const status = document.getElementById('upload-status');
+    status.textContent = '업로드 중...';
+    const ext = file.name.split('.').pop();
+    const { data, error } = await db.storage.from('images').upload('profile.' + ext, file, { upsert: true });
+    if (error) { status.textContent = '❌ 업로드 실패: ' + error.message; return; }
+    const { data: u } = db.storage.from('images').getPublicUrl('profile.' + ext);
+    const url = u.publicUrl + '?t=' + Date.now();
+    let saved = {};
+    try {
+      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
+      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
+    } catch(e) {}
+    saved['avatar'] = url;
+    await db.from('profile').upsert({ id: 1, data: saved });
+    showCurrentAvatar(url);
+    status.textContent = '✅ 완료!';
+    showToast('✅ 프로필 사진 저장!');
+  }
+
   // ── 공지 ──
   async function loadNotice() {
     const data = await fetchAll('notice', { order: 'created_at', asc: false });
@@ -459,19 +542,10 @@
   async function addNotice() {
     const title = document.getElementById('noti-title').value.trim();
     if (!title) { showToast('❗ 제목 필수!'); return; }
-    let image_url = null; let images = [];
-    const files = document.getElementById('noti-image').files;
-    if (files.length) {
-      showToast(`🖼 이미지 ${files.length}장 업로드 중...`);
-      for (const f of files) {
-        const url = await uploadImage(f, 'notice');
-        if (url) images.push(url);
-      }
-      if (!images.length) { showToast('❌ 이미지 업로드 실패'); return; }
-      image_url = images[0];
-    }
+    const images = document.getElementById('noti-image-url').value.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
+    const image_url = images[0] || null;
     const ok = await insertRow('notice', { title, content: document.getElementById('noti-content').value, pinned: document.getElementById('noti-pin').checked, image_url, images });
-    if (ok) { showToast('✅ 추가!'); ['noti-title','noti-content','noti-image'].forEach(id=>document.getElementById(id).value=''); document.getElementById('noti-pin').checked=false; loadNotice(); }
+    if (ok) { showToast('✅ 추가!'); ['noti-title','noti-content','noti-image-url'].forEach(id=>document.getElementById(id).value=''); document.getElementById('noti-pin').checked=false; loadNotice(); }
     else showToast('❌ 실패');
   }
 
@@ -482,7 +556,7 @@
     if (!data.length) { t.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#ccc;padding:20px">없음</td></tr>'; return; }
     t.innerHTML = data.map(s => {
       const isOff = s.type === '휴방';
-      const badge = isOff ? '<span class="badge" style="background:#e7eef2;color:#5f7d8c">휴방</span>' : '<span class="badge" style="background:#d6f0e4;color:#1f7a52">방송</span>';
+      const badge = isOff ? '<span class="badge" style="background:#eceef1;color:#6b7280">휴방</span>' : '<span class="badge" style="background:#d6f0e4;color:#1f7a52">방송</span>';
       return `<tr><td>${s.date}</td><td>${s.time||'-'}</td><td>${badge}</td><td>${s.title||'-'}</td><td><button class="delete-btn" onclick="del('schedule',${s.id},loadSchedule)">🗑</button></td></tr>`;
     }).join('');
   }
@@ -645,32 +719,6 @@
     showToast('🗑 삭제!'); loadWork();
   }
 
-  // ── 일기 ──
-  async function loadDiary() {
-    const data = await fetchAll('diary', { order: 'diary_date', asc: false });
-    const t = document.getElementById('diary-list');
-    if (!data.length) { t.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ccc;padding:20px">없음</td></tr>'; return; }
-    t.innerHTML = data.map(d => `<tr><td>${d.diary_date||'-'}</td><td>${d.mood}</td><td>${d.title}</td><td><button class="delete-btn" onclick="del('diary',${d.id},loadDiary)">🗑</button></td></tr>`).join('');
-  }
-  async function addDiary() {
-    const title = document.getElementById('diary-title').value.trim();
-    if (!title) { showToast('❗ 제목 필수!'); return; }
-    let image_url = null; let images = [];
-    const files = document.getElementById('diary-image').files;
-    if (files.length) {
-      showToast(`🖼 이미지 ${files.length}장 업로드 중...`);
-      for (const f of files) {
-        const url = await uploadImage(f, 'diary');
-        if (url) images.push(url);
-      }
-      if (!images.length) { showToast('❌ 이미지 업로드 실패'); return; }
-      image_url = images[0];
-    }
-    const ok = await insertRow('diary', { title, content: document.getElementById('diary-content').value, mood: document.getElementById('diary-mood').value, diary_date: document.getElementById('diary-date').value, image_url, images });
-    if (ok) { showToast('✅ 추가!'); ['diary-title','diary-content','diary-date','diary-image'].forEach(id=>document.getElementById(id).value=''); loadDiary(); }
-    else showToast('❌ 실패');
-  }
-
   async function del(table, id, fn) {
     if (!confirm('정말 삭제?')) return;
     const ok = await deleteRow(table, id);
@@ -744,10 +792,7 @@
   // ── 옷장 ──
   let dressCache = [];
   let dressFilter = 'all';   // 'all' | 'new'(새 옷/포스터) | 'old'(기존)
-  const DRESS_CATS = [['white','화이트'],['black','블랙'],['outfit','의상'],['lens','렌즈']];
-  const DRESS_TONES = [['','원본'],['glow','뽀얀'],['peach','피치'],['film','시네마'],['honey','허니']];
-  function getTone(d){ var t=''; (d.badges||[]).forEach(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; l=String(l).trim(); if(l.slice(0,3).toLowerCase()==='fx:') t=l.slice(3).toLowerCase(); }); return t; }
-  function badgesWithTone(badges, key){ var out=(badges||[]).filter(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().slice(0,3).toLowerCase()!=='fx:'; }); if(key) out.push({label:'fx:'+key}); return out; }
+  const DRESS_CATS = [['hair','헤어'],['outfit','의상'],['lens','렌즈']];   // 관리자 목록의 분류·순서 (분류를 바꿀 땐 위 select 옵션 + 옷장 페이지 탭도 함께 수정)
   const dressByOrder = (a,b)=> ((a.sort_order||0)-(b.sort_order||0)) || (new Date(a.created_at)-new Date(b.created_at));
   function hasNew(d){
     return (d.badges||[]).some(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().toUpperCase()==='NEW'; });
@@ -769,7 +814,6 @@
     const chip = (d) => hasNew(d)
       ? `<span style="font-size:10px;font-weight:800;color:#fff;background:var(--main);padding:2px 8px;border-radius:999px;white-space:nowrap">✨ 새옷</span>`
       : `<span style="font-size:10px;font-weight:700;color:var(--text-soft);background:var(--main-light);padding:2px 8px;border-radius:999px;white-space:nowrap">기존</span>`;
-    const toneSel = (d) => { const cur=getTone(d); return `<select onchange="setDressTone('${d.id}',this.value)" title="보정 톤" style="border:1px solid var(--main-light);background:var(--card);color:var(--main-dark);font-size:11px;font-weight:700;padding:5px 6px;border-radius:8px;cursor:pointer">`+DRESS_TONES.map(([k,l])=>`<option value="${k}" ${k===cur?'selected':''}>🎨 ${l}</option>`).join('')+`</select>`; };
     const tgl = (d) => `<button onclick="toggleDressNew('${d.id}')" title="새옷/기존 전환" style="border:1px solid var(--main-light);background:var(--card);color:var(--main-dark);font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;cursor:pointer;white-space:nowrap">${hasNew(d)?'기존으로':'새옷으로'}</button>`;
 
     const row = (d, i, len) => `
@@ -781,7 +825,6 @@
         <div style="width:42px;height:56px;border-radius:7px;background:var(--bg) center/cover no-repeat;flex-shrink:0;${d.image_url?`background-image:url('${(d.image_url||'').replace(/'/g,'%27')}')`:''}"></div>
         <span style="flex:1;font-size:14px;font-weight:600;min-width:0">${(d.name||'').replace(/</g,'&lt;')}</span>
         ${chip(d)}
-        ${toneSel(d)}
         ${tgl(d)}
         <button class="delete-btn" onclick="del('dress_items','${d.id}',loadDress)">🗑</button>
       </div>`;
@@ -794,7 +837,7 @@
       html += shown.map(d=>row(d, arr.indexOf(d), arr.length)).join('');
     });
 
-    // 알 수 없는(예: 기존 '헤어') 분류도 보여줘서 잃어버리지 않게
+    // 목록에 없는 분류(예: 과거 데이터)도 보여줘서 잃어버리지 않게
     const known = DRESS_CATS.map(c=>c[0]);
     const other = dressCache.filter(d=>!known.includes(d.category)).sort(dressByOrder).filter(match);
     if(other.length){
@@ -804,7 +847,6 @@
           <span style="font-size:11px;font-weight:700;color:#fff;background:var(--text-soft);padding:2px 8px;border-radius:999px">${(d.category||'?')}</span>
           <span style="flex:1;font-size:14px;font-weight:600;min-width:0">${(d.name||'').replace(/</g,'&lt;')}</span>
           ${chip(d)}
-          ${toneSel(d)}
           ${tgl(d)}
           <button class="delete-btn" onclick="del('dress_items','${d.id}',loadDress)">🗑</button>
         </div>`).join('');
@@ -812,13 +854,6 @@
     el.innerHTML = html;
   }
   function setDressFilter(f){ dressFilter = f; loadDress(); }
-  async function setDressTone(id, key){
-    const d = dressCache.find(x=>x.id===id); if(!d) return;
-    const badges = badgesWithTone(d.badges, key);
-    showToast(key ? '🎨 보정 톤 적용...' : '🎨 원본으로...');
-    await updateRow('dress_items', id, { badges });
-    loadDress();
-  }
   async function toggleDressNew(id){
     const d = dressCache.find(x=>x.id===id); if(!d) return;
     const had = hasNew(d);
@@ -830,7 +865,7 @@
     loadDress();
   }
 
-  // ↑/↓ 순서 변경 (같은 분류 안에서 자리 바꾸기 → 0,1,2…로 다시 매김)
+  // ▲/▼ 순서 변경 (같은 분류 안에서 자리 바꾸기 → 0,1,2…로 다시 매김)
   async function moveDress(id, dir){
     const item = dressCache.find(d=>d.id===id);
     if(!item) return;
@@ -847,10 +882,8 @@
     const name = document.getElementById('dr-name').value.trim();
     if(!name){ showToast('❗ 이름 필수!'); return; }
     const cat = document.getElementById('dr-cat').value;
-    const image_url = document.getElementById('dr-url').value.trim();
-    const tone = document.getElementById('dr-tone').value;
-    let badges = document.getElementById('dr-new').checked ? [{label:'NEW'}] : [];
-    badges = badgesWithTone(badges, tone);
+    const image_url = document.getElementById('dr-img-url').value.trim();
+    const badges = document.getElementById('dr-new').checked ? [{label:'NEW'}] : [];
     const orderRaw = (document.getElementById('dr-order').value||'').trim();
     let sort_order;
     if(orderRaw !== ''){
@@ -867,20 +900,10 @@
     if(ok){
       showToast('✅ 추가됐어요!');
       document.getElementById('dr-name').value=''; document.getElementById('dr-desc').value='';
-      document.getElementById('dr-url').value=''; document.getElementById('dr-new').checked=false; document.getElementById('dr-tone').value='';
+      document.getElementById('dr-img-url').value=''; document.getElementById('dr-new').checked=false;
       document.getElementById('dr-order').value='';
-      document.getElementById('dr-preview').innerHTML='';
       loadDress();
-    } else showToast('❌ 추가 실패 (통합 SQL 다시 Run 했는지 확인)');
-  }
-  function drPreview(){
-    const u = (document.getElementById('dr-url').value||'').trim();
-    const box = document.getElementById('dr-preview');
-    if(!box) return;
-    const key = (document.getElementById('dr-tone')||{}).value||'';
-    box.innerHTML = u
-      ? `<div class="${key?('pv-'+key):''}" style="position:relative;width:96px;height:128px;border-radius:8px;overflow:hidden;border:1px solid var(--main-light)"><img src="${u.replace(/"/g,'&quot;')}" alt="미리보기" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentNode.style.display='none'"></div>`
-      : '';
+    } else showToast('❌ 추가 실패 (옷장 SQL 실행했는지 확인)');
   }
 </script>
 </body>

@@ -3,374 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>우히 · 옷장</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Gowun+Batang:wght@400;700&family=Parisienne&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<title>하요 · 옷장</title>
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/ha/hayodayong/hayodayong.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
 <style>
-:root{
-  --ink:#1f2d35; --bg:#ffffff; --paper:#ffffff; --soft:#9bb0ba; --line:#e7eff3;
-  --pink:#3fbfe6; --pink-dark:#0f7aa8; --pink-soft:#e3f4fb;
-  --blue:#6fcbeb; --blue-dark:#2a93c4; --blue-soft:#eef8fd;
-  --serif:'Playfair Display','Gowun Batang',serif;
-  --serif-ko:'Gowun Batang',serif;
-  --script:'Parisienne',cursive;
-  --script-ko:'Nanum Pen Script',cursive;
-  --ui:'Pretendard','Noto Sans KR',sans-serif;
-  --max:1040px;
-}
-body.dark{
-  --ink:#e6f1f5; --bg:#0d141a; --paper:#13202a; --soft:#84a0ad; --line:#243640;
-  --pink:#5cc8ea; --pink-dark:#9adcf4; --pink-soft:#13303d;
-  --blue:#74c6e8; --blue-dark:#9ad8f0; --blue-soft:#13303d;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;background:#eceef1;}
-html:has(body.dark){background:#0a0e13;}
-.sheet{background:var(--bg);max-width:1200px;margin:34px auto 0;box-shadow:0 26px 80px rgba(20,30,50,.26);overflow:hidden;transition:background .25s;}
-@media(max-width:1260px){.sheet{margin:16px 14px 0;}}
-body{font-family:var(--ui);background:transparent;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;}
-a{color:inherit;text-decoration:none;}
-button{font-family:inherit;cursor:pointer;border:none;background:none;}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
+  :root{--transition:.2s;--shadow:0 6px 18px rgba(70,90,30,.10);--radius-md:12px}
+  body.dark{--shadow:0 6px 18px rgba(0,0,0,.4)}
 
-#fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
-#fx .fxfb{position:absolute;bottom:-40px;color:var(--pink);opacity:0;animation:rise linear infinite;}
-@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.4}90%{opacity:.4}100%{transform:translateY(-106vh) rotate(40deg);opacity:0}}
-@media (prefers-reduced-motion: reduce){#fx{display:none}}
+  .mode-seg{display:inline-flex;background:var(--main-light);border-radius:999px;padding:4px;gap:4px;margin:22px 0 16px}
+  .seg-btn{border:none;background:transparent;color:var(--main-dark);font-size:14px;font-weight:700;padding:9px 18px;border-radius:999px;cursor:pointer;transition:all var(--transition);white-space:nowrap}
+  .seg-btn:hover{opacity:.8}
+  .seg-btn.active{background:var(--main-dark);color:#fff;box-shadow:var(--shadow)}
+  body.dark .seg-btn.active{color:#16210b}
 
-main{position:relative;z-index:1;}
+  .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .cat-tab{display:inline-flex;align-items:center;gap:7px;padding:9px 17px;border-radius:999px;border:1.5px solid var(--rule);background:var(--card);color:var(--main-dark);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--transition)}
+  .cat-tab:hover{border-color:var(--main)}
+  .cat-tab.active{background:var(--main);color:#2f4d10;border-color:var(--main)}
+  body.dark .cat-tab.active{color:#16210b}
+  .cat-tab .cnt{font-size:11px;font-weight:700;min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:var(--main-light);color:var(--main-dark)}
+  .cat-tab.active .cnt{background:rgba(0,0,0,.16);color:#2f4d10}
 
-/* 유틸바 */
-.topbar{}
-.topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:14px;gap:16px;}
-.social{display:flex;gap:8px;flex:1;}
-.social a{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--ink);transition:.16s;}
-.social a:hover{background:var(--pink-soft);color:var(--pink-dark);}
-.brand{text-align:center;line-height:1;flex-shrink:0;}
-.brand .logo{font-family:var(--serif);font-weight:700;font-size:34px;letter-spacing:.5px;}
-.brand .logo em{font-family:var(--script);font-style:normal;color:var(--pink);font-size:36px;margin-left:1px;}
-.brand .tagline{font-size:11px;color:var(--soft);margin-top:7px;}
-.topbar .right{display:flex;align-items:center;gap:12px;flex:1;justify-content:flex-end;}
-.btn-join{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:700;color:var(--ink);transition:.16s;}
-.btn-join:hover{background:var(--pink);color:#fff;border-color:var(--pink);}
-.theme-switch{width:24px;height:34px;border-radius:999px;border:1.5px solid var(--line);background:var(--pink-soft);position:relative;flex-shrink:0;padding:0;}
-.theme-switch .knob{position:absolute;left:2px;top:2px;width:17px;height:17px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;box-shadow:0 1px 4px rgba(0,0,0,.18);transition:top .22s;}
-body.dark .theme-switch .knob{top:13px;background:var(--paper);}
+  .zoom-hint{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.34);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;opacity:0;transition:opacity var(--transition);z-index:2}
 
-/* 내비 */
-.nav{}
-.nav .wrap{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;padding-top:14px;padding-bottom:14px;}
-.nav a{font-family:var(--serif-ko);font-size:16px;font-weight:700;color:var(--ink);transition:.16s;}
-.nav a:hover{color:var(--pink-dark);}
-.nav a.active{color:var(--pink-dark);}
-.nav a.script{font-family:var(--script-ko);font-size:23px;color:var(--pink);font-weight:400;}
+  /* 새 옷 = 포스터 벽 */
+  .poster-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:2px solid var(--main-dark);padding-bottom:8px;margin-bottom:22px}
+  .poster-head .ph-t{font-family:var(--katuri);font-weight:800;font-size:32px;line-height:.95;letter-spacing:1px;background:linear-gradient(90deg,var(--main-dark),var(--main));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .poster-head .ph-m{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--text-soft);white-space:nowrap;padding-bottom:5px}
+  .poster-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:900px){.poster-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
+  @media(max-width:520px){.poster-grid{grid-template-columns:1fr;gap:18px}}
+  .poster{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;cursor:pointer;background:#0b1722;box-shadow:var(--shadow);transition:transform var(--transition),box-shadow var(--transition)}
+  .poster:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
+  .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .poster:hover img{transform:scale(1.06)}
+  .poster .ph-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;opacity:.4;color:#fff}
+  .poster::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 26%,transparent 50%,rgba(0,0,0,.88))}
+  .poster .frame{position:absolute;inset:10px;border:1.5px solid rgba(255,255,255,.55);border-radius:5px;z-index:3;pointer-events:none}
+  .poster .p-top{position:absolute;top:0;left:0;right:0;z-index:4;padding:16px 17px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;color:#fff}
+  .poster .p-brand{font-size:11px;font-weight:800;letter-spacing:.24em;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+  .poster .p-new{font-size:10px;font-weight:800;letter-spacing:.08em;background:var(--main-dark);color:#fff;padding:3px 10px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.45);display:inline-flex;align-items:center;gap:4px}
+  .poster .p-bottom{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:18px 18px 19px;color:#fff}
+  .poster .p-cat{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);padding:3px 11px;border-radius:999px;margin-bottom:11px}
+  .poster .p-line{width:26px;height:2.5px;background:var(--main);margin-bottom:10px;border-radius:2px}
+  .poster .p-name{font-family:var(--katuri);font-size:22px;font-weight:800;line-height:1.14;text-shadow:0 2px 8px rgba(0,0,0,.65);word-break:keep-all}
+  .poster .p-meta{display:flex;align-items:center;gap:8px;margin-top:9px;font-size:11px;opacity:.92;text-shadow:0 1px 3px rgba(0,0,0,.6);letter-spacing:.06em}
+  .poster .p-desc{font-size:11.5px;opacity:.85;margin-top:7px;line-height:1.45;text-shadow:0 1px 3px rgba(0,0,0,.6);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  @media(max-width:520px){.poster .p-name{font-size:25px}.poster-head .ph-t{font-size:28px}}
 
-/* 섹션 헤더 */
-.sections{padding-top:34px;padding-bottom:54px;}
-.sec-head{display:flex;align-items:baseline;gap:13px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:22px;}
-.sec-head .en{font-family:var(--serif);font-weight:700;font-size:23px;}
-.sec-head .ko{font-family:var(--script-ko);font-size:24px;color:var(--pink);line-height:1;}
-.sec-head .more{margin-left:auto;font-size:11px;color:var(--soft);letter-spacing:1.5px;align-self:center;}
+  /* 기존 옷 = 앨범 그리드 */
+  .item-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:900px){.item-grid{grid-template-columns:repeat(3,1fr);gap:13px}}
+  @media(max-width:560px){.item-grid{grid-template-columns:repeat(2,1fr);gap:11px}}
+  .item-card{position:relative;border-radius:var(--radius-md);overflow:hidden;cursor:pointer;background:var(--bg);border:1.5px solid var(--rule);aspect-ratio:3/4;transition:transform var(--transition),box-shadow var(--transition)}
+  .item-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .item-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+  .item-card:hover img{transform:scale(1.05)}
+  .item-card:hover .zoom-hint{opacity:1}
+  .item-card .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:42px;opacity:.32}
+  .item-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;background:linear-gradient(to top,rgba(0,0,0,.74),rgba(0,0,0,.30) 55%,transparent);color:#fff;pointer-events:none}
+  .item-cap .name{font-size:14.5px;font-weight:700;line-height:1.25;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+  .item-cap .desc{font-size:11.5px;opacity:.9;margin-top:3px;line-height:1.35;text-shadow:0 1px 2px rgba(0,0,0,.45);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .item-card.no-img .item-cap{background:linear-gradient(to top,var(--card) 30%,transparent);color:var(--text)}
+  .item-card.no-img .item-cap .name{text-shadow:none}
+  .item-card.no-img .item-cap .desc{text-shadow:none;opacity:.68}
 
-/* 옷장 */
-.closet-bar{display:flex;gap:10px;margin-bottom:18px;}
-.closet-bar button{border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-weight:700;font-size:13.5px;color:var(--ink);transition:.16s;}
-.closet-bar button.on{background:var(--pink);color:#fff;border-color:var(--pink);box-shadow:0 5px 14px color-mix(in srgb,var(--pink) 32%,transparent);}
-.cats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;border-bottom:1px solid var(--line);padding-bottom:13px;}
-.cats button{font-family:var(--serif-ko);font-weight:700;font-size:15px;color:var(--soft);padding:2px 1px;transition:.16s;}
-.cats button.on{color:var(--pink-dark);border-bottom:2px solid var(--pink);}
-.poster-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
-.poster{cursor:pointer;}
-.poster .img{position:relative;aspect-ratio:3/4;border-radius:11px;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;font-size:52px;padding-top:34px;background:linear-gradient(150deg,var(--g1,#cdeaf9),var(--g2,#7cc6e8));box-shadow:0 12px 30px rgba(40,60,80,.14);transition:transform .18s;}
-.poster .img .pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
-/* 이미지 보정 톤 (admin에서 항목별 선택) — 색 레이어를 부드럽게 얹는 방식 */
-.poster .img.t-glow .pimg,.lb .img.t-glow img{filter:contrast(.96) saturate(1.04);}
-.t-glow::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,250,245,.20),rgba(255,244,250,.06));}
-.poster .img.t-peach .pimg,.lb .img.t-peach img{filter:saturate(1.08);}
-.t-peach::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(160deg,rgba(255,206,186,.24),rgba(255,196,214,.12));}
-.poster .img.t-film .pimg,.lb .img.t-film img{filter:contrast(1.08) saturate(.97) brightness(.99);}
-.t-film::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,224,188,.16),rgba(66,108,138,.22));}
-.poster .img.t-honey .pimg,.lb .img.t-honey img{filter:saturate(1.1) contrast(1.02);}
-.t-honey::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,214,150,.24),rgba(255,188,128,.12));}
-.poster .img .badge,.poster .img .plogo,.poster .img .pmeta{z-index:1;}
-.poster:hover .img{transform:translateY(-4px);}
-.poster .plogo{position:absolute;top:9px;right:12px;font-family:var(--serif);font-weight:700;font-size:13px;color:rgba(255,255,255,.92);}
-.poster .plogo em{font-family:var(--script);font-style:normal;}
-.poster .badge{position:absolute;top:10px;left:10px;background:var(--pink);color:#fff;font-size:10px;font-weight:800;padding:4px 9px;border-radius:6px;letter-spacing:1px;}
-.poster .pmeta{position:absolute;left:0;right:0;bottom:0;padding:26px 13px 14px;background:linear-gradient(transparent,rgba(15,40,55,.72));color:#fff;text-align:left;}
-.poster .pcat{font-size:10px;font-weight:800;letter-spacing:1px;background:rgba(255,255,255,.24);padding:2px 8px;border-radius:5px;}
-.poster .ptitle{font-family:var(--serif-ko);font-weight:700;font-size:16.5px;margin-top:7px;line-height:1.25;}
-.poster .pdate{font-size:11px;opacity:.85;margin-top:3px;}
-/* 새 옷 = 방셀 포스터 (하요 규격: 3열·프레임) */
-.poster-grid.new-mode{grid-template-columns:repeat(3,1fr);gap:18px;}
-@media(max-width:900px){.poster-grid.new-mode{grid-template-columns:repeat(2,1fr);gap:14px}}
-@media(max-width:520px){.poster-grid.new-mode{grid-template-columns:1fr;gap:18px}}
-.poster-grid.new-mode .poster .img{aspect-ratio:3/4;border-radius:10px;padding-top:0;background:#0b1722;box-shadow:0 14px 34px rgba(20,40,55,.22);}
-.poster-grid.new-mode .poster:hover .img{transform:translateY(-6px);box-shadow:0 26px 54px rgba(20,40,55,.32);}
-.poster-grid.new-mode .poster .img::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,0) 32%,rgba(0,0,0,0) 52%,rgba(8,22,30,.72));}
-.poster-grid.new-mode .poster .img .pimg{z-index:0;}
-.poster-grid.new-mode .poster .frame{position:absolute;inset:10px;border:1.5px solid rgba(255,255,255,.55);border-radius:5px;z-index:3;pointer-events:none;}
-.poster-grid.new-mode .poster .plogo{top:16px;left:17px;right:auto;z-index:4;font-family:var(--serif);font-size:11px;font-weight:800;letter-spacing:.24em;text-shadow:0 1px 4px rgba(0,0,0,.6);background:none;padding:0;}
-.poster-grid.new-mode .poster .badge{top:14px;left:auto;right:16px;z-index:4;font-size:10px;font-weight:800;letter-spacing:.08em;background:var(--pink);color:#fff;padding:4px 11px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4);}
-.poster-grid.new-mode .poster .badge::before{content:"✦ ";}
-.poster-grid.new-mode .poster .pmeta{z-index:4;padding:18px 18px 19px;background:none;}
-.poster-grid.new-mode .poster .pcat{font-size:10.5px;letter-spacing:.06em;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);padding:3px 11px;border-radius:999px;}
-.poster-grid.new-mode .poster .pcat-line{display:block;width:26px;height:2.5px;border-radius:2px;background:var(--pink);margin:11px 0 10px;}
-.poster-grid.new-mode .poster .ptitle{font-size:22px;line-height:1.14;text-shadow:0 2px 8px rgba(0,0,0,.65);word-break:keep-all;}
-.poster-grid.new-mode .poster .pdate{font-size:11px;opacity:.92;margin-top:9px;letter-spacing:.06em;text-shadow:0 1px 3px rgba(0,0,0,.6);}
-@media(max-width:520px){.poster-grid.new-mode .poster .ptitle{font-size:25px}}
-.empty{text-align:center;color:var(--soft);font-size:14px;padding:50px 0;font-family:var(--serif-ko);}
-.pager{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:26px;flex-wrap:wrap;}
-.pager:empty{display:none;}
-.pg-btn{min-width:36px;height:36px;padding:0 10px;border:1px solid var(--line);background:var(--paper);color:var(--soft);border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;}
-.pg-btn:hover:not(:disabled):not(.on){border-color:var(--pink);color:var(--pink);}
-.pg-btn.on{background:var(--pink);border-color:var(--pink);color:#fff;}
-.pg-btn:disabled{opacity:.35;cursor:default;}
-.pg-arrow{font-size:16px;}
+  .dress-pager{display:flex;justify-content:center;gap:6px;margin-top:24px;flex-wrap:wrap}
+  .pg{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--rule);background:var(--card);color:var(--text-mid);font-size:13px;font-weight:600;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center}
+  .pg:hover{border-color:var(--main)}
+  .pg.active{background:var(--main);color:#2f4d10;border-color:var(--main)}
+  body.dark .pg.active{color:#16210b}
 
-/* 라이트박스 */
-.lb{position:fixed;inset:0;background:rgba(8,22,30,.82);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:300;padding:30px;}
-.lb.on{display:flex;}
-.lb .box{width:100%;max-width:330px;}
-.lb .img{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;font-size:72px;padding-top:50px;box-shadow:0 30px 70px rgba(0,0,0,.5);}
-.lb .pmeta{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 18px;background:linear-gradient(transparent,rgba(15,40,55,.78));color:#fff;text-align:left;}
-.lb .ptitle{font-family:var(--serif-ko);font-weight:700;font-size:20px;}
-.lb .pdate{font-size:12px;opacity:.85;margin-top:3px;}
-.lb .close{position:absolute;top:18px;right:20px;color:#fff;font-size:28px;font-weight:300;line-height:1;}
-
-footer{text-align:center;padding:36px 20px 46px;color:var(--soft);font-size:12px;line-height:1.85;font-family:var(--serif-ko);}
-
-/* 문의 모달 */
-.iq-ov{position:fixed;inset:0;background:rgba(20,40,50,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:400;padding:20px;}
-.iq-ov.on{display:flex;}
-.iq-modal{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(20,40,50,.3);}
-.iq-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--pink-dark);}
-.iq-desc{font-size:13px;color:var(--soft);margin:6px 0 16px;}
-.iq-input{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:11px 13px;font-size:14px;font-family:inherit;margin-bottom:10px;}
-.iq-input:focus{outline:none;border-color:var(--pink);}
-textarea.iq-input{resize:vertical;}
-.iq-status{font-size:12.5px;color:var(--pink-dark);min-height:16px;margin-bottom:8px;font-weight:600;}
-.iq-btns{display:flex;gap:10px;}
-.iq-cancel,.iq-send{flex:1;border-radius:10px;padding:12px;font-size:14px;font-weight:800;}
-.iq-cancel{background:var(--line);color:var(--soft);}
-.iq-send{background:var(--pink);color:#fff;}
-
-@media(max-width:880px){.poster-grid{grid-template-columns:repeat(3,1fr)}.brand .logo{font-size:30px}.nav .wrap{gap:18px}}
-@media(max-width:560px){
-  .topbar .wrap{flex-wrap:wrap;justify-content:center}.social,.topbar .right{flex:none}
-  .poster-grid{grid-template-columns:repeat(2,1fr)}
-}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:600;padding:24px}
+  .lightbox.open{display:flex}
+  .lightbox .inner{display:flex;flex-direction:column;align-items:center;max-width:92%;max-height:90%}
+  .lightbox img{max-width:100%;max-height:74vh;border-radius:14px;box-shadow:0 12px 50px rgba(0,0,0,.5)}
+  .lightbox-cap{margin-top:16px;text-align:center;color:#fff}
+  .lightbox-cap .lb-name{font-size:17px;font-weight:700}
+  .lightbox-cap .lb-desc{font-size:13.5px;opacity:.82;margin-top:5px;max-width:520px;line-height:1.5}
+  .lightbox-close{position:absolute;top:18px;right:24px;color:#fff;font-size:36px;cursor:pointer;line-height:1;opacity:.85}
+  .lightbox-close:hover{opacity:1}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <div class="mast"><div class="logo"><span class="scr">Hayo</span><span class="sub">V T U B E R · D A I L Y</span></div></div>
+    <div class="navrule"><nav class="nav">
+      <a href="../index.html">메인</a>
+      <a href="../profile/">프로필</a>
+      <a href="../notice/">공지</a>
+      <a href="../schedule/">일정</a>
+      <a href="index.html" class="on">옷장</a>
+      <a href="../work/">업보</a>
+      <a href="../song/">노래책</a>
+      <div class="actions"><button class="tsw" id="tsw" type="button" aria-label="다크"><span class="kn" id="kn">🌙</span></button></div>
+    </nav></div>
+  </header>
 
-<div id="fx"></div>
+  <div class="kicker"><span class="cat">WARDROBE · 👗</span><span class="date dbox"></span></div>
+  <h1 class="headline">하요의 옷장</h1>
+  <div class="byline">새로 올린 옷은 <b>포스터</b>로, 기존 옷은 <b>앨범</b>으로 봐요. 이미지를 누르면 크게 볼 수 있어요 🍀</div>
 
-<main>
-
-  <div class="sheet">
-  <header class="topbar"><div class="wrap">
-    <div class="social">
-      <a href="#" title="YouTube">▶</a>
-      <a href="https://www.sooplive.com/station/1020118" target="_blank" title="SOOP">S</a>
-      <a href="#" title="팬심M">M</a>
-      <a href="#" title="메일">✉</a>
-    </div>
-    <div class="brand">
-      <a href="../"><div class="logo">UHI<em>story</em></div></a>
-      <div class="tagline">「잔잔살벌」 청량 블루 국밥요정의 데일리 매거진</div>
-    </div>
-    <div class="right">
-      <button class="btn-join" onclick="openInquiry()">문의</button>
-      <button class="theme-switch" id="themeSwitch" type="button" aria-label="다크모드 전환"><span class="knob" id="themeKnob">🌙</span></button>
-    </div>
-  </div></header>
-
-  <nav class="nav"><div class="wrap">
-    <a href="../">메인</a>
-    <a href="../info/">프로필</a>
-    <a href="../schedule/">일정</a>
-    <a href="index.html" class="active">옷장</a>
-    <a href="../song/">노래책</a>
-    <a href="../work/">업보</a>
-  </div></nav>
-
-  <div class="wrap">
-    <div class="sections" id="mainContent" style="opacity:0;transition:opacity .3s ease">
-
-      <div class="sec-head"><span class="en">Wardrobe</span><span class="ko">우히의 옷장</span><span class="more">CLOSET</span></div>
-
-      <div class="closet-bar">
-        <button id="btn-new" class="on" onclick="setMode('new')">✨ 새 옷 (포스터)</button>
-        <button id="btn-old" onclick="setMode('old')">🗂 기존 옷</button>
-      </div>
-
-      <div class="cats" id="cats">
-        <button class="on" data-c="white" onclick="setCat('white')">화이트</button>
-        <button data-c="black" onclick="setCat('black')">블랙</button>
-        <button data-c="outfit" onclick="setCat('outfit')">의상</button>
-        <button data-c="lens" onclick="setCat('lens')">렌즈</button>
-      </div>
-
-      <div class="poster-grid new-mode" id="grid"></div>
-
-      <div class="pager" id="pager"></div>
-
-      <div class="empty" id="empty" style="display:none;">아직 등록된 옷이 없어요 👗</div>
-
-    </div>
+  <div class="mode-seg" id="mode-seg">
+    <button class="seg-btn active" data-mode="new">✨ 새 옷 (포스터)</button>
+    <button class="seg-btn" data-mode="old">🗂 기존 옷</button>
   </div>
+  <div class="cat-tabs" id="cat-tabs"></div>
+  <div id="dress-body"><div class="spinner"></div></div>
 
-  </div><!-- /sheet -->
-
-  <footer>© 2026 우히 Official.<br>비즈니스 문의 — uhi1020118@gmail.com</footer>
-
-</main>
-
-<!-- 라이트박스 -->
-<div class="lb" id="lb" onclick="if(event.target===this)closeLb()">
-  <div class="box"><div class="img" id="lb-img"><span class="close" onclick="closeLb()">×</span><div class="pmeta"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div></div></div>
+  <footer>© 2026 하요 Official.<br>비즈니스 문의 — hayodayong@gmail.com</footer>
 </div>
 
-<!-- 문의 모달 -->
-<div class="iq-ov" id="iq-ov" onclick="if(event.target===this)closeInquiry()">
-  <div class="iq-modal">
-    <div class="iq-title">✉️ 문의하기</div>
-    <div class="iq-desc">우히에게 하고 싶은 말을 남겨주세요 💙</div>
-    <input class="iq-input" id="iq-nick" placeholder="닉네임 (필수)">
-    <textarea class="iq-input" id="iq-msg" rows="4" placeholder="문의 내용을 적어주세요"></textarea>
-    <div class="iq-status" id="iq-status"></div>
-    <div class="iq-btns">
-      <button class="iq-cancel" onclick="closeInquiry()">취소</button>
-      <button class="iq-send" onclick="sendInquiry()">보내기 💙</button>
-    </div>
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLb()">
+  <span class="lightbox-close" onclick="closeLb()">×</span>
+  <div class="inner">
+    <img id="lb-img" src="" referrerpolicy="no-referrer" alt="">
+    <div class="lightbox-cap"><div class="lb-name" id="lb-name"></div><div class="lb-desc" id="lb-desc"></div></div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
 <script>
-/* 다크모드 */
-(function(){var b=document.getElementById('themeSwitch'),k=document.getElementById('themeKnob');if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');if(k)k.textContent=document.body.classList.contains('dark')?'☀️':'🌙';if(b)b.addEventListener('click',function(){var d=document.body.classList.toggle('dark');localStorage.setItem('theme',d?'dark':'light');if(k)k.textContent=d?'☀️':'🌙';});})();
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function fmtDate(s){ try{ const d=new Date(s); if(isNaN(d)) return ''; const y=String(d.getFullYear()).slice(2); const m=String(d.getMonth()+1).padStart(2,'0'); const dd=String(d.getDate()).padStart(2,'0'); return `${y}.${m}.${dd}`; }catch(e){ return ''; } }
 
-/* 옷장 토글 + 분류 + 라이트박스 (데이터-드리븐 단일 렌더) */
-var mode='new', cat='white', page=1;
-var PER_PAGE=6;
-var CATK={white:'화이트',black:'블랙',outfit:'의상',lens:'렌즈'};
-/* 시안용 기본 데이터 (DB 연결되면 덮어씀) */
-var ITEMS=[
-  {nw:1,cat:'outfit',emoji:'👗',g1:'#cdeaf9',g2:'#6cc4ea',title:'청량 여름 원피스',date:'2026.01.12',img:''},
-  {nw:1,cat:'white',emoji:'💇‍♀️',g1:'#e3f4fb',g2:'#8ad0ef',title:'화이트 청량 코디',date:'2026.01.11',img:''},
-  {nw:1,cat:'lens',emoji:'👁️',g1:'#d7eefb',g2:'#5bb8e0',title:'아쿠아 블루 렌즈',date:'2026.01.10',img:''},
-  {nw:1,cat:'outfit',emoji:'🧥',g1:'#eaf6fc',g2:'#7ccae9',title:'겨울 데뷔 코디',date:'2025.12.13',img:''},
-  {nw:0,cat:'black',emoji:'🎀',g1:'#eef8fd',g2:'#a9def3',title:'블랙 데일리룩',date:'2025.12.20',img:''},
-  {nw:0,cat:'outfit',emoji:'👚',g1:'#f0f9fd',g2:'#9bd8f0',title:'데일리 니트',date:'2025.12.18',img:''},
-  {nw:0,cat:'lens',emoji:'✨',g1:'#edf7fc',g2:'#88cfee',title:'기본 블루 렌즈',date:'2025.12.15',img:''}
-];
-var TCLS={glow:'t-glow',peach:'t-peach',film:'t-film',honey:'t-honey'};
-function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function setMode(m){mode=m;page=1;document.getElementById('btn-new').classList.toggle('on',m==='new');document.getElementById('btn-old').classList.toggle('on',m==='old');render();}
-function setCat(c){cat=c;page=1;document.querySelectorAll('#cats button').forEach(function(b){b.classList.toggle('on',b.dataset.c===c);});render();}
-function render(){
-  var grid=document.getElementById('grid');
-  var isNew=(mode==='new');
-  grid.classList.toggle('new-mode',isNew);
-  var full=ITEMS.filter(function(it){
-    return ((it.nw?1:0)===(isNew?1:0)) && (cat==='all'||it.cat===cat);
-  });
-  var totalPages=Math.max(1,Math.ceil(full.length/PER_PAGE));
-  if(page>totalPages) page=totalPages;
-  var start=(page-1)*PER_PAGE;
-  var list=full.slice(start,start+PER_PAGE);
-  grid.innerHTML=list.map(function(it,i){
-    var hasImg=!!(it.img&&it.img.trim());
-    var st=hasImg?'':('background:linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+');');
-    var tcls=(hasImg&&TCLS[it.fx])?(' '+TCLS[it.fx]):'';
-    var imgTag=hasImg?'<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="pimg">':'';
-    var faceEmoji=(hasImg||isNew)?'':(it.emoji||'👗');
-    var badge=it.nw?'<span class="badge">NEW</span>':'';
-    var line=isNew?'<span class="pcat-line"></span>':'';
-    var frame=isNew?'<div class="frame"></div>':'';
-    return '<div class="poster" data-i="'+i+'"><div class="img'+tcls+'" style="'+st+'">'+imgTag+frame+faceEmoji+badge+'<span class="plogo">UHI<em>s</em></span><div class="pmeta"><span class="pcat">'+(CATK[it.cat]||'의상')+'</span>'+line+'<div class="ptitle">'+esc(it.title)+'</div><div class="pdate">'+esc(it.date)+'</div></div></div></div>';
-  }).join('');
-  grid.querySelectorAll('.poster').forEach(function(p){
-    p.addEventListener('click',function(){ openLb(list[+p.dataset.i]); });
-  });
-  document.getElementById('empty').style.display=full.length?'none':'block';
-  renderPager(totalPages);
-}
-function goPage(p){ page=p; render(); var g=document.getElementById('grid'); if(g) g.scrollIntoView({behavior:'smooth',block:'start'}); }
-function renderPager(totalPages){
-  var pg=document.getElementById('pager'); if(!pg) return;
-  if(totalPages<=1){ pg.innerHTML=''; return; }
-  var h='';
-  h+='<button class="pg-btn pg-arrow" '+(page<=1?'disabled':'')+' onclick="goPage('+(page-1)+')">‹</button>';
-  for(var i=1;i<=totalPages;i++){
-    h+='<button class="pg-btn'+(i===page?' on':'')+'" onclick="goPage('+i+')">'+i+'</button>';
+  // 분류 (admin DRESS_CATS와 같은 값으로 맞추기)
+  const CATS = [
+    { key:'hair',   label:'헤어' },
+    { key:'outfit', label:'의상' },
+    { key:'lens',   label:'렌즈' },
+  ];
+  const LABELS = Object.fromEntries(CATS.map(c => [c.key, c.label]));
+  const PER_PAGE = 9;
+
+  function isNew(it){
+    return (it.badges || []).some(function(b){
+      var label = (b && (b.label != null ? b.label : b)) || '';
+      return String(label).trim().toUpperCase() === 'NEW';
+    });
   }
-  h+='<button class="pg-btn pg-arrow" '+(page>=totalPages?'disabled':'')+' onclick="goPage('+(page+1)+')">›</button>';
-  pg.innerHTML=h;
-}
-function openLb(it){
-  if(!it)return;
-  var img=document.getElementById('lb-img');
-  var hasImg=!!(it.img&&it.img.trim());
-  if(hasImg){ img.className='img'+(TCLS[it.fx]?(' '+TCLS[it.fx]):''); img.innerHTML='<img src="'+esc(it.img)+'" referrerpolicy="no-referrer" alt="" class="pimg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='#0b1f2a'; }
-  else{ img.className='img'; img.innerHTML='<div class="emoji" style="position:absolute;top:50px;left:0;right:0;text-align:center;z-index:1;">'+(it.emoji||'👗')+'</div><span class="close" onclick="closeLb()" style="position:relative;z-index:2;">×</span><div class="pmeta" style="position:absolute;z-index:2;"><div class="ptitle" id="lb-title"></div><div class="pdate" id="lb-date"></div></div>'; img.style.background='linear-gradient(150deg,'+(it.g1||'#cdeaf9')+','+(it.g2||'#6cc4ea')+')'; }
-  document.getElementById('lb-title').textContent=it.title||'';
-  document.getElementById('lb-date').textContent=it.date||'';
-  document.getElementById('lb').classList.add('on');
-}
-function closeLb(){document.getElementById('lb').classList.remove('on');}
-render();
-async function loadDress(){
-  if(typeof db==='undefined') return;
-  try{
-    var res = await db.from('dress_items').select('*').order('sort_order').order('created_at');
-    var data = res.data;
-    if(data && data.length){
-      ITEMS = data.map(function(it){
-        var nw=(it.badges||[]).some(function(b){var l=(typeof b==='string')?b:(b&&b.label);return String(l||'').trim().toUpperCase()==='NEW';});
-        var dt=it.created_at?String(it.created_at).slice(2,10).replace(/-/g,'.'):'';
-        var fx='';(it.badges||[]).forEach(function(b){var l=(typeof b==='string')?b:(b&&b.label);l=String(l||'').trim();if(l.slice(0,3).toLowerCase()==='fx:')fx=l.slice(3).toLowerCase();});
-        return {nw:nw?1:0,cat:it.category||'outfit',emoji:'👗',g1:'#cdeaf9',g2:'#6cc4ea',title:it.name||'',date:dt,img:(it.image_url||'').trim(),fx:fx};
+
+  let allItems = [];
+  let curCat = CATS[0].key;
+  let curMode = 'new';
+  let curPage = 1;
+
+  async function load(){
+    try {
+      const { data } = await db.from('dress_items').select('*').order('sort_order').order('created_at');
+      allItems = data || [];
+    } catch(e) { allItems = []; }
+    document.querySelectorAll('#mode-seg .seg-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        curMode = btn.dataset.mode; curPage = 1;
+        document.querySelectorAll('#mode-seg .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === curMode));
+        buildTabs(); render();
       });
-      render();
-    }
-  }catch(e){ console.error('dress', e); }
-}
-function _reveal(){var mc=document.getElementById("mainContent");if(mc)mc.style.opacity="1";}
-if(typeof db!=='undefined') loadDress().then(_reveal).catch(_reveal); else _reveal();
-setTimeout(_reveal,1800);
-
-/* 문의 모달 */
-function openInquiry(){document.getElementById('iq-ov').classList.add('on');document.getElementById('iq-nick').focus();}
-function closeInquiry(){document.getElementById('iq-ov').classList.remove('on');document.getElementById('iq-status').textContent='';}
-function sendInquiry(){
-  var n=document.getElementById('iq-nick').value.trim();
-  var s=document.getElementById('iq-status');
-  if(!n){s.textContent='닉네임을 입력해 주세요!';return;}
-  s.textContent='보냈어요! (시안 미리보기라 실제 저장은 안 돼요 💙)';
-  setTimeout(closeInquiry,1400);
-}
-
-/* fx 입자 (.fxfb 전용) */
-(function(){
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var fx=document.getElementById('fx');
-  if(fx&&!reduce){
-    var g=['✦','♡','✧','✦'];
-    for(var i=0;i<12;i++){
-      var s=document.createElement('span');s.className='fxfb';
-      s.textContent=g[i%g.length];
-      s.style.left=(Math.random()*100)+'%';
-      s.style.fontSize=(10+Math.random()*15)+'px';
-      s.style.animationDuration=(10+Math.random()*9)+'s';
-      s.style.animationDelay=(-Math.random()*15)+'s';
-      fx.appendChild(s);
-    }
+    });
+    buildTabs();
+    render();
   }
-})();
+
+  function viewItems(){
+    if (curMode === 'new'){
+      return allItems.filter(i => i.category === curCat && isNew(i)).slice().sort((a,b)=> new Date(b.created_at||0) - new Date(a.created_at||0));
+    }
+    return allItems.filter(i => i.category === curCat && !isNew(i));
+  }
+
+  function buildTabs(){
+    const wrap = document.getElementById('cat-tabs');
+    wrap.innerHTML = '';
+    CATS.forEach(c => {
+      const cnt = allItems.filter(i => i.category === c.key && (curMode === 'new' ? isNew(i) : !isNew(i))).length;
+      const b = document.createElement('button');
+      b.className = 'cat-tab' + (c.key === curCat ? ' active' : '');
+      b.dataset.cat = c.key;
+      b.innerHTML = `${esc(c.label)} <span class="cnt">${cnt}</span>`;
+      b.onclick = () => { curCat = c.key; curPage = 1; buildTabs(); render(); };
+      wrap.appendChild(b);
+    });
+  }
+
+  function gridHTML(pageItems){
+    return '<div class="item-grid">' + pageItems.map((item, idx) => {
+      const hasImg = !!item.image_url;
+      const inner = hasImg ? `<img src="${esc(item.image_url)}" alt="${esc(item.name)}" referrerpolicy="no-referrer" loading="lazy">` : `<span class="ph">👗</span>`;
+      return `<div class="item-card${hasImg?'':' no-img'}" data-idx="${idx}">
+        ${hasImg?'<div class="zoom-hint">⤢</div>':''}
+        ${inner}
+        <div class="item-cap">
+          <div class="name">${esc(item.name)}</div>
+          ${item.description?`<div class="desc">${esc(item.description)}</div>`:''}
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+  }
+
+  function posterHTML(pageItems){
+    return '<div class="poster-head"><div class="ph-t">NEW LOOKS</div><div class="ph-m">HAYO · ' + esc(LABELS[curCat]||'') + '</div></div>'
+      + '<div class="poster-grid">' + pageItems.map((it, idx) => {
+        const img = it.image_url ? `<img src="${esc(it.image_url)}" alt="${esc(it.name)}" referrerpolicy="no-referrer" loading="lazy">` : '<span class="ph-ph">👗</span>';
+        const cat = (it.category && LABELS[it.category]) ? `<span class="p-cat">${esc(LABELS[it.category])}</span>` : '';
+        const date = it.created_at ? `<span class="p-date">${fmtDate(it.created_at)}</span>` : '';
+        return `<div class="poster${it.image_url?'':' no-img'}" data-idx="${idx}">
+          ${img}
+          <div class="frame"></div>
+          <div class="p-top">
+            <span class="p-brand">HAYO</span>
+            <span class="p-new">✦ NEW</span>
+          </div>
+          <div class="p-bottom">
+            ${cat}
+            <div class="p-line"></div>
+            <div class="p-name">${esc(it.name)}</div>
+            ${date?`<div class="p-meta">${date}</div>`:''}
+            ${it.description?`<div class="p-desc">${esc(it.description)}</div>`:''}
+          </div>
+        </div>`;
+      }).join('') + '</div>';
+  }
+
+  function render(){
+    const body = document.getElementById('dress-body');
+    document.getElementById('cat-tabs').style.display = 'flex';
+    const items = viewItems();
+    if (!items.length){
+      body.innerHTML = (curMode === 'new')
+        ? '<div class="empty"><div class="empty-icon">✨</div>' + (LABELS[curCat]||'') + ' 새 옷이 아직 없어요<br><span style="font-size:12.5px;opacity:.85">admin에서 옷을 추가할 때 "✨ 새 옷으로 올리기"를 체크하면 여기 포스터로 떠요</span></div>'
+        : '<div class="empty"><div class="empty-icon">👗</div>' + (LABELS[curCat]||'') + ' 항목이 아직 없어요</div>';
+      return;
+    }
+    const totalPages = Math.max(1, Math.ceil(items.length / PER_PAGE));
+    if (curPage > totalPages) curPage = 1;
+    const pageItems = items.slice((curPage-1)*PER_PAGE, curPage*PER_PAGE);
+    const main = (curMode === 'new') ? posterHTML(pageItems) : gridHTML(pageItems);
+    let pager = '';
+    if (totalPages > 1){
+      pager = '<div class="dress-pager">';
+      for (let i=1;i<=totalPages;i++) pager += `<button class="pg${i===curPage?' active':''}" data-pg="${i}">${i}</button>`;
+      pager += '</div>';
+    }
+    body.innerHTML = main + pager;
+    body.querySelectorAll('[data-idx]').forEach(el => {
+      el.addEventListener('click', () => { const it = pageItems[+el.dataset.idx]; if (it && it.image_url) openLb(it); });
+    });
+    body.querySelectorAll('.pg').forEach(btn => {
+      btn.addEventListener('click', () => { curPage = +btn.dataset.pg; render(); window.scrollTo(0,0); });
+    });
+  }
+
+  function openLb(item){
+    document.getElementById('lb-img').src = item.image_url;
+    document.getElementById('lb-name').textContent = item.name || '';
+    const d = document.getElementById('lb-desc');
+    d.textContent = item.description || '';
+    d.style.display = item.description ? 'block' : 'none';
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLb(){ document.getElementById('lightbox').classList.remove('open'); }
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLb(); });
+
+  load();
+  (function(){var M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];var t=new Date();var s=t.getFullYear()+' · '+M[t.getMonth()]+' '+t.getDate();document.querySelectorAll('.dbox').forEach(function(e){e.textContent=s});})();
 </script>
+<script>
+(function(){if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');var sw=document.getElementById('tsw'),kn=document.getElementById('kn');function r(){if(kn)kn.textContent=document.body.classList.contains('dark')?'☀️':'🌙';}if(sw)sw.addEventListener('click',function(){document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');r();});r();})();
+</script>
+<script src="../fx.js"></script>
 </body>
 </html>
