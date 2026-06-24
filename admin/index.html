@@ -196,10 +196,15 @@
     </div>
 
     <div class="card">
-      <div class="card-title">🎬 진행한 컨텐츠 (한 줄에 하나 · <b>날짜 | 제목 | 링크</b>)</div>
-      <div class="form-field"><textarea class="input" id="f-contents" rows="7" placeholder="2026.07.24 | 하요의 놀이터 | https://...&#10;2026.07.02 | 파자마파티&#10;2026.06.06 | 하요의 메이드 카페 | https://..."></textarea></div>
-      <div style="font-size:11px;color:var(--text-soft);margin-top:-4px;margin-bottom:8px">형식: <b>날짜 | 제목 | 링크</b> &nbsp;(날짜·링크는 선택 — 제목만 써도 됨). 날짜는 <b>최신순 자동 정렬</b>, 링크 넣으면 목록에서 눌러 이동, <b>5개 넘으면 1·2·3 페이지</b>로 나뉨.</div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
+      <div class="card-title">🎬 진행한 컨텐츠</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">날짜</label><input class="input" id="c-date" type="date"></div>
+        <div class="form-field full"><label class="input-label">제목 *</label><input class="input" id="c-title" placeholder="예: 마크 신서버 첫날!"></div>
+        <div class="form-field full"><label class="input-label">링크 URL (행 클릭 시 이동)</label><input class="input" id="c-url" placeholder="https://"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:6px"><button class="btn btn-primary" onclick="addContent()">+ 추가</button></div>
+      <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>날짜</th><th>제목</th><th>링크</th><th>삭제</th></tr></thead>
+      <tbody id="content-list"><tr><td colspan="4" style="text-align:center;color:#ccc;padding:16px">없음</td></tr></tbody></table></div>
     </div>
 
     <div class="card">
@@ -485,7 +490,7 @@
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('adminBody').style.display = 'flex';
       checkDb();
-      loadProfileFields(); loadMain();
+      loadProfileFields(); loadMain(); loadContents();
       loadNotice(); loadSchedule(); loadWork(); loadSong(); loadDress(); loadInquiry(); loadOriginalSongs();
     } else {
       document.getElementById('loginErr').textContent = '비밀번호가 틀렸어요 >﹏<';
@@ -537,13 +542,50 @@
   const v  = id => (document.getElementById(id)?.value || '').trim();
   const lns = id => (document.getElementById(id)?.value || '').split('\n').map(s=>s.trim()).filter(Boolean);
   async function fetchProfile(){ try{ const {data:rows}=await db.from('profile').select('data').eq('id',1); if(rows&&rows[0]&&rows[0].data) return rows[0].data; }catch(e){} return {}; }
+  // ── 진행한 컨텐츠 (profile.data.contents 배열로 관리) ──
+  let CONTENTS_CACHE = [];
+  function ckeyA(c){ return (c && c.date ? String(c.date).replace(/[^0-9]/g,'') : ''); }
+  async function loadContents(){
+    const d = await fetchProfile();
+    CONTENTS_CACHE = Array.isArray(d.contents) ? d.contents : [];
+    const t = document.getElementById('content-list');
+    if(!CONTENTS_CACHE.length){ t.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ccc;padding:16px">없음</td></tr>'; return; }
+    // 원본 인덱스 보존하며 날짜 최신순 표시
+    const rows = CONTENTS_CACHE.map(function(c,i){ return {c:c,i:i}; }).sort(function(a,b){ var ka=ckeyA(a.c),kb=ckeyA(b.c); if(ka&&kb) return kb.localeCompare(ka); if(ka) return -1; if(kb) return 1; return 0; });
+    t.innerHTML = rows.map(function(r){
+      var c=r.c;
+      var link = c.url ? '<a href="'+esc(c.url)+'" target="_blank" rel="noreferrer" style="color:var(--main-dark);font-weight:700">링크</a>' : '-';
+      return '<tr><td>'+(c.date?esc(c.date):'-')+'</td><td>'+esc(c.title||'')+'</td><td>'+link+'</td><td><button class="delete-btn" onclick="delContent('+r.i+')">🗑</button></td></tr>';
+    }).join('');
+  }
+  async function addContent(){
+    const title = document.getElementById('c-title').value.trim();
+    if(!title){ showToast('❗ 제목 필수!'); return; }
+    const item = { date: document.getElementById('c-date').value || '', title: title, url: document.getElementById('c-url').value.trim() };
+    const d = await fetchProfile();
+    d.contents = Array.isArray(d.contents) ? d.contents : [];
+    d.contents.push(item);
+    const { error } = await db.from('profile').upsert({ id:1, data:d });
+    if(error){ showToast('❌ 추가 실패: ' + error.message); return; }
+    showToast('✅ 추가!');
+    ['c-date','c-title','c-url'].forEach(function(id){ document.getElementById(id).value=''; });
+    loadContents();
+  }
+  async function delContent(idx){
+    const d = await fetchProfile();
+    if(!Array.isArray(d.contents)) return;
+    d.contents.splice(idx,1);
+    const { error } = await db.from('profile').upsert({ id:1, data:d });
+    if(error){ showToast('❌ 삭제 실패: ' + error.message); return; }
+    showToast('🗑 삭제!');
+    loadContents();
+  }
   async function loadProfileFields(){
     const d = await fetchProfile();
     PSAVE.forEach(k=>{ const el=document.getElementById('f-'+k); if(el) el.value = d[k]||''; });
     document.getElementById('f-tmi').value      = (d.tmi||[]).join('\n');
     document.getElementById('f-likes').value    = (d.likes||[]).join('\n');
     document.getElementById('f-dislikes').value = (d.dislikes||[]).join('\n');
-    document.getElementById('f-contents').value = (d.contents||[]).map(function(c){ var parts=[c.date||'', c.title||'', c.url||'']; while(parts.length && parts[parts.length-1]==='') parts.pop(); return parts.join(' | '); }).join('\n');
     document.getElementById('f-stats').value    = (d.stats||[]).map(s=>`${s.label},${s.value}`).join('\n');
     const ev=d.event||{}; document.getElementById('f-event-title').value=ev.title||''; document.getElementById('f-event-code').value=ev.code||''; document.getElementById('f-event-note').value=ev.note||'';
     const g=d.goal||{};  document.getElementById('f-goal-label').value=g.label||''; document.getElementById('f-goal-current').value=(g.current!=null?g.current:''); document.getElementById('f-goal-target').value=(g.target!=null?g.target:''); document.getElementById('f-goal-next').value=g.next||'';
@@ -568,7 +610,6 @@
     const d = await fetchProfile();
     PSAVE.forEach(k=>{ d[k]=v('f-'+k); });
     d.tmi=lns('f-tmi'); d.likes=lns('f-likes'); d.dislikes=lns('f-dislikes');
-    d.contents = lns('f-contents').map(function(line){ var p=line.split('|').map(function(s){return s.trim();}); if(p.length>=3) return {date:p[0], title:p[1], url:p[2]}; if(p.length===2) return {date:p[0], title:p[1], url:''}; return {date:'', title:p[0]||'', url:''}; }).filter(function(c){return c.title;});
     d.stats = lns('f-stats').map(row=>{ const i=row.lastIndexOf(','); if(i<0) return {label:row,value:0}; return {label:row.slice(0,i).trim(), value:Math.max(0,Math.min(100,parseInt(row.slice(i+1))||0))}; });
     d.event = { title:v('f-event-title'), code:v('f-event-code'), note:v('f-event-note') };
     d.goal  = { label:v('f-goal-label'), current:Number(v('f-goal-current'))||0, target:Number(v('f-goal-target'))||0, next:v('f-goal-next') };
