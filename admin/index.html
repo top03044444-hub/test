@@ -284,7 +284,7 @@
           <select class="input" id="sch-type"><option value="방송">방송</option><option value="휴방">휴방</option></select>
         </div>
         <div class="form-field full">
-          <label class="input-label">색상</label>
+          <label class="input-label">1부 색상</label>
           <div class="color-pick">
             <label><input type="radio" name="schcolor" value="green" checked><span class="cdot-green"></span></label>
             <label><input type="radio" name="schcolor" value="pink"><span class="cdot-pink"></span></label>
@@ -300,6 +300,19 @@
         <div class="form-field"><label class="input-label">1부 제목 (휴방이면 비워도 됨)</label><input class="input" id="sch-title" placeholder="방송 제목"></div>
         <div class="form-field"><label class="input-label">2부 시간 (선택)</label><input class="input" id="sch-time2" placeholder="오후 9시"></div>
         <div class="form-field"><label class="input-label">2부 제목 (선택)</label><input class="input" id="sch-title2" placeholder="2부 있을 경우"></div>
+        <div class="form-field full">
+          <label class="input-label">2부 색상 (2부 있을 때)</label>
+          <div class="color-pick">
+            <label><input type="radio" name="schcolor2" value="green"><span class="cdot-green"></span></label>
+            <label><input type="radio" name="schcolor2" value="pink"><span class="cdot-pink"></span></label>
+            <label><input type="radio" name="schcolor2" value="yellow"><span class="cdot-yellow"></span></label>
+            <label><input type="radio" name="schcolor2" value="orange"><span class="cdot-orange"></span></label>
+            <label><input type="radio" name="schcolor2" value="blue" checked><span class="cdot-blue"></span></label>
+            <label><input type="radio" name="schcolor2" value="purple"><span class="cdot-purple"></span></label>
+            <label><input type="radio" name="schcolor2" value="red"><span class="cdot-red"></span></label>
+            <label><input type="radio" name="schcolor2" value="gray"><span class="cdot-gray"></span></label>
+          </div>
+        </div>
         <div class="form-field full"><label class="input-label">설명 (선택)</label><textarea class="input" id="sch-desc" rows="2"></textarea></div>
         <div class="form-field full"><label><input type="checkbox" id="sch-hl"> ⭐ 하이라이트 (달력에서 강조)</label></div>
         <div class="form-field full" style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addSchedule()">+ 추가</button></div>
@@ -677,8 +690,9 @@
     let title = document.getElementById('sch-title').value.trim();
     if (!title) title = (type === '휴방' ? '휴방' : '방송');
     const color = (document.querySelector('input[name="schcolor"]:checked')||{}).value || 'green';
+    const color2 = (document.querySelector('input[name="schcolor2"]:checked')||{}).value || 'blue';
     const row = {
-      title, date, type, color,
+      title, date, type, color, color2,
       time: document.getElementById('sch-time').value,
       time2: document.getElementById('sch-time2').value,
       title2: document.getElementById('sch-title2').value.trim(),

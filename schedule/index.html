@@ -109,6 +109,7 @@
   function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function kind(t){ return t === '휴방' ? 'off' : 'on'; }
   function colorClass(s){ return 'c-' + (s.color || (kind(s.type)==='off'?'pink':'green')); }
+  function colorClass2(s){ return 'c-' + (s.color2 || s.color || 'blue'); }
   async function init() {
     const now = new Date(); currentYear = now.getFullYear(); currentMonth = now.getMonth();
     allSchedule = await fetchAll('schedule', { order: 'date', asc: true });
@@ -137,8 +138,13 @@
       const events = allSchedule.filter(s => s.date === dateStr);
       const hl = events.some(e=>e.highlight);
       let evHtml = events.map(e => {
-        const label = (e.time ? e.time+' ' : '') + (e.title || (kind(e.type)==='off'?'휴방':'방송'));
-        return `<div class="ev ${colorClass(e)}" title="${esc(label)}">${esc(label)}</div>`;
+        const l1 = (e.time ? e.time+' ' : '') + (e.title || (kind(e.type)==='off'?'휴방':'방송'));
+        let chips = `<div class="ev ${colorClass(e)}" title="${esc(l1)}">${esc(l1)}</div>`;
+        if (e.title2 || e.time2) {
+          const l2 = (e.time2 ? e.time2+' ' : '') + (e.title2 || '2부');
+          chips += `<div class="ev ${colorClass2(e)}" title="${esc(l2)}">${esc(l2)}</div>`;
+        }
+        return chips;
       }).join('');
       const cls = `cal-cell${isToday?' today':''}${events.length?' has':''}${hl?' hl':''}`;
       const click = events.length ? `onclick="openModal('${dateStr}')"` : '';
@@ -157,10 +163,11 @@
     el.innerHTML = upcoming.map(s => {
       const dd = new Date(s.date + 'T00:00:00'); const k = kind(s.type);
       const label = k==='off' ? '휴방' : '방송';
-      const times = [s.time, s.time2].filter(Boolean).join(' · ');
+      const p1 = (s.time?s.time+' ':'') + (s.title||label);
+      const p2 = (s.title2||s.time2) ? ((s.time2?s.time2+' ':'') + (s.title2||'2부')) : '';
       return `<div class="up-item ${colorClass(s)}" style="border-left-color:currentColor" onclick="openModal('${s.date}')">
         <div class="up-date"><div class="up-d1">${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')} (${DAYS[dd.getDay()]})</div></div>
-        <div class="up-info"><div class="up-title">${esc(s.title || label)}</div>${times?`<div class="up-time">${esc(times)}</div>`:''}</div>
+        <div class="up-info"><div class="up-title">${esc(s.title || label)}</div><div class="up-time">${esc(p1)}${p2?'  ·  '+esc(p2):''}</div></div>
         <span class="up-badge ${colorClass(s)}">${label}</span>
       </div>`;
     }).join('');
@@ -173,8 +180,8 @@
     events.forEach(s => {
       const k = kind(s.type);
       html += `<div class="m-badge ${colorClass(s)}">${k==='off'?'휴방':'방송'}</div>`;
-      html += `<div class="m-part"><div class="pt">${s.time?esc(s.time):'1부'}</div><div class="pn">${esc(s.title || (k==='off'?'휴방':'방송'))}</div></div>`;
-      if (s.title2 || s.time2) html += `<div class="m-part"><div class="pt">${s.time2?esc(s.time2):'2부'}</div><div class="pn">${esc(s.title2||'방송')}</div></div>`;
+      html += `<div class="m-part ${colorClass(s)}"><div class="pt">${s.time?esc(s.time):'1부'}</div><div class="pn">${esc(s.title || (k==='off'?'휴방':'방송'))}</div></div>`;
+      if (s.title2 || s.time2) html += `<div class="m-part ${colorClass2(s)}"><div class="pt">${s.time2?esc(s.time2):'2부'}</div><div class="pn">${esc(s.title2||'방송')}</div></div>`;
       if (s.description) html += `<div class="m-desc">${esc(s.description)}</div>`;
     });
     html += `<button class="m-close" onclick="closeModal()">닫기</button>`;
