@@ -468,10 +468,38 @@
     if (document.getElementById('pwInput').value === ADMIN_PASSWORD) {
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('adminBody').style.display = 'flex';
+      checkDb();
       loadProfileFields(); loadMain();
       loadNotice(); loadSchedule(); loadWork(); loadSong(); loadDress(); loadInquiry(); loadOriginalSongs();
     } else {
       document.getElementById('loginErr').textContent = '비밀번호가 틀렸어요 >﹏<';
+    }
+  }
+  // DB 연결/설정 점검: 실패하면 화면 상단에 빨간 배너로 원인 안내
+  async function checkDb() {
+    var banner = document.getElementById('db-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'db-banner';
+      banner.style.cssText = 'display:none;background:#ffe0e0;color:#b3261e;border:1.5px solid #f3b4ae;border-radius:12px;padding:14px 18px;font-size:13px;line-height:1.6;margin-bottom:8px';
+      var body = document.getElementById('adminBody');
+      body.insertBefore(banner, body.children[1] || null);
+    }
+    try {
+      if (SUPABASE_URL.indexOf('{{') !== -1 || SUPABASE_ANON.indexOf('{{') !== -1) {
+        banner.innerHTML = '⚠️ <b>supabase.js</b> 상단 2줄(프로젝트 URL · anon 키)이 아직 안 채워졌어요. 채우기 전에는 저장이 안 돼요.';
+        banner.style.display = 'block'; return;
+      }
+      var { error } = await db.from('profile').select('id').limit(1);
+      if (error) {
+        banner.innerHTML = '⚠️ DB 연결 오류: <b>' + error.message + '</b><br>대부분 ① SQL(supabase_setup.sql)을 안 돌렸거나 ② URL/키가 안 맞아서예요.';
+        banner.style.display = 'block';
+      } else {
+        banner.style.display = 'none';
+      }
+    } catch (e) {
+      banner.innerHTML = '⚠️ DB에 연결하지 못했어요: <b>' + (e && e.message ? e.message : e) + '</b><br>supabase.js의 URL/키를 확인하고, 배포본(또는 인터넷 연결)에서 열어주세요. (로컬 파일 미리보기는 저장이 안 될 수 있어요)';
+      banner.style.display = 'block';
     }
   }
 
@@ -507,7 +535,7 @@
   }
   function previewAvatar() {
     const direct = (document.getElementById('f-avatar')?.value || '').trim();
-    const url = direct || soopAvatarUrl(document.getElementById('f-soop-id')?.value);
+    const url = direct || soopAvatarUrl(document.getElementById('f-soop_id')?.value);
     const img = document.getElementById('av-preview');
     const ph = document.getElementById('av-ph');
     if (!img) return;
@@ -620,7 +648,7 @@
     const image_url = images[0] || null;
     const ok = await insertRow('notice', { title, content: document.getElementById('noti-content').value, pinned: document.getElementById('noti-pin').checked, image_url, images });
     if (ok) { showToast('✅ 추가!'); ['noti-title','noti-content','noti-image-url'].forEach(id=>document.getElementById(id).value=''); document.getElementById('noti-pin').checked=false; loadNotice(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 일정 ──
@@ -655,7 +683,7 @@
       ['sch-title','sch-date','sch-time','sch-time2','sch-title2','sch-desc'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('sch-hl').checked = false;
       loadSchedule();
-    } else showToast('❌ 실패');
+    } else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 업보 시스템 v2 ──
@@ -742,7 +770,7 @@
     const maxOrder = viewers.reduce((m,v)=>Math.max(m, v.sort_order||0), 0);
     const ok = await insertRow('viewers', { nickname: nick, soop_id: document.getElementById('v-soop').value.trim(), sort_order: maxOrder+1 });
     if (ok) { showToast('✅ 추가!'); document.getElementById('v-nick').value=''; document.getElementById('v-soop').value=''; loadWork(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
   async function editViewer(id) {
     const v = viewers.find(x=>x.id===id);
@@ -777,7 +805,7 @@
     const maxOrder = types.reduce((m,t)=>Math.max(m, t.sort_order||0), 0);
     const ok = await insertRow('upbo_types', { name, category: document.getElementById('t-cat').value, sort_order: maxOrder+1 });
     if (ok) { showToast('✅ 추가!'); document.getElementById('t-name').value=''; loadWork(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
   async function editType(id) {
     const t = types.find(x=>x.id===id);
@@ -796,7 +824,7 @@
   async function del(table, id, fn) {
     if (!confirm('정말 삭제?')) return;
     const ok = await deleteRow(table, id);
-    if (ok) { showToast('🗑 삭제!'); fn(); } else showToast('❌ 실패');
+    if (ok) { showToast('🗑 삭제!'); fn(); } else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 노래 ──
@@ -822,7 +850,7 @@
     diff = Math.min(5, Math.max(1, diff));
     const ok = await insertRow('songs', { title, artist: document.getElementById('song-artist').value.trim(), genre: document.getElementById('song-genre').value, difficulty: diff });
     if (ok) { showToast('✅ 추가!'); document.getElementById('song-title').value=''; document.getElementById('song-artist').value=''; loadSong(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 문의 ──
@@ -860,7 +888,7 @@
     if (!title || !vod) { showToast('❗ 제목/VOD ID 필수!'); return; }
     const ok = await insertRow('original_songs', { title, vod_id: vod, thumbnail: document.getElementById('os-thumb').value.trim() });
     if (ok) { showToast('✅ 추가!'); ['os-title','os-vod','os-thumb'].forEach(id=>document.getElementById(id).value=''); loadOriginalSongs(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 옷장 ──
@@ -977,7 +1005,7 @@
       document.getElementById('dr-img-url').value=''; document.getElementById('dr-new').checked=false;
       document.getElementById('dr-order').value='';
       loadDress();
-    } else showToast('❌ 추가 실패 (옷장 SQL 실행했는지 확인)');
+    } else showToast('❌ 추가 실패: ' + (window.__dbErr || '옷장 SQL 실행했는지 확인'));
   }
 </script>
 </body>

@@ -32,7 +32,7 @@ async function fetchAll(table, options = {}) {
  */
 async function insertRow(table, row) {
   const { error } = await db.from(table).insert(row);
-  if (error) { console.error(`insertRow(${table}) 오류:`, error); return false; }
+  if (error) { console.error(`insertRow(${table}) 오류:`, error); window.__dbErr = error.message; return false; }
   return true;
 }
 
@@ -41,7 +41,7 @@ async function insertRow(table, row) {
  */
 async function deleteRow(table, id) {
   const { error } = await db.from(table).delete().eq('id', id);
-  if (error) { console.error(`deleteRow(${table}) 오류:`, error); return false; }
+  if (error) { console.error(`deleteRow(${table}) 오류:`, error); window.__dbErr = error.message; return false; }
   return true;
 }
 
@@ -50,7 +50,7 @@ async function deleteRow(table, id) {
  */
 async function updateRow(table, id, updates) {
   const { error } = await db.from(table).update(updates).eq('id', id);
-  if (error) { console.error(`updateRow(${table}) 오류:`, error); return false; }
+  if (error) { console.error(`updateRow(${table}) 오류:`, error); window.__dbErr = error.message; return false; }
   return true;
 }
 
@@ -94,11 +94,11 @@ async function uploadImage(file, folder = 'uploads') {
     const blob = await compressImage(file);
     const rand = Math.random().toString(36).slice(2, 8);
     const path = `${folder}/${Date.now()}_${rand}.jpg`;
-    const { error } = await db.storage.from('{{버킷이름}}').upload(path, blob, {
+    const { error } = await db.storage.from('images').upload(path, blob, {
       upsert: true, contentType: 'image/jpeg'
     });
     if (error) { console.error('uploadImage 오류:', error); return null; }
-    const { data } = db.storage.from('{{버킷이름}}').getPublicUrl(path);
+    const { data } = db.storage.from('images').getPublicUrl(path);
     return data?.publicUrl || null;
   } catch (e) {
     console.error('uploadImage 예외:', e);
