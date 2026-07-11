@@ -372,3 +372,126 @@ h1,h2,h3,.card-title,.nav a.nav-logo{ font-family:'Jua','Noto Sans KR',sans-seri
 
 .wrap{opacity:0;transition:opacity .3s} body.ready .wrap{opacity:1}
 @media (prefers-reduced-motion:reduce){ .wrap{opacity:1} }
+
+/* ═══════════════════════════════════════════════════════════
+   🍏 다꾸 테마 레이어 — 메인/프로필과 카테고리 페이지 통일
+   (HTML 구조는 그대로, 스타일만 덮어씀)
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --tape-m:rgba(158,212,191,.72); --tape-g:rgba(181,223,160,.72);
+  --tape-b:rgba(190,225,245,.72); --tape-y:rgba(255,224,178,.8);
+  --ink:#37554A; --apple:#5E8A4E; --apple-l:#B5DFA0;
+}
+body.dark{ --ink:#EAF6F0; --apple:#B5DFA0; --apple-l:#7FA05A; }
+
+@keyframes fallDown{from{transform:translateY(-5vh) rotate(0)}to{transform:translateY(108vh) rotate(50deg)}}
+@keyframes wobA{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+@keyframes wobB{0%,100%{transform:rotate(1deg)}50%{transform:rotate(-1deg)}}
+
+/* 떨어지는 꾸밈 (JS가 #fallbox 주입) */
+#fallbox{position:fixed;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+#fallbox span{position:absolute;top:-40px;line-height:1}
+
+/* ── 내비 = 마스킹테이프 ── */
+.nav{ background:transparent !important; border:none !important; box-shadow:none !important; backdrop-filter:none !important; }
+.nav-inner{
+  max-width:var(--page-width); margin:0 auto;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap:10px 8px; padding:22px clamp(14px,3vw,32px) 26px;
+}
+.nav a.nav-logo{
+  font-family:'Gaegu',cursive !important; font-weight:700 !important;
+  font-size:24px !important; color:var(--main-dark) !important;
+  background:var(--card) !important; border-radius:999px !important;
+  padding:9px 24px !important; box-shadow:0 4px 14px rgba(62,142,126,.14);
+  transform:rotate(-1.5deg); width:100%; text-align:center; margin-bottom:6px;
+  background-image:none !important;
+}
+.nav a:not(.nav-logo){
+  font-family:'Gaegu',cursive; font-weight:700; font-size:20px;
+  color:var(--ink) !important; text-decoration:none; padding:8px 22px;
+  border:none; border-radius:0; background:none;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.4) 0 8px,transparent 8px 16px);
+  box-shadow:0 2px 5px rgba(62,142,126,.2); transition:transform .15s;
+}
+.nav a:not(.nav-logo):nth-of-type(2){transform:rotate(-2deg);background-color:var(--tape-m)}
+.nav a:not(.nav-logo):nth-of-type(3){transform:rotate(1.5deg);background-color:var(--tape-g)}
+.nav a:not(.nav-logo):nth-of-type(4){transform:rotate(-1deg);background-color:var(--tape-b)}
+.nav a:not(.nav-logo):nth-of-type(5){transform:rotate(2deg);background-color:var(--tape-m)}
+.nav a:not(.nav-logo):nth-of-type(6){transform:rotate(-1.5deg);background-color:var(--tape-g)}
+.nav a:not(.nav-logo):nth-of-type(7){transform:rotate(1deg);background-color:var(--tape-b)}
+.nav a:not(.nav-logo):nth-of-type(8){transform:rotate(-1deg);background-color:var(--tape-m)}
+.nav a:not(.nav-logo):nth-of-type(9){transform:rotate(1.5deg);background-color:var(--tape-g)}
+.nav a:not(.nav-logo):nth-of-type(10){transform:rotate(-1deg);background-color:var(--tape-y)}
+.nav a:not(.nav-logo):hover{ transform:translateY(-2px) rotate(0deg) !important; opacity:1; }
+.nav a.active{ box-shadow:0 3px 8px rgba(62,142,126,.32), inset 0 0 0 2.5px var(--main-dark); }
+
+/* 다크 토글 = 세로형, 마지막 링크 옆 */
+.theme-switch{
+  width:22px; height:33px; border-radius:12px;
+  border:2px solid var(--main) !important; background:var(--card) !important;
+  margin-left:8px; flex-shrink:0;
+}
+.theme-switch .knob{ font-size:11px; }
+
+/* ── 제목 = 둥근 폰트 ── */
+.page-title{
+  font-family:'Jua','Noto Sans KR',sans-serif !important;
+  color:var(--ink) !important; letter-spacing:0;
+}
+.page-subtitle{
+  font-family:'Gaegu',cursive !important; font-size:19px !important;
+  color:var(--text-soft) !important;
+}
+
+/* ── 카드 = 메모지 (비정형 라운드 + 테이프) ── */
+.card{
+  background:var(--card) !important;
+  border:none !important;
+  border-radius:14px 5px 16px 6px !important;
+  box-shadow:0 8px 20px rgba(62,142,126,.16) !important;
+  position:relative;
+}
+.card:nth-of-type(even){ border-radius:5px 15px 6px 16px !important; }
+.card::before{
+  content:''; position:absolute; top:-12px; left:50%;
+  width:92px; height:26px; transform:translateX(-50%) rotate(-3deg);
+  background-color:var(--tape-m);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.4) 0 8px,transparent 8px 16px);
+  box-shadow:0 1px 3px rgba(0,0,0,.08); z-index:2; pointer-events:none;
+}
+.card-title{
+  font-family:'Jua','Noto Sans KR',sans-serif !important;
+  color:var(--ink) !important;
+}
+
+/* ── 리스트/아이템 = 손글씨 톤 ── */
+.notice-title,.up-title,.diary-title,.item-title,.song-title{
+  font-family:'Jua','Noto Sans KR',sans-serif !important; color:var(--ink) !important;
+}
+.notice-date,.up-date,.diary-date,.notice-count,.item-date{
+  font-family:'Gaegu',cursive !important; font-size:16px !important; color:var(--text-soft) !important;
+}
+.notice-item,.up-item,.diary-item{ border-radius:10px 4px 12px 5px !important; }
+.notice-item.pinned{ box-shadow:inset 0 0 0 2.5px var(--apple-l) !important; }
+
+/* 버튼·탭 = 다꾸 톤 */
+.btn,.tab,.cat-tab,.page-btn,.toggle-btn{
+  font-family:'Gaegu',cursive !important; font-weight:700 !important;
+  border-radius:16px 6px 16px 6px !important;
+}
+.tab.active,.cat-tab.active,.toggle-btn.active,.btn-primary{
+  background:var(--main) !important; color:#fff !important; border-color:var(--main) !important;
+}
+
+/* 달력(일정) */
+.cal-day,.cal-cell{ border-radius:10px 4px 12px 5px !important; }
+.cal-weekday,.cal-head{ font-family:'Jua','Noto Sans KR',sans-serif !important; color:var(--ink) !important; }
+
+/* 옷장 포스터 */
+.poster,.dress-card,.item-card{ border-radius:12px 5px 14px 6px !important; }
+
+/* 푸터 */
+footer{ font-family:'Gaegu',cursive !important; font-size:17px !important; padding:44px 0 24px !important; }
+
+@media (prefers-reduced-motion:reduce){ *{animation:none !important} }
