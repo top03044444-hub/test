@@ -1,59 +1,71 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>하요 · 공지</title>
-<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/ha/hayodayong/hayodayong.jpg">
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
-<style>
-  .notice-count{font-size:12px;letter-spacing:1px;font-weight:700;color:var(--text-soft);margin-bottom:12px}
-  .notice-list{display:flex;flex-direction:column;gap:10px}
-  .notice-item{background:var(--card);border:1.5px solid var(--rule);border-radius:4px;padding:16px 20px;cursor:pointer;transition:all .2s}
-  .notice-item:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
-  .notice-item.pinned{border-left:4px solid var(--main);background:var(--cream)}
-  .notice-header{display:flex;align-items:center;gap:10px}
-  .notice-pin{font-size:11px;background:var(--main-dark);color:#fff;padding:2px 8px;border-radius:999px;font-weight:700}
-  body.dark .notice-pin{color:#16210b}
-  .notice-title{font-size:15px;font-weight:700;color:var(--ink);flex:1}
-  .notice-thumb{width:42px;height:42px;border-radius:6px;object-fit:cover;border:1px solid var(--rule);flex-shrink:0}
-  .notice-date{font-size:12px;color:var(--text-soft)}
-  .notice-arrow{color:var(--main-dark);font-size:16px;transition:transform .2s}
-  .notice-item.open .notice-arrow{transform:rotate(90deg)}
-  .notice-content{font-size:14px;color:var(--text-mid);line-height:1.85;max-height:0;overflow:hidden;transition:max-height .3s;white-space:pre-wrap}
-  .notice-item.open .notice-content{max-height:3000px;margin-top:14px;padding-top:14px;border-top:1px solid var(--rule)}
-  .post-img{display:block;max-width:100%;border-radius:8px;margin-bottom:12px;border:1px solid var(--rule)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>송민트 · 공지</title>
+  <link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/ad/ad8hv5jk7d6/ad8hv5jk7d6.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .notice-list { display: flex; flex-direction: column; gap: 10px; }
+    .notice-item {
+      background: #fff; border-radius: 14px;
+      border: 1.5px solid var(--main-light);
+      padding: 18px 22px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .notice-item:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .notice-item.pinned { border-left: 4px solid var(--main); background: var(--main-light); }
+    .notice-header { display: flex; align-items: center; gap: 10px; }
+    .notice-pin { font-size: 11px; background: var(--main); color: #fff; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+    .notice-title { font-size: 15px; font-weight: 600; color: var(--text); flex: 1; }
+    .notice-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; border: 1px solid var(--main-light); flex-shrink: 0; }
+    .notice-date { font-size: 12px; color: var(--text-soft); }
+    .notice-arrow { color: var(--main-light); font-size: 16px; transition: transform 0.2s; }
+    .notice-item.open .notice-arrow { transform: rotate(90deg); }
+    .notice-content {
+      font-size: 14px; color: var(--text-mid); line-height: 1.8;
+      max-height: 0; overflow: hidden; transition: max-height 0.3s;
+      white-space: pre-wrap;
+    }
+    .notice-item.open .notice-content {
+      max-height: 3000px; margin-top: 14px;
+      padding-top: 14px; border-top: 1px solid var(--main-light);
+    }
+    .notice-count { font-size: 13px; color: var(--text-soft); margin-bottom: 4px; }
+    .post-img { display: block; max-width: 100%; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--main-light); }
+    body.dark .notice-item { background: var(--card); }
+    body.dark .notice-item.pinned { background: #22262e; }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="mast"><div class="logo"><span class="scr">Hayo</span><span class="sub">H A Y O · D A I L Y</span></div></div>
-    <div class="navrule"><nav class="nav">
-      <a href="../index.html">메인</a>
-      <a href="../profile/">프로필</a>
-      <a href="index.html" class="on">공지</a>
-      <a href="../schedule/">일정</a>
-      <a href="../dress/">옷장</a>
-      <a href="../work/">업보</a>
-      <a href="../song/">노래책</a>
-      <div class="actions"><button class="tsw" id="tsw" type="button" aria-label="다크"><span class="kn" id="kn">🌙</span></button></div>
-    </nav></div>
-  </header>
+<nav class="nav"><div class="nav-inner">
+  <a href="../index.html" class="nav-logo">송민트</a>
+  <a href="../index.html">메인</a>
+  <a href="../profile/">프로필</a>
+  <a href="index.html" class="active">공지</a>
+  <a href="../schedule/">일정</a>
+  <a href="../work/">업보</a>
+  <a href="../diary/">일기</a>
+  <a href="../song/">노래책</a>
+  <a href="../dress/">옷장</a>
+  <a href="../game/">미니게임</a>
+  <button class="theme-switch" id="themeSwitch" type="button" aria-label="다크모드 전환"><span class="knob" id="themeKnob">🌙</span></button>
+</div></nav>
 
-  <div class="kicker"><span class="cat">NOTICE</span><span class="date dbox"></span></div>
-  <h1 class="headline">공지사항</h1>
-  <div class="byline">하요의 소식과 공지를 모아둔 곳이에요 🍀</div>
+<div class="container stagger">
+  <div class="page-title">공지사항</div>
+  <div class="page-subtitle">송민트의 공지사항이에요</div>
 
   <div class="card">
     <div class="notice-count" id="count"></div>
-    <div class="notice-list" id="notice-list"><div class="spinner"></div></div>
+    <div class="notice-list" id="notice-list">
+      <div class="spinner"></div>
+    </div>
   </div>
-
 </div>
-
-<footer class="paperfoot">© 2026 하요 Official.<br>비즈니스 문의 — hayodayong@gmail.com</footer>
+<footer>© 2026 송민트 Official.<br>비즈니스 문의 — 문의 버튼을 이용해 주세요 💚</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
@@ -65,12 +77,17 @@
     const all = [...pinned, ...normal];
     const el = document.getElementById('notice-list');
     document.getElementById('count').textContent = `총 ${all.length}개의 공지`;
-    if (!all.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>공지사항이 없어요</div>'; return; }
+
+    if (!all.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">-</div>공지사항이 없어요</div>';
+      return;
+    }
+
     el.innerHTML = all.map(n => {
       const date = new Date(n.created_at);
       const dateStr = `${date.getFullYear()}.${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')}`;
       const imgs = (n.images&&n.images.length)?n.images:(n.image_url?[n.image_url]:[]);
-      const thumb = imgs.length ? `<img src="${imgs[0]}" class="notice-thumb" referrerpolicy="no-referrer" loading="lazy" alt="">` : '';
+      const thumb = imgs.length ? `<img src="${imgs[0]}" class="notice-thumb" loading="lazy" alt="">` : '';
       return `
         <div class="notice-item${n.pinned?' pinned':''}" onclick="this.classList.toggle('open')">
           <div class="notice-header">
@@ -80,16 +97,27 @@
             <span class="notice-date">${dateStr}</span>
             <span class="notice-arrow">›</span>
           </div>
-          <div class="notice-content">${imgs.map(u=>`<img src="${u}" class="post-img" referrerpolicy="no-referrer" loading="lazy" alt="">`).join('')}${n.content || ''}</div>
+          <div class="notice-content">${imgs.map(u=>`<img src="${u}" class="post-img" loading="lazy" alt="">`).join('')}${n.content || ''}</div>
         </div>`;
     }).join('');
   }
   init();
-  (function(){var M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];var t=new Date();var s=t.getFullYear()+' · '+M[t.getMonth()]+' '+t.getDate();document.querySelectorAll('.dbox').forEach(function(e){e.textContent=s});})();
 </script>
 <script>
-(function(){if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');var sw=document.getElementById('tsw'),kn=document.getElementById('kn');function r(){if(kn)kn.textContent=document.body.classList.contains('dark')?'☀️':'🌙';}if(sw)sw.addEventListener('click',function(){document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');r();});r();})();
+(function(){
+  if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+  var sw = document.getElementById('themeSwitch');
+  var knob = document.getElementById('themeKnob');
+  function refresh(){ if(knob) knob.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙'; }
+  if (sw) sw.addEventListener('click', function(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    refresh();
+  });
+  refresh();
+})();
 </script>
+<!-- 공통 연출(입자·클릭·기울기) -->
 <script src="../fx.js"></script>
 </body>
 </html>
