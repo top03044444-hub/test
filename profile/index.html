@@ -15,15 +15,15 @@
   --logo:#3E8E7E; --accent:#3E8E7E; --apple:#5E8A4E; --apple-l:#B5DFA0;
   --text:#3D5148; --ink:#37554A; --text-soft:#7C9489; --line:#DCEDE4;
   --tape-m:rgba(158,212,191,.72); --tape-g:rgba(181,223,160,.72); --tape-b:rgba(190,225,245,.72); --tape-y:rgba(255,224,178,.8);
-  --page-width:1180px; --dot:#D8F2E6;
+  --page-width:1180px;
 }
 body.dark{
   --main:#8CC7AE; --main-dark:#8FD6BC; --main-light:#22332C; --bg:#182320; --card:#22322C;
   --logo:#9EE0C4; --accent:#9EE0C4; --apple:#B5DFA0; --apple-l:#7FA05A;
-  --text:#DFEEE7; --ink:#EAF6F0; --text-soft:#9DB5AA; --line:#33463D; --dot:#22332C;
+  --text:#DFEEE7; --ink:#EAF6F0; --text-soft:#9DB5AA; --line:#33463D;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(var(--dot) 1.4px,transparent 1.4px);background-size:26px 26px;font-family:'Noto Sans KR',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;transition:background-color .25s,color .25s}
+body{background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;transition:background-color .25s,color .25s}
 a{color:var(--accent);text-decoration-thickness:1.5px;text-underline-offset:3px}
 a:hover{opacity:.82}
 img{display:block;max-width:100%}
@@ -36,7 +36,7 @@ body.ready .wrap{opacity:1}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 
 #fallbox{position:fixed;inset:0;pointer-events:none;z-index:6;overflow:hidden}
-#fallbox span{position:absolute;top:-40px;line-height:1}
+#fallbox span{position:absolute;top:-40px;line-height:1;display:block}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0 2px;flex-wrap:wrap}
 .topbar .spacer{flex:1}
@@ -52,8 +52,16 @@ header.logo-h .lg span{font-family:'Gaegu',cursive;font-weight:700;font-size:24p
 nav.tape-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px;padding:18px 0 30px}
 nav.tape-nav a{font-family:'Gaegu',cursive;font-weight:700;font-size:20px;text-decoration:none;color:var(--ink);padding:8px 24px;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.4) 0 8px,transparent 8px 16px);box-shadow:0 2px 5px rgba(62,142,126,.2);transition:transform .15s}
 nav.tape-nav a:hover{transform:translateY(-2px) rotate(0)!important;opacity:1}
-nav.tape-nav a:nth-child(1){transform:rotate(-2deg);background-color:var(--tape-m)}
-nav.tape-nav a:nth-child(2){transform:rotate(1.5deg);background-color:var(--tape-g)}
+nav.tape-nav a:nth-child(9n+1){transform:rotate(-2deg);background-color:var(--tape-m)}
+nav.tape-nav a:nth-child(9n+2){transform:rotate(1.5deg);background-color:var(--tape-g)}
+nav.tape-nav a:nth-child(9n+3){transform:rotate(-1deg);background-color:var(--tape-b)}
+nav.tape-nav a:nth-child(9n+4){transform:rotate(2deg);background-color:var(--tape-y)}
+nav.tape-nav a:nth-child(9n+5){transform:rotate(-1.5deg);background-color:var(--tape-m)}
+nav.tape-nav a:nth-child(9n+6){transform:rotate(1deg);background-color:var(--tape-g)}
+nav.tape-nav a:nth-child(9n+7){transform:rotate(-1deg);background-color:var(--tape-b)}
+nav.tape-nav a:nth-child(9n+8){transform:rotate(1.5deg);background-color:var(--tape-y)}
+nav.tape-nav a:nth-child(9n+9){transform:rotate(-2deg);background-color:var(--tape-m)}
+nav.tape-nav a.active{box-shadow:0 0 0 2.5px var(--main-dark),0 2px 5px rgba(62,142,126,.2);color:var(--main-dark)}
 nav.tape-nav a:nth-child(3){transform:rotate(-1deg);background-color:var(--tape-b)}
 nav.tape-nav a:nth-child(4){transform:rotate(2deg);background-color:var(--tape-m)}
 nav.tape-nav a:nth-child(5){transform:rotate(-1.5deg);background-color:var(--tape-g)}
@@ -74,7 +82,7 @@ figure.polaroid .nm{font-family:'Gaegu',cursive;font-weight:700;font-size:clamp(
 figure.polaroid .en{font-family:'Gaegu',cursive;font-size:clamp(18px,2.2vw,22px);color:var(--accent)}
 figure.polaroid .dood{position:absolute;pointer-events:none}
 .heroside{flex:1 1 340px;min-width:280px;display:flex;flex-direction:column;gap:20px;justify-content:center}
-.greet{font-family:'Gaegu',cursive;font-size:22px;color:var(--text-soft);line-height:1.7;text-align:center}
+.greet{font-family:'Gaegu',cursive;font-weight:700;font-size:clamp(28px,3.4vw,38px);color:var(--ink);line-height:1.5;text-align:center}
 .greet b{color:var(--accent)}
 
 /* 메모 카드 공통 */
@@ -86,10 +94,9 @@ figure.polaroid .dood{position:absolute;pointer-events:none}
 .memo h2{font-family:'Jua',sans-serif;font-size:21px;color:var(--ink);margin:2px 0 12px}
 .memo ul{list-style:none;font-family:'Gaegu',cursive;font-size:19px;line-height:1.8;color:var(--text)}
 .memo ul strong{color:var(--ink)}
-.dday-badge{align-self:center;width:140px;height:140px;border-radius:50%;background:#E9F8DF;border:3px dashed #A9D68C;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-5deg);box-shadow:0 8px 18px rgba(94,138,78,.18)}
-body.dark .dday-badge{background:#28402C;border-color:#6F9A57}
-.dday-badge .l{font-family:'Gaegu',cursive;font-weight:700;font-size:16px;color:var(--apple)}
-.dday-badge .v{font-family:'Jua',sans-serif;font-size:32px;color:var(--apple)}
+.dday-stamp{position:absolute;right:-26px;bottom:-30px;display:flex;flex-direction:column;align-items:center;justify-content:center;width:140px;height:122px;background:url('../apple-note.png') center/contain no-repeat;transform:rotate(5deg);padding-top:10px}
+.dday-stamp .l{font-family:'Gaegu',cursive;font-weight:700;font-size:14px;color:var(--apple);white-space:nowrap}
+.dday-stamp .v{font-family:'Jua',sans-serif;font-size:24px;color:var(--apple)}
 
 /* 섹션 */
 .sect{margin-top:54px}
@@ -135,6 +142,9 @@ body.dark .days .d.on{background:#2C4230}
 body.dark .links a.g,body.dark .links a.g2{background:#28402C}
 .links a:hover{transform:translateY(-2px) rotate(0)!important}
 
+
+/* 이모지 → 이미지 아이콘 치환 */
+.e-ico{display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.18em;background-size:contain;background-repeat:no-repeat;background-position:center;margin:0 .04em}
 footer{text-align:center;font-family:'Gaegu',cursive;font-size:17px;color:var(--text-soft);padding:44px 0 0;line-height:1.8}
 
 /* 문의 모달 */
@@ -169,14 +179,15 @@ footer{text-align:center;font-family:'Gaegu',cursive;font-size:17px;color:var(--
   </header>
 
   <nav class="tape-nav" aria-label="메뉴">
-    <a href="../">홈</a>
-    <a href="../schedule/">일정</a>
-    <a href="../song/">노래책</a>
+    <a href="../">메인</a>
+    <a href="../profile/" class="active">프로필</a>
     <a href="../notice/">공지</a>
+    <a href="../schedule/">일정</a>
     <a href="../work/">업보</a>
+    <a href="../diary/">다이어리</a>
+    <a href="../song/">노래책</a>
     <a href="../dress/">옷장</a>
-    <a href="../diary/">일기</a>
-    <a href="../game/">미니게임 🎮</a>
+    <a href="../game/">미니게임</a>
   </nav>
 
   <!-- 히어로 -->
@@ -196,7 +207,7 @@ footer{text-align:center;font-family:'Gaegu',cursive;font-size:17px;color:var(--
     </figure>
 
     <div class="heroside">
-      <div class="greet" id="head-sub">안녕! 목소리 1티어 <b>송민트</b>야 💚<br>오늘도 민트빛 하루 되세요 ⊹₊⟡</div>
+      <div class="greet" id="head-sub">안농! 나 목소리 1티어 <b>송민트</b> 💚</div>
 
       <div class="memo a wob1">
         <span class="tape" style="top:-12px;left:50%;width:92px;height:26px;transform:translateX(-50%) rotate(-3deg);background-color:var(--tape-m)"></span>
@@ -205,14 +216,10 @@ footer{text-align:center;font-family:'Gaegu',cursive;font-size:17px;color:var(--
           <li>· 데뷔 <strong id="info-debut">2026.01.03</strong></li>
           <li>· 생일 <strong id="info-birth">6.26</strong> 🎂</li>
           <li>· 소속 <strong>개인</strong> · 성별 <strong>여</strong></li>
-          <li>· 성격 <strong id="info-mbti">E쁨</strong></li>
-          <li>· 팬 애칭 <strong id="info-fandom">애플</strong> 🍏</li>
+          <li>· 특징 <strong id="info-mbti">E쁨</strong></li>
+          <li>· 팬 애칭 <strong id="info-fandom">애플이</strong> 🍏</li>
         </ul>
-      </div>
-
-      <div class="dday-badge">
-        <span class="l">생일까지 🍏</span>
-        <span class="v" id="dday">D-?</span>
+        <div class="dday-stamp"><span class="l">생일까지</span><span class="v" id="dday">D-?</span></div>
       </div>
     </div>
   </div>
@@ -353,14 +360,16 @@ footer{text-align:center;font-family:'Gaegu',cursive;font-size:17px;color:var(--
 (function(){
   if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   var box=document.getElementById('fallbox');
-  var kinds=[{g:'♥',c:'#9ED4BF'},{g:'◆',c:'#C3BAE8'},{g:'✦',c:'#B5DFA0'},{g:'🍏',c:''}];
+  var kinds=['../apple.png','../heart-purple.png','../heart-mint.png','../apple-half.png'];
   for(var i=0;i<14;i++){
-    var k=kinds[i%kinds.length], s=document.createElement('span');
-    s.textContent=k.g;
+    var s=document.createElement('span');
+    s.style.backgroundImage="url('"+kinds[i%kinds.length]+"')";
+    s.style.backgroundSize='contain';
+    s.style.backgroundRepeat='no-repeat';
+    var sz=Math.round(18+Math.random()*16);
+    s.style.width=sz+'px'; s.style.height=sz+'px';
     s.style.left=(2+Math.random()*94).toFixed(1)+'%';
-    s.style.fontSize=Math.round(13+Math.random()*13)+'px';
-    s.style.opacity=(0.35+Math.random()*0.35).toFixed(2);
-    if(k.c) s.style.color=k.c;
+    s.style.opacity=(0.45+Math.random()*0.35).toFixed(2);
     s.style.animation='fallDown '+(9+Math.random()*9).toFixed(1)+'s linear '+(-Math.random()*18).toFixed(1)+'s infinite';
     box.appendChild(s);
   }
@@ -444,10 +453,57 @@ async function load(){
     }
   }catch(e){}
 
+  if(window.iconizeEmoji) window.iconizeEmoji(document.body);
   document.body.classList.add('ready');
 }
 load();
 setTimeout(function(){ document.body.classList.add('ready'); }, 1600);
+
+/* ── 🍏 💚 💜 이모지를 이미지로 치환 (DB엔 이모지 그대로 저장) ── */
+(function(){
+  var MAP = {
+    '\uD83C\uDF4F': '../apple.png',        /* 🍏 */
+    '\uD83D\uDC9A': '../heart-mint.png',   /* 💚 */
+    '\uD83D\uDC9C': '../heart-purple.png'  /* 💜 */
+  };
+  var RE = /[\uD83C\uDF4F\uD83D\uDC9A\uD83D\uDC9C]|\uD83C\uDF4F|\uD83D\uDC9A|\uD83D\uDC9C/g;
+  var SKIP = { SCRIPT:1, STYLE:1, INPUT:1, TEXTAREA:1, CANVAS:1 };
+
+  function iconize(root){
+    if(!root) return;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(n){
+        if(!n.nodeValue) return NodeFilter.FILTER_REJECT;
+        var p = n.parentNode;
+        if(!p || SKIP[p.nodeName]) return NodeFilter.FILTER_REJECT;
+        if(p.classList && p.classList.contains('e-ico')) return NodeFilter.FILTER_REJECT;
+        return /\uD83C\uDF4F|\uD83D\uDC9A|\uD83D\uDC9C/.test(n.nodeValue)
+          ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    var nodes=[], n;
+    while((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(function(node){
+      var txt = node.nodeValue, frag = document.createDocumentFragment(), last = 0, m;
+      var re = /\uD83C\uDF4F|\uD83D\uDC9A|\uD83D\uDC9C/g;
+      while((m = re.exec(txt))){
+        if(m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
+        var i = document.createElement('span');
+        i.className = 'e-ico';
+        i.style.backgroundImage = "url('" + MAP[m[0]] + "')";
+        i.setAttribute('aria-hidden','true');
+        frag.appendChild(i);
+        last = m.index + m[0].length;
+      }
+      if(last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  window.iconizeEmoji = iconize;
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ iconize(document.body); });
+  else iconize(document.body);
+})();
 </script>
 <script src="../fx.js"></script>
 </body>

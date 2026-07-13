@@ -18,6 +18,22 @@
     .search-box { flex:1; min-width:200px; padding:12px 18px; border-radius:999px; border:1.5px solid var(--main-light); font-size:14px; outline:none; background:#fff; }
     .search-box:focus { border-color:var(--main); }
     .genre-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+    .rand-btn { flex:0 0 auto; padding:12px 22px; border-radius:999px; border:none; cursor:pointer;
+      background:var(--main); color:#fff; font-family:'Jua','Noto Sans KR',sans-serif; font-size:15px;
+      box-shadow:0 6px 14px rgba(62,142,126,.24); transition:transform .15s; }
+    .rand-btn:hover { transform:translateY(-2px); }
+    .rand-result { margin:14px 0 4px; padding:20px 22px; border-radius:16px 6px 18px 7px;
+      background:#EAF8EF; border:2.5px dashed var(--main); text-align:center; animation:randPop .35s ease-out; }
+    body.dark .rand-result { background:#25392F; }
+    .rand-result .rl { font-family:'Gaegu',cursive; font-weight:700; font-size:16px; color:var(--main-dark); }
+    .rand-result .rt { font-family:'Jua','Noto Sans KR',sans-serif; font-size:28px; color:var(--text); margin:4px 0 2px; }
+    .rand-result .ra { font-family:'Gaegu',cursive; font-size:18px; color:var(--text-soft); }
+    .rand-result .rand-again { margin-top:12px; padding:8px 20px; border-radius:14px; border:none; cursor:pointer;
+      background:var(--main-light); color:var(--main-dark); font-family:'Gaegu',cursive; font-weight:700; font-size:16px; }
+    body.dark .rand-result .rand-again { background:#33463D; color:#9EE0C4; }
+    @keyframes randPop { from { transform:scale(.94); opacity:0 } to { transform:scale(1); opacity:1 } }
+    @media (prefers-reduced-motion:reduce) { .rand-result { animation:none } }
+
     .gt { padding:8px 15px; border-radius:999px; border:1.5px solid var(--main-light); background:#fff; color:var(--text-soft); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
     .gt.active { background:var(--main); color:#fff; border-color:var(--main); }
     .count-line { font-size:13px; color:var(--text-soft); margin:14px 0 6px; }
@@ -76,7 +92,7 @@
   <a href="../notice/">공지</a>
   <a href="../schedule/">일정</a>
   <a href="../work/">업보</a>
-  <a href="../diary/">일기</a>
+  <a href="../diary/">다이어리</a>
   <a href="index.html" class="active">노래책</a>
   <a href="../dress/">옷장</a>
   <a href="../game/">미니게임</a>
@@ -88,6 +104,13 @@
     <div class="song-head"><span style="font-size:22px">🎵</span><span class="t">노래책</span></div>
     <div class="filter-row">
       <input class="search-box" id="search" placeholder="🔍 곡명 · 아티스트 검색...">
+      <button class="rand-btn" id="randBtn" type="button">🎲 랜덤 뽑기</button>
+    </div>
+    <div class="rand-result" id="randResult" hidden>
+      <div class="rl">오늘의 추천곡 🍏</div>
+      <div class="rt" id="randTitle">—</div>
+      <div class="ra" id="randArtist"></div>
+      <button class="rand-again" id="randAgain" type="button">다시 뽑기 🎲</button>
     </div>
     <div class="genre-tabs" id="genre-tabs"></div>
     <div class="count-line" id="count"></div>
@@ -120,6 +143,29 @@
       `<button class="gt ${g===curGenre?'active':''}" onclick="selGenre('${g}')">${g}</button>`).join('');
   }
   function selGenre(g){ curGenre=g; curPage=1; renderGenres(); render(); enableIframeAutoHeight(); }
+
+  /* ── 🎲 랜덤 뽑기 (현재 장르·검색 필터 안에서) ── */
+  function rollRandom(){
+    const list = filtered();
+    const box = document.getElementById('randResult');
+    if (!list.length){
+      box.hidden = false;
+      document.getElementById('randTitle').textContent = '노래가 없어요 😢';
+      document.getElementById('randArtist').textContent = '';
+      return;
+    }
+    const pick = list[Math.floor(Math.random() * list.length)];
+    box.hidden = false;
+    box.style.animation = 'none'; void box.offsetWidth; box.style.animation = '';
+    document.getElementById('randTitle').textContent = pick.title || '제목 없음';
+    const bits = [];
+    if (pick.artist) bits.push(pick.artist);
+    if (pick.genre)  bits.push(pick.genre);
+    document.getElementById('randArtist').textContent = bits.join(' · ');
+  }
+  document.getElementById('randBtn').addEventListener('click', rollRandom);
+  document.getElementById('randAgain').addEventListener('click', rollRandom);
+
 
   function filtered() {
     return songs.filter(s => {
@@ -174,6 +220,7 @@
 })();
 </script>
 <!-- 공통 연출(입자·클릭·기울기) -->
+<script src="../icons.js"></script>
 <script src="../fx.js"></script>
 </body>
 </html>
