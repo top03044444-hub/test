@@ -50,24 +50,20 @@
 </symbol>
 </svg>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="nav-logo" href="../"><span class="lg"><svg viewBox="0 0 110 98" style="width:22px;height:22px"><use href="#gop"/></svg></span>서곱철</a>
-    <div class="nav-menu">
-      <a href="../">메인</a>
-      <a href="../profile/">프로필</a>
-      <a href="../schedule/">일정</a>
-      <a href="../notice/" class="active">공지</a>
-      <a href="../work/">업보</a>
-      <a href="../dress/">옷장</a>
-    </div>
-    <div class="dkbox" id="dkbox">다크 모드<span class="sw"><i></i></span></div>
-    <button class="askbtn" onclick="openAsk()">✉ 문의</button>
+
+
+
+<div class="pagewrap">
+  <div class="pagecard">
+  <!-- nav -->
+  <div class="nav">
+    <a class="nav-logo" href="../"><span class="lg"><svg viewBox="0 0 110 98" style="width:24px;height:24px"><use href="#gop"/></svg></span>서곱철</a>
+    <nav class="nm"><a href="../">메인</a><a href="../profile/">프로필</a><a href="../schedule/">일정</a><a href="../notice/" class="act">공지</a><a href="../work/">업보</a><a href="../dress/">옷장</a></nav>
+    <div class="dk" id="dkbox">다크 모드<span class="sw"><i></i></span></div>
+    <button class="ask" onclick="openAsk()">✉ 문의</button>
   </div>
-</nav>
 
-
-<div class="container stagger">
+  <div class="container stagger">
   <div class="pagehero">
     <div class="ph-left">
       RECEIPT NO. <b>NOTICE</b><br>
@@ -93,6 +89,8 @@
     <div class="notice-list" id="notice-list">
       <div class="spinner"></div>
     </div>
+  </div>
+</div>
   </div>
 </div>
 <footer>
