@@ -40,6 +40,7 @@
   </style>
 </head>
 <body>
+<script>if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');</script>
 <nav class="nav">
   <div class="nav-inner">
     <a class="nav-logo" href="../">서곱철</a>
@@ -52,6 +53,12 @@
     <button class="theme-switch" id="themeBtn" aria-label="다크모드"><span class="knob">🌙</span></button>
   </div>
 </nav>
+
+<div class="pagehero">
+  <div class="ph-title">공지사항</div>
+  <div class="ph-sub">📢 서곱철의 새 소식을 확인하세요</div>
+</div>
+
 
 <div class="container stagger">
   <div class="page-title">공지사항</div>

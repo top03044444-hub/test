@@ -83,6 +83,7 @@
   </style>
 </head>
 <body>
+<script>if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');</script>
 <nav class="nav">
   <div class="nav-inner">
     <a class="nav-logo" href="../">서곱철</a>
@@ -95,6 +96,12 @@
     <button class="theme-switch" id="themeBtn" aria-label="다크모드"><span class="knob">🌙</span></button>
   </div>
 </nav>
+
+<div class="pagehero">
+  <div class="ph-title">방송 일정</div>
+  <div class="ph-sub">📅 방송시간은 랜덤 — 오방공 확인!</div>
+</div>
+
 
 <div class="container stagger">
   <div class="page-title">📅 방송 일정</div>

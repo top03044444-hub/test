@@ -61,6 +61,7 @@
   </style>
 </head>
 <body>
+<script>if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');</script>
 <nav class="nav">
   <div class="nav-inner">
     <a class="nav-logo" href="../">서곱철</a>
@@ -74,14 +75,18 @@
   </div>
 </nav>
 
+<div class="pagehero">
+  <div class="ph-title">업보 현황</div>
+  <div class="ph-sub">🐷 단골들의 업보를 기록합니다</div>
+</div>
+
+
 <div class="container stagger">
   <div class="card">
-    <div class="upbo-head">
-      <div>
-        <div class="upbo-eyebrow">UPBO</div>
-        <div class="upbo-title">업보 현황</div>
-      </div>
+    <div class="upbo-head" style="justify-content:flex-end">
       <span class="upbo-update" id="update-date"></span>
+    </div>
+    <span class="upbo-update" id="update-date"></span>
     </div>
     <input class="search-box" id="search" placeholder="🔍 닉네임 또는 아이디 검색...">
     <div class="viewer-grid" id="grid"><div class="spinner"></div></div>
