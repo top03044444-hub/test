@@ -178,7 +178,7 @@ body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
       <div class="rl"></div>
       <div style="text-align:center">
         <div class="jua" style="font-size:13.5px;color:var(--main-deep);margin-bottom:6px">특징</div>
-        <div class="tags" style="justify-content:center">
+        <div class="tags" style="justify-content:center" data-tags="info-tags">
           <span class="tag">똥꼬발랄</span><span class="tag">착함</span><span class="tag">해삐</span>
         </div>
       </div>
@@ -203,19 +203,21 @@ body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
         </div>
         <div class="card">
           <div class="ct">📊 능력치<span class="ln"></span></div>
+          <div id="stat-box">
           <div class="stat"><div class="top"><span>텐션</span><i>95</i></div><div class="bar"><span class="fill" style="width:95%"></span></div></div>
           <div class="stat"><div class="top"><span>탱커력</span><i>90</i></div><div class="bar"><span class="fill" style="width:90%"></span></div></div>
           <div class="stat"><div class="top"><span>허당력</span><i>85</i></div><div class="bar"><span class="fill" style="width:85%"></span></div></div>
           <div class="stat"><div class="top"><span>곱창 사랑</span><i>100</i></div><div class="bar"><span class="fill" style="width:100%"></span></div></div>
           <div class="stat" style="margin:0"><div class="top"><span>쎈 언니 지수</span><i>40</i></div><div class="bar"><span class="fill" style="width:40%"></span></div></div>
+          </div>
         </div>
       </div>
 
       <div class="g c2">
         <div class="card">
           <div class="ct">🩷 좋아함 / 싫어함<span class="ln"></span></div>
-          <div class="ldrow"><span class="tag">좋아함</span><span class="v">곱창 · 야구(한화이글스)<br>게임 · 소통 · 칭찬</span></div>
-          <div class="ldrow"><span class="tag g">싫어함</span><span class="v">당근 · 간지럼</span></div>
+          <div class="ldrow"><span class="tag">좋아함</span><span class="v" data-hook="like-list">곱창 · 야구(한화이글스) · 게임 · 소통 · 칭찬</span></div>
+          <div class="ldrow"><span class="tag g">싫어함</span><span class="v" data-hook="dislike-list">당근 · 간지럼</span></div>
         </div>
         <div class="card">
           <div class="ct">🎯 TMI<span class="ln"></span></div>
@@ -253,10 +255,12 @@ body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
     </div>
     <div class="card">
       <div class="ct">🎯 목표 (마일스톤)<span class="ln"></span></div>
+      <div id="mile-box">
       <div class="mile done"><span class="dot"></span>단골 100명 모으기<span class="d2">달성!</span></div>
       <div class="mile done"><span class="dot"></span>첫 노래 방송 하기<span class="d2">달성!</span></div>
       <div class="mile"><span class="dot"></span>단골 500명 모으기<span class="d2">진행 중</span></div>
       <div class="mile"><span class="dot"></span>곱창집 오프 팬미팅<span class="d2">준비 중</span></div>
+      </div>
     </div>
   </section>
 
@@ -339,6 +343,41 @@ tb.onclick=function(){
         const n=Math.round((b-today)/864e5);
         document.querySelectorAll('.ddv').forEach(function(el){ el.textContent=(n===0)?'생일! 🎉':'D-'+n; });
       }
+    }
+
+
+    // 특징 태그 (쉼표 구분)
+    document.querySelectorAll('[data-tags]').forEach(function(box){
+      const k = box.dataset.tags;
+      if(!p[k]) return;
+      box.innerHTML = String(p[k]).split(',').map(function(t){
+        t = t.trim(); return t ? '<span class="tag">'+t+'</span>' : '';
+      }).join('');
+    });
+
+    // 능력치 ("이름:숫자" 줄바꿈)
+    const sb = document.getElementById('stat-box');
+    if(sb && p['stats']){
+      sb.innerHTML = String(p['stats']).split('\n').filter(Boolean).map(function(line,i,arr){
+        const m = line.split(':');
+        const name = (m[0]||'').trim(), val = Math.max(0, Math.min(100, parseInt(m[1]||'0',10)||0));
+        const last = (i===arr.length-1) ? ' style="margin:0"' : '';
+        return '<div class="stat"'+last+'><div class="top"><span>'+name+'</span><i>'+val+'</i></div>'+
+               '<div class="bar"><span class="fill" style="width:'+val+'%"></span></div></div>';
+      }).join('');
+    }
+
+    // 마일스톤 ("달성|내용" 또는 "진행중|내용" 줄바꿈)
+    const mb = document.getElementById('mile-box');
+    if(mb && p['milestones']){
+      mb.innerHTML = String(p['milestones']).split('\n').filter(Boolean).map(function(line){
+        const parts = line.split('|');
+        const st = (parts[0]||'').trim();
+        const txt = (parts[1]||'').trim();
+        const done = (st === '달성' || st === '달성!' );
+        return '<div class="mile'+(done?' done':'')+'"><span class="dot"></span>'+txt+
+               '<span class="d2">'+(done?'달성!':st)+'</span></div>';
+      }).join('');
     }
 
     if(typeof loadOriginalSongs==='function') await loadOriginalSongs();

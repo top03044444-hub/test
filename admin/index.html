@@ -25,7 +25,17 @@
     .ord-btn { width: 22px; height: 18px; line-height: 1; padding: 0; border: 1px solid var(--main-light); background: var(--card); color: var(--main-dark); border-radius: 5px; font-size: 9px; cursor: pointer; transition: background .2s; }
     .ord-btn:hover:not(:disabled) { background: var(--main-light); }
     .ord-btn:disabled { opacity: .3; cursor: default; }
-  </style>
+  
+  .hint{ font-size:11.5px; color:var(--text-soft); margin-top:6px; line-height:1.7; }
+  .hint code{ background:var(--main-light); color:var(--main-dark); padding:1px 5px; border-radius:4px; font-size:11px; }
+  .palette{ display:flex; flex-direction:column; gap:9px; }
+  .pal-row{ display:grid; grid-template-columns:96px 44px 1fr 110px; align-items:center; gap:9px; }
+  .pal-row label{ font-size:12.5px; font-weight:700; }
+  .pal-row input[type=color]{ width:44px; height:36px; border:1.5px solid var(--main-light); border-radius:8px; background:none; cursor:pointer; padding:2px; }
+  .pal-row .input{ margin:0; }
+  .pal-row .hint{ margin:0; }
+  @media(max-width:640px){ .pal-row{ grid-template-columns:1fr 44px; } .pal-row .hint{ display:none; } }
+</style>
 </head>
 <body>
 
@@ -80,8 +90,8 @@
     </div>
     <div class="card">
       <div class="card-title">⭐ 한마디 & 하고픈 말</div>
-      <div class="form-field"><label class="input-label">오늘의 한마디 (줄바꿈=엔터)</label><textarea class="input" id="f-quote" rows="3"></textarea></div>
-      <div class="form-field"><label class="input-label">하고픈 말</label><textarea class="input" id="f-msg" rows="3"></textarea></div>
+      <div class="form-field"><label class="input-label">오늘의 한마디 (줄바꿈=엔터)</label><textarea class="input" id="f-quote" placeholder=""곱창처럼 쫄깃하게, 단골처럼 든든하게!"" rows="3"></textarea><div class="hint">프로필 페이지 상단 큰 따옴표 문구예요.</div></div>
+      <div class="form-field"><label class="input-label">하고픈 말</label><textarea class="input" id="f-msg" rows="3" placeholder="안녕하세요! 쌍룡파 직영점 사장 서곱철입니다!"></textarea><div class="hint">메인·프로필의 <b>About</b> 칸에 표시돼요. 줄바꿈=엔터.</div></div>
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
     </div>
     <div class="card">
@@ -109,22 +119,91 @@
     </div>
 
     <div class="card">
+      <div class="card-title">🩷 좋아함 / 싫어함</div>
+      <div class="form-field">
+        <label class="input-label">좋아함</label>
+        <input class="input" id="f-like-list" type="text" placeholder="곱창, 야구(한화이글스), 게임, 소통">
+        <div class="hint">쉼표(,)로 구분해서 한 줄로 적어주세요.</div>
+      </div>
+      <div class="form-field">
+        <label class="input-label">싫어함</label>
+        <input class="input" id="f-dislike-list" type="text" placeholder="당근, 간지럼">
+        <div class="hint">쉼표(,)로 구분. 메인·프로필 양쪽에 같이 반영돼요.</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 능력치 (프로필 페이지)</div>
+      <div class="form-field">
+        <label class="input-label">능력치 목록</label>
+        <textarea class="input" id="f-stats" rows="6" placeholder="텐션:95&#10;탱커력:90&#10;허당력:85&#10;곱창 사랑:100&#10;쎈 언니 지수:40"></textarea>
+        <div class="hint"><b>규격</b> — 한 줄에 하나씩 <code>이름:숫자</code> 형식. 숫자는 0~100. 예) <code>텐션:95</code><br>비워두면 기본값(5개)이 그대로 표시돼요.</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 목표 (마일스톤)</div>
+      <div class="form-field">
+        <label class="input-label">목표 목록</label>
+        <textarea class="input" id="f-milestones" rows="6" placeholder="달성|단골 100명 모으기&#10;달성|첫 노래 방송 하기&#10;진행 중|단골 500명 모으기&#10;준비 중|곱창집 오프 팬미팅"></textarea>
+        <div class="hint"><b>규격</b> — 한 줄에 하나씩 <code>상태|내용</code> 형식. 상태를 <code>달성</code>으로 쓰면 취소선이 그어져요.<br>그 외 아무 글자(진행 중, 준비 중 …)는 그대로 표시됩니다.</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎨 색상 팔레트</div>
+      <div class="hint" style="margin-bottom:12px">
+        여기서 색을 바꾸면 <b>메인 · 프로필 · 모든 카테고리 페이지</b>에 즉시 반영돼요. (다크모드는 그대로 유지)<br>
+        비워두면 기본 색으로 돌아갑니다.
+      </div>
+      <div class="palette">
+        <div class="pal-row"><label>메인 색</label><input type="color" id="c-theme-main" oninput="syncColor('theme-main')"><input class="input" id="f-theme-main" placeholder="#F4C2C2" oninput="syncHex('theme-main')"><span class="hint">버튼·배지·강조</span></div>
+        <div class="pal-row"><label>진한 메인</label><input type="color" id="c-theme-main-dark" oninput="syncColor('theme-main-dark')"><input class="input" id="f-theme-main-dark" placeholder="#C4586E" oninput="syncHex('theme-main-dark')"><span class="hint">제목·요일 헤더</span></div>
+        <div class="pal-row"><label>더 진한 메인</label><input type="color" id="c-theme-main-deep" oninput="syncColor('theme-main-deep')"><input class="input" id="f-theme-main-deep" placeholder="#B7485F" oninput="syncHex('theme-main-deep')"><span class="hint">카드 제목</span></div>
+        <div class="pal-row"><label>연한 메인</label><input type="color" id="c-theme-main-light" oninput="syncColor('theme-main-light')"><input class="input" id="f-theme-main-light" placeholder="#FCE8E8" oninput="syncHex('theme-main-light')"><span class="hint">테두리·배경 톤</span></div>
+        <div class="pal-row"><label>페이지 배경</label><input type="color" id="c-theme-bg" oninput="syncColor('theme-bg')"><input class="input" id="f-theme-bg" placeholder="#FBEAEA" oninput="syncHex('theme-bg')"><span class="hint">바깥 배경색</span></div>
+        <div class="pal-row"><label>로고 글자</label><input type="color" id="c-theme-logo" oninput="syncColor('theme-logo')"><input class="input" id="f-theme-logo" placeholder="#3E2B2B" oninput="syncHex('theme-logo')"><span class="hint">상단 로고</span></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn" onclick="resetPalette()">기본값으로</button>
+        <button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📖 사용법 · 규격 안내</div>
+      <div class="hint" style="line-height:2">
+        <b>· 프사</b> — SOOP 아이디만 넣으면 자동 연동. 직접 이미지 URL을 넣으면 그게 우선.<br>
+        <b>· 생일</b> — <code>MM.DD</code> (예: 06.08). D-Day가 자동 계산돼요.<br>
+        <b>· 방송 요일</b> — 체크한 요일만 방송으로 표시, 나머지는 자동 "휴방".<br>
+        <b>· 옷장 사진</b> — 세로 <b>3:4 (900×1200 권장)</b>. SOOP 비공개 게시판에 올린 뒤 사진 우클릭 → "이미지 주소 복사"로 얻은 <code>https://stimg.sooplive.com/…</code> 주소를 넣으세요. (게시글 주소 ✗)<br>
+        <b>· 공지/일기 이미지</b> — 위와 같은 방법. 원본 글을 지우면 이미지도 깨집니다.<br>
+        <b>· VOD</b> — SOOP 다시보기 주소의 <b>숫자 ID만</b> 입력 (예: <code>vod.sooplive.co.kr/player/<b>123456789</b></code>).<br>
+        <b>· 저장 후 반영이 안 보이면</b> — 페이지에서 <code>Ctrl+Shift+R</code> (강력 새로고침).
+      </div>
+    </div>
+
+    <div class="card">
       <div class="card-title">♥ TMI</div>
-      <div class="form-field"><label class="input-label">좋아하는 음식</label><input class="input" id="f-tmi-food" type="text"></div>
-      <div class="form-field"><label class="input-label">요즘 듣는 노래</label><input class="input" id="f-tmi-song" type="text"></div>
-      <div class="form-field"><label class="input-label">최근 읽은 책</label><input class="input" id="f-tmi-book" type="text"></div>
+      <div class="form-field"><label class="input-label">좋아하는 음식</label><input class="input" id="f-tmi-food" type="text" placeholder="곱창 (당연하지!)"></div>
+      <div class="form-field"><label class="input-label">요즘 듣는 노래</label><input class="input" id="f-tmi-song" type="text" placeholder="폰서트"></div>
+      <div class="form-field"><label class="input-label">최근 읽은 책</label><input class="input" id="f-tmi-book" type="text" placeholder="인디"></div>
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
     </div>
     <div class="card">
       <div class="card-title">📅 방송 요일</div>
+      <div class="hint" style="margin-bottom:10px">체크한 요일만 <b>방송</b>으로 표시되고, 체크 안 한 요일은 자동으로 <b>휴방</b>이 돼요.</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="day-checks">
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="0">일</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="1">월</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="2">화</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="3">수</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="4">목</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="5">금</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="6">토</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="0">월</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="1">화</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="2">수</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="3">목</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="4">금</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="5">토</label>
+        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="6">일</label>
       </div>
       <input type="hidden" id="f-days">
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveDays()">저장 ♥</button></div>
@@ -142,7 +221,7 @@
     </div>
     <div class="card">
       <div class="card-title">🔗 관련 링크</div>
-      <div class="form-field"><label class="input-label">SOOP 방송국</label><input class="input" id="f-link-soop" type="url" placeholder="https://"></div>
+      <div class="form-field"><label class="input-label">SOOP 방송국</label><div class="hint">체크한 요일만 방송으로 표시되고, 나머지는 자동으로 <b>휴방</b>이 돼요.</div><input class="input" id="f-link-soop" type="url" placeholder="https://"></div>
       <div class="form-field"><label class="input-label">유튜브</label><input class="input" id="f-link-youtube" type="url" placeholder="https://"></div>
       <div class="form-field"><label class="input-label">쌍룡파 카페</label><input class="input" id="f-link-cafe" type="url" placeholder="https://"></div>
       <div class="form-field"><label class="input-label">X (트위터)</label><input class="input" id="f-link-x" type="url" placeholder="https://"></div>
@@ -350,9 +429,10 @@
     'avatar','soop-id',
     'info-name','info-catchphrase','info-debut','info-birth','info-fandom','info-agency',
     'info-position','info-mbti','info-game','info-team','info-song','info-content','info-tags',
-    'quote','msg','now',
+    'quote','msg','now','like-list','dislike-list','stats','milestones',
     'tmi-food','tmi-song','tmi-book','days',
-    'link-soop','link-youtube','link-x','link-cafe'
+    'link-soop','link-youtube','link-x','link-cafe',
+    'theme-main','theme-main-dark','theme-main-deep','theme-main-light','theme-bg','theme-logo'
   ];
 
   function tryLogin() {
@@ -861,6 +941,48 @@
       loadDress();
     } else showToast('❌ 추가 실패 (옷장 SQL 실행했는지 확인)');
   }
+</script>
+<script>
+/* 🎨 색상 팔레트 */
+const PAL_DEFAULT = {
+  'theme-main':'#F4C2C2', 'theme-main-dark':'#C4586E', 'theme-main-deep':'#B7485F',
+  'theme-main-light':'#FCE8E8', 'theme-bg':'#FBEAEA', 'theme-logo':'#3E2B2B'
+};
+function syncColor(k){
+  const c=document.getElementById('c-'+k), f=document.getElementById('f-'+k);
+  if(c&&f){ f.value=c.value.toUpperCase(); previewPalette(); }
+}
+function syncHex(k){
+  const c=document.getElementById('c-'+k), f=document.getElementById('f-'+k);
+  if(c&&f && /^#[0-9a-fA-F]{6}$/.test(f.value)){ c.value=f.value; previewPalette(); }
+}
+function previewPalette(){
+  const map={'theme-main':'--main','theme-main-dark':'--main-dark','theme-main-deep':'--main-deep',
+             'theme-main-light':'--main-light','theme-bg':'--bg','theme-logo':'--logo'};
+  Object.keys(map).forEach(function(k){
+    const f=document.getElementById('f-'+k);
+    if(f && /^#[0-9a-fA-F]{6}$/.test(f.value)) document.documentElement.style.setProperty(map[k], f.value);
+  });
+}
+function resetPalette(){
+  Object.keys(PAL_DEFAULT).forEach(function(k){
+    const f=document.getElementById('f-'+k), c=document.getElementById('c-'+k);
+    if(f) f.value=''; if(c) c.value=PAL_DEFAULT[k];
+    document.documentElement.style.removeProperty('--'+k.replace('theme-',''));
+  });
+  alert('기본값으로 되돌렸어요. 저장 버튼을 눌러야 사이트에 반영됩니다.');
+}
+/* 로드 시 컬러피커 동기화 */
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    Object.keys(PAL_DEFAULT).forEach(function(k){
+      const f=document.getElementById('f-'+k), c=document.getElementById('c-'+k);
+      if(!f||!c) return;
+      c.value = /^#[0-9a-fA-F]{6}$/.test(f.value) ? f.value : PAL_DEFAULT[k];
+    });
+    previewPalette();
+  }, 600);
+});
 </script>
 </body>
 </html>

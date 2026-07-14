@@ -306,7 +306,7 @@ body.ready .wrap{opacity:1}
       <div class="mrow" style="padding:5px 0"><span>MBTI</span><i class="d"></i><b data-hook="info-mbti">ESFP</b></div>
       <div style="border-top:1.5px dotted var(--line);margin-top:8px;padding-top:9px">
         <div style="font-size:12px;color:var(--text-soft);font-weight:700;margin-bottom:7px">특징</div>
-        <div class="tags"><span class="tag">똥꼬발랄</span><span class="tag">착함</span><span class="tag">해삐</span></div>
+        <div class="tags" data-tags="info-tags"><span class="tag">똥꼬발랄</span><span class="tag">착함</span><span class="tag">해삐</span></div>
       </div>
     </div>
 
@@ -329,10 +329,10 @@ body.ready .wrap{opacity:1}
     <div class="card likecard">
       <div class="ct">🩷 좋아함 / 싫어함<span class="ln"></span></div>
       <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-        <span class="tag">좋아함</span><span style="font-size:13px;font-weight:700">곱창, 야구(한화이글스), 게임, 소통</span>
+        <span class="tag">좋아함</span><span style="font-size:13px;font-weight:700" data-hook="like-list">곱창, 야구(한화이글스), 게임, 소통</span>
       </div>
       <div style="border-top:1.5px dotted var(--line);padding-top:10px;display:flex;align-items:center;gap:9px">
-        <span class="tag g">싫어함</span><span style="font-size:13px;font-weight:700">당근, 간지럼</span>
+        <span class="tag g">싫어함</span><span style="font-size:13px;font-weight:700" data-hook="dislike-list">당근, 간지럼</span>
       </div>
     </div>
 
@@ -424,6 +424,16 @@ document.getElementById('mask').onclick=function(e){if(e.target.id==='mask')cm()
       if(p['avatar']) av.src = p['avatar'];
       else if(p['soop-id']) av.src = 'https://profile.img.sooplive.co.kr/LOGO/'+p['soop-id'].slice(0,2)+'/'+p['soop-id']+'/'+p['soop-id']+'.jpg';
     }
+
+
+    // 특징 태그 (쉼표 구분)
+    document.querySelectorAll('[data-tags]').forEach(function(box){
+      const k = box.dataset.tags;
+      if(!p[k]) return;
+      box.innerHTML = String(p[k]).split(',').map(function(t){
+        t = t.trim(); return t ? '<span class="tag">'+t+'</span>' : '';
+      }).join('');
+    });
 
     // 링크
     [['lk-soop','link-soop'],['lk-yt','link-youtube'],['lk-x','link-x'],['lk-cafe','link-cafe']].forEach(function(pair){

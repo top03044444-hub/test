@@ -131,3 +131,27 @@ function initIframeResize() {
    일정/노래/일기/업보 페이지는 enableIframeAutoHeight() 라는 이름으로 호출합니다.
    이 별칭이 없으면 그 페이지들에서 "함수 없음" 에러가 나고 iframe 높이가 자동조절되지 않습니다. */
 function enableIframeAutoHeight() { initIframeResize(); }
+
+
+/* =============================================
+   🎨 색상 팔레트 자동 적용 (전 페이지 공통)
+   admin > 🎨 테마 탭에서 저장한 색을 모든 페이지에 반영
+   ============================================= */
+async function applyTheme(){
+  try{
+    const { data } = await db.from('profile').select('data').eq('id',1).single();
+    const p = (data && data.data) || {};
+    const map = {
+      'theme-main':      '--main',
+      'theme-main-dark': '--main-dark',
+      'theme-main-deep': '--main-deep',
+      'theme-main-light':'--main-light',
+      'theme-bg':        '--bg',
+      'theme-logo':      '--logo'
+    };
+    Object.keys(map).forEach(function(k){
+      if(p[k]) document.documentElement.style.setProperty(map[k], p[k]);
+    });
+  }catch(e){ /* 실패해도 기본 색 유지 */ }
+}
+applyTheme();
