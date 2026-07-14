@@ -11,7 +11,9 @@
     .upbo-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:6px; }
     .upbo-eyebrow { font-size:12px; letter-spacing:3px; color:var(--main); font-weight:700; }
     .upbo-title { font-size:26px; font-weight:800; color:var(--main-dark); }
-    .upbo-update { font-size:12px; color:var(--text-soft); background:#fff; border:1px solid var(--main-light); padding:6px 14px; border-radius:999px; }
+    .upbo-bar { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .upbo-bar .search-box { flex:1; margin:0; }
+    .upbo-update { font-size:12px; white-space:nowrap; color:var(--text-soft); background:#fff; border:1px solid var(--main-light); padding:6px 14px; border-radius:999px; }
     .search-box { width:100%; padding:13px 18px; border-radius:999px; border:1.5px solid var(--main-light); font-size:14px; outline:none; background:#fff; margin:14px 0 18px; }
     .search-box:focus { border-color:var(--main); }
 
@@ -103,12 +105,10 @@
     </div>
   </div>
   <div class="card">
-    <div class="upbo-head" style="justify-content:flex-end">
+    <div class="upbo-bar">
+      <input class="search-box" id="search" placeholder="🔍 닉네임 또는 아이디 검색...">
       <span class="upbo-update" id="update-date"></span>
     </div>
-    <span class="upbo-update" id="update-date"></span>
-    </div>
-    <input class="search-box" id="search" placeholder="🔍 닉네임 또는 아이디 검색...">
     <div class="viewer-grid" id="grid"><div class="spinner"></div></div>
   </div>
   </div>
