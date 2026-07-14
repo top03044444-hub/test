@@ -106,16 +106,28 @@
 </head>
 <body>
 <script>if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');</script>
+<svg width="0" height="0" style="position:absolute">
+<symbol id="gop" viewBox="0 0 110 98">
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#C98E71" stroke-width="17" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#E9B79B" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#F7DCC7" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" opacity=".75"/>
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#C98E71" stroke-width="15" stroke-dasharray="1.5 13" opacity=".5"/>
+</symbol>
+</svg>
+
 <nav class="nav">
   <div class="nav-inner">
-    <a class="nav-logo" href="../">서곱철</a>
-    <a href="../">메인</a>
-    <a href="../profile/">프로필</a>
-    <a href="../schedule/">일정</a>
-    <a href="../notice/">공지</a>
-    <a href="../work/">업보</a>
-    <a href="../dress/" class="active">옷장</a>
-    <button class="theme-switch" id="themeBtn" aria-label="다크모드"><span class="knob">🌙</span></button>
+    <a class="nav-logo" href="../"><span class="lg"><svg viewBox="0 0 110 98" style="width:22px;height:22px"><use href="#gop"/></svg></span>서곱철</a>
+    <div class="nav-menu">
+      <a href="../">메인</a>
+      <a href="../profile/">프로필</a>
+      <a href="../schedule/">일정</a>
+      <a href="../notice/">공지</a>
+      <a href="../work/">업보</a>
+      <a href="../dress/" class="active">옷장</a>
+    </div>
+    <div class="dkbox" id="dkbox">다크 모드<span class="sw"><i></i></span></div>
+    <button class="askbtn" onclick="openAsk()">✉ 문의</button>
   </div>
 </nav>
 
@@ -336,5 +348,38 @@
 </script>
 <!-- 공통 연출(입자·클릭·기울기) -->
 <script src="../fx.js"></script>
+
+<div class="askmask" id="askmask">
+  <div class="askmodal">
+    <h3>💬 문의하기</h3>
+    <p>서곱철에게 하고 싶은 말을 남겨주세요! (익명)</p>
+    <textarea id="askmsg" placeholder="문의 내용을 입력해주세요..."></textarea>
+    <div class="askbtns">
+      <button class="no" onclick="closeAsk()">취소</button>
+      <button class="yes" onclick="sendAsk()">보내기</button>
+    </div>
+  </div>
+</div>
+<script>
+function openAsk(){ document.getElementById('askmask').classList.add('on'); }
+function closeAsk(){ document.getElementById('askmask').classList.remove('on'); }
+async function sendAsk(){
+  var t = document.getElementById('askmsg');
+  var v = (t.value || '').trim();
+  if(!v){ alert('내용을 입력해주세요!'); return; }
+  try{ await insertRow('inquiries', { message: v }); alert('문의가 전송되었습니다! 고맙곱창 🩷'); }
+  catch(e){ alert('전송에 실패했어요. 잠시 후 다시 시도해 주세요.'); }
+  t.value = ''; closeAsk();
+}
+document.getElementById('askmask').onclick = function(e){ if(e.target.id === 'askmask') closeAsk(); };
+(function(){
+  var box = document.getElementById('dkbox'); if(!box) return;
+  box.onclick = function(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+  };
+})();
+</script>
+
 </body>
 </html>

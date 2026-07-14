@@ -23,11 +23,12 @@
   border:1.5px solid var(--main-light);box-shadow:var(--shadow)}
 .avwrap{position:relative;display:grid;place-items:center;cursor:pointer}
 .avatar{width:180px;height:180px;border-radius:50%;object-fit:cover;display:block;
-  border:5px solid var(--white);box-shadow:0 0 0 3px var(--main),0 14px 30px rgba(150,90,100,.28);
+  border:5px solid var(--card);
+  box-shadow:0 0 0 3px var(--main), 0 14px 30px rgba(150,90,100,.26);
   background:var(--main-light);transition:transform .25s}
 .avwrap:hover .avatar{transform:scale(1.04)}
-.ring{position:absolute;width:212px;height:212px;border-radius:50%;border:2px dashed var(--main-dark);
-  opacity:.45;animation:spin2 22s linear infinite}
+.ring{position:absolute;width:214px;height:214px;border-radius:50%;border:2px dashed var(--main-dark);
+  opacity:.35;animation:spin2 22s linear infinite}
 @keyframes spin2{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.ring{animation:none}}
 .phero h1{font-family:var(--katuri);font-weight:900;font-size:60px;letter-spacing:6px;
@@ -124,16 +125,28 @@ body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
 <script>if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');</script>
 
 <!-- nav -->
+<svg width="0" height="0" style="position:absolute">
+<symbol id="gop" viewBox="0 0 110 98">
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#C98E71" stroke-width="17" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#E9B79B" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#F7DCC7" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" opacity=".75"/>
+  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#C98E71" stroke-width="15" stroke-dasharray="1.5 13" opacity=".5"/>
+</symbol>
+</svg>
+
 <nav class="nav">
   <div class="nav-inner">
-    <a class="nav-logo" href="../">서곱철</a>
-    <a href="../">메인</a>
-    <a href="./" class="active">프로필</a>
-    <a href="../schedule/">일정</a>
-    <a href="../notice/">공지</a>
-    <a href="../work/">업보</a>
-    <a href="../dress/">옷장</a>
-    <button class="theme-switch" id="themeBtn" aria-label="다크모드"><span class="knob">🌙</span></button>
+    <a class="nav-logo" href="../"><span class="lg"><svg viewBox="0 0 110 98" style="width:22px;height:22px"><use href="#gop"/></svg></span>서곱철</a>
+    <div class="nav-menu">
+      <a href="../">메인</a>
+      <a href="../profile/" class="active">프로필</a>
+      <a href="../schedule/">일정</a>
+      <a href="../notice/">공지</a>
+      <a href="../work/">업보</a>
+      <a href="../dress/">옷장</a>
+    </div>
+    <div class="dkbox" id="dkbox">다크 모드<span class="sw"><i></i></span></div>
+    <button class="askbtn" onclick="openAsk()">✉ 문의</button>
   </div>
 </nav>
 
@@ -291,17 +304,7 @@ body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
   </footer>
 </div>
 
-<script>
-/* 다크모드 */
-var tb=document.getElementById('themeBtn');
-function syncKnob(){ tb.querySelector('.knob').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙'; }
-syncKnob();
-tb.onclick=function(){
-  document.body.classList.toggle('dark');
-  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-  syncKnob();
-};
-</script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
@@ -312,8 +315,10 @@ tb.onclick=function(){
     const p = (data && data.data) || {};
 
     document.querySelectorAll('[data-hook]').forEach(function(el){
-      const k = el.dataset.hook;
-      if(p[k]) el.innerHTML = String(p[k]).replace(/\n/g,'<br>');
+      const k = el.dataset.hook, v = p[k];
+      if(v === undefined || v === null || v === '') return;
+      if(typeof v === 'object') return;              // 배열/객체는 전용 렌더러가 처리
+      el.innerHTML = String(v).replace(/\n/g,'<br>');
     });
 
     const av = document.querySelector('.avatar');
@@ -355,29 +360,63 @@ tb.onclick=function(){
       }).join('');
     });
 
-    // 능력치 ("이름:숫자" 줄바꿈)
+    // 능력치 — 문자열("이름:숫자" 줄바꿈) / 배열 둘 다 허용
     const sb = document.getElementById('stat-box');
     if(sb && p['stats']){
-      sb.innerHTML = String(p['stats']).split('\n').filter(Boolean).map(function(line,i,arr){
-        const m = line.split(':');
-        const name = (m[0]||'').trim(), val = Math.max(0, Math.min(100, parseInt(m[1]||'0',10)||0));
-        const last = (i===arr.length-1) ? ' style="margin:0"' : '';
-        return '<div class="stat"'+last+'><div class="top"><span>'+name+'</span><i>'+val+'</i></div>'+
-               '<div class="bar"><span class="fill" style="width:'+val+'%"></span></div></div>';
-      }).join('');
+      const raw = p['stats'];
+      let rows = [];
+      if(Array.isArray(raw)){
+        rows = raw.map(function(it){
+          if(it && typeof it === 'object'){
+            const nm = it.name || it.label || it.key || '';
+            const vl = parseInt(it.value !== undefined ? it.value : (it.val !== undefined ? it.val : 0), 10) || 0;
+            return [String(nm).trim(), vl];
+          }
+          const m = String(it).split(':');
+          return [(m[0]||'').trim(), parseInt(m[1]||'0',10)||0];
+        });
+      } else if(typeof raw === 'string'){
+        rows = raw.split('\n').filter(Boolean).map(function(line){
+          const m = line.split(':');
+          return [(m[0]||'').trim(), parseInt(m[1]||'0',10)||0];
+        });
+      }
+      rows = rows.filter(function(r){ return r[0]; });
+      if(rows.length){
+        sb.innerHTML = rows.map(function(r,i){
+          const v = Math.max(0, Math.min(100, r[1]));
+          const last = (i===rows.length-1) ? ' style="margin:0"' : '';
+          return '<div class="stat"'+last+'><div class="top"><span>'+r[0]+'</span><i>'+v+'</i></div>'+
+                 '<div class="bar"><span class="fill" style="width:'+v+'%"></span></div></div>';
+        }).join('');
+      }
     }
 
-    // 마일스톤 ("달성|내용" 또는 "진행중|내용" 줄바꿈)
+    // 마일스톤 — 문자열("상태|내용" 줄바꿈) / 배열 둘 다 허용
     const mb = document.getElementById('mile-box');
     if(mb && p['milestones']){
-      mb.innerHTML = String(p['milestones']).split('\n').filter(Boolean).map(function(line){
-        const parts = line.split('|');
-        const st = (parts[0]||'').trim();
-        const txt = (parts[1]||'').trim();
-        const done = (st === '달성' || st === '달성!' );
-        return '<div class="mile'+(done?' done':'')+'"><span class="dot"></span>'+txt+
-               '<span class="d2">'+(done?'달성!':st)+'</span></div>';
-      }).join('');
+      const raw = p['milestones'];
+      let rows = [];
+      if(Array.isArray(raw)){
+        rows = raw.map(function(it){
+          if(it && typeof it === 'object') return [String(it.status || it.state || ''), String(it.text || it.name || '')];
+          const m = String(it).split('|');
+          return [(m[0]||'').trim(), (m[1]||'').trim()];
+        });
+      } else if(typeof raw === 'string'){
+        rows = raw.split('\n').filter(Boolean).map(function(line){
+          const m = line.split('|');
+          return [(m[0]||'').trim(), (m[1]||'').trim()];
+        });
+      }
+      rows = rows.filter(function(r){ return r[1]; });
+      if(rows.length){
+        mb.innerHTML = rows.map(function(r){
+          const done = (r[0] === '달성' || r[0] === '달성!');
+          return '<div class="mile'+(done?' done':'')+'"><span class="dot"></span>'+r[1]+
+                 '<span class="d2">'+(done?'달성!':r[0])+'</span></div>';
+        }).join('');
+      }
     }
 
     if(typeof loadOriginalSongs==='function') await loadOriginalSongs();
@@ -396,5 +435,38 @@ setTimeout(function(){ document.body.classList.add('ready'); }, 1200);
 </script>
 
 <script src="../fx.js"></script>
+
+<div class="askmask" id="askmask">
+  <div class="askmodal">
+    <h3>💬 문의하기</h3>
+    <p>서곱철에게 하고 싶은 말을 남겨주세요! (익명)</p>
+    <textarea id="askmsg" placeholder="문의 내용을 입력해주세요..."></textarea>
+    <div class="askbtns">
+      <button class="no" onclick="closeAsk()">취소</button>
+      <button class="yes" onclick="sendAsk()">보내기</button>
+    </div>
+  </div>
+</div>
+<script>
+function openAsk(){ document.getElementById('askmask').classList.add('on'); }
+function closeAsk(){ document.getElementById('askmask').classList.remove('on'); }
+async function sendAsk(){
+  var t = document.getElementById('askmsg');
+  var v = (t.value || '').trim();
+  if(!v){ alert('내용을 입력해주세요!'); return; }
+  try{ await insertRow('inquiries', { message: v }); alert('문의가 전송되었습니다! 고맙곱창 🩷'); }
+  catch(e){ alert('전송에 실패했어요. 잠시 후 다시 시도해 주세요.'); }
+  t.value = ''; closeAsk();
+}
+document.getElementById('askmask').onclick = function(e){ if(e.target.id === 'askmask') closeAsk(); };
+(function(){
+  var box = document.getElementById('dkbox'); if(!box) return;
+  box.onclick = function(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+  };
+})();
+</script>
+
 </body>
 </html>

@@ -413,9 +413,11 @@ document.getElementById('mask').onclick=function(e){if(e.target.id==='mask')cm()
       'info-content':'게임 · 소통', 'info-tags':'똥꼬발랄, 착함, 해삐',
       'main-story':'', 'like-list':'', 'dislike-list':''
     };
-    Object.keys(hooks).forEach(function(k){
-      const el = document.querySelector('[data-hook="'+k+'"]');
-      if(el && p[k]) el.innerHTML = String(p[k]).replace(/\n/g,'<br>');
+    document.querySelectorAll('[data-hook]').forEach(function(el){
+      const k = el.dataset.hook, v = p[k];
+      if(v === undefined || v === null || v === '') return;
+      if(typeof v === 'object') return;
+      el.innerHTML = String(v).replace(/\n/g,'<br>');
     });
 
     // 아바타 (직접 URL > SOOP 아이디)
