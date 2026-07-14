@@ -1,58 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap');
 /* =============================================
    버추얼 팬페이지 템플릿 — 공통 디자인 시스템
    ============================================= */
 
-@font-face {
-  font-family: 'AndongKaturi';
-  src: url('https://cdn.jsdelivr.net/gh/webdesignfarm/font/AndongKaturi.woff') format('woff');
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Gothic+A1:wght@700;800;900&family=Jua&display=swap');
 
 :root {
-  --katuri: 'Noto Sans KR','Pretendard',sans-serif;
-  --round: 'Jua','Noto Sans KR',sans-serif;
-  --hand: 'Gaegu',cursive;
+  --katuri: 'Gothic A1','Noto Sans KR',sans-serif;
+  --jua: 'Jua','Noto Sans KR',sans-serif;
+  --paper:#FDF7EC; --paper2:#F6EBD9; --pline:#DCC4B2;
   /* ⬇⬇ 새 사람 만들 때 이 5개 색만 바꾸면 서브페이지 전체 색이 바뀜 (메인 index.html의 :root도 같이 맞출 것) ⬇⬇ */
-  --main:        #8CC7AE;
-  --main-dark:   #3E8E7E;
-  --main-deep:   #2E6E5E;
-  --main-light:  #EAFBF6;
-  --bg:     #EAFBF6;
-  --card:   #FCFCFC;
-  --logo:        #3E8E7E;   /* 상단 로고 글자색 (색 바꿀 때 여기도 같이) */
-  --text:        #3D5148;
-  --text-soft:   #7C9489;
-  --text-mid:    #5F7A6E;
+  --main:        #F4C2C2;
+  --main-dark:   #C4586E;
+  --main-deep:   #B7485F;
+  --main-light:  #FCE8E8;
+  --bg:     #FBEAEA;
+  --card:   #FFFFFF;
+  --logo:        #3E2B2B;   /* 상단 로고 글자색 (색 바꿀 때 여기도 같이) */
+  --text:        #4A3730;
+  --text-soft:   #9C8177;
+  --text-mid:    #6E574E;
   --white:       #ffffff;
   --radius-lg:   24px;
   --radius-md:   16px;
   --radius-sm:   10px;
-  --shadow:      0 4px 24px rgba(120,130,145,0.13);
-  --shadow-hover:0 8px 32px rgba(120,130,145,0.25);
+  --shadow:      0 6px 26px rgba(190,120,130,0.14);
+  --shadow-hover:0 10px 34px rgba(190,120,130,0.26);
   --transition:  0.2s ease;
-  --page-width: 1180px; /* 페이지 가로폭. SOOP에서 카드가 nav선까지 안 차면 키우고, 비율 깨지면 줄이기 */
+  --page-width: 1240px; /* 페이지 가로폭. SOOP에서 카드가 nav선까지 안 차면 키우고, 비율 깨지면 줄이기 */
 }
 
 /* ── 다크모드 색 (검정 배경 + 밝은 슬레이트 글자) ── */
 body.dark {
-  --main:        #8CC7AE;
-  --main-dark:   #8FD6BC;
-  --main-deep:   #9EE0C4;
-  --main-light:  #22332C;
-  --bg:     #182320;
-  --card:   #22322C;
-  --logo:        #9EE0C4;   /* 다크: 밝게 (어두운 배경에서 잘 보이게) */
-  --text:        #DFEEE7;
-  --text-soft:   #9DB5AA;
-  --text-mid:    #B6CCC1;
-  --white:       #22322C;
+  --paper:#453739; --paper2:#3C2F31; --pline:#65504F;
+  --main:        #F4C2C2;
+  --main-dark:   #FFA9BC;
+  --main-deep:   #FFB3C3;
+  --main-light:  #3E2E33;
+  --bg:     #251D20;
+  --card:   #332A2C;
+  --logo:        #FFE8EC;   /* 다크: 밝게 (어두운 배경에서 잘 보이게) */
+  --text:        #F3E2E4;
+  --text-soft:   #BA9CA2;
+  --text-mid:    #C7ABB0;
+  --white:       #332A2C;
   --shadow:      0 4px 24px rgba(0, 0, 0, 0.5);
   --shadow-hover:0 8px 32px rgba(0, 0, 0, 0.6);
 }
-body.dark::before { display: none; }
-body { transition: background var(--transition), color var(--transition);
-  background-color: var(--bg); }
+
+body { transition: background var(--transition), color var(--transition); }
 
 /* ── 다크모드 세로 토글 (노래책 오른쪽) ── */
 .theme-switch {
@@ -69,8 +64,8 @@ body { transition: background var(--transition), color var(--transition);
   font-size: 9px; transition: top var(--transition), background var(--transition);
   box-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
-body.dark .theme-switch { background: #2B3E36; }
-body.dark .theme-switch .knob { top: 14px; background: #22322C; }
+body.dark .theme-switch { background: #22262e; }
+body.dark .theme-switch .knob { top: 14px; background: #181c22; }
 
 /* 다크모드 고정색 요소 보정 */
 body.dark .nav { background: rgba(18,18,19,0.92); }
@@ -78,7 +73,7 @@ body.dark footer { color: #e3e7ec !important; }
 body.dark .input { background: var(--card); color: var(--text); }
 body.dark .page-btn { background: var(--card); color: var(--text); }
 body.dark .badge-white { background: var(--card); }
-body.dark tr:hover td { background: #2B3E36; }
+body.dark tr:hover td { background: #22262e; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -92,19 +87,24 @@ body {
   line-height: 1.6;
 }
 
-/* ── 배경 하트 장식 ── */
-body::before {
-  content: '♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡  ♡';
-  position: fixed; top: 0; left: 0; right: 0;
-  color: var(--main-light); font-size: 18px; letter-spacing: 10px;
-  line-height: 3; word-break: break-all;
-  pointer-events: none; z-index: 0; opacity: 0.6;
+/* ── 배경: 깅엄 체크 테이블보 (body 배경 레이어 — §0.0.6) ── */
+body {
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(233,150,160,.14) 0 22px, transparent 22px 44px),
+    repeating-linear-gradient(90deg, rgba(233,150,160,.14) 0 22px, transparent 22px 44px);
+  background-attachment: fixed;
+}
+body.dark {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(233,150,160,.05) 0 22px, transparent 22px 44px),
+    repeating-linear-gradient(90deg, rgba(233,150,160,.05) 0 22px, transparent 22px 44px);
 }
 
 /* ── 상단 네비게이션 ── */
 .nav {
   position: sticky; top: 0; z-index: 200;
-  background: rgba(247,248,250,0.88);
+  background: rgba(255,252,250,0.9);
   backdrop-filter: blur(16px);
   border-bottom: 1.5px solid var(--main-light);
   display: flex; justify-content: center;
@@ -116,8 +116,10 @@ body::before {
   gap: 2px;
 }
 a.nav-logo {
-  font-family: var(--katuri);
-  font-size: 30px !important; color: var(--logo) !important;
+  font-family: var(--katuri) !important;
+  font-weight: 900 !important;
+  font-size: 28px !important; color: var(--logo) !important;
+  letter-spacing: 2px !important;
   margin-right: auto;
   padding: 10px 12px;
   line-height: 1;
@@ -284,8 +286,10 @@ tr:hover td { background: var(--main-light); }
 
 /* ── 페이지 타이틀 ── */
 .page-title {
-  font-family: 'Pretendard','Noto Sans KR',sans-serif;
-  font-size: 32px; color: var(--main-dark);
+  font-family: var(--katuri);
+  font-weight: 900;
+  letter-spacing: 3px;
+  font-size: 32px; color: var(--main-deep);
   text-align: center; margin-bottom: 4px;
 }
 .page-subtitle {
@@ -361,137 +365,27 @@ footer {
 }
 
 
-/* ── 공통 푸터 (§8.5) ── */
-footer{ text-align:center; color:var(--text-soft); font-size:12px; line-height:1.7; margin-top:24px; font-family:'Gaegu',cursive; }
-
-h1,h2,h3,.card-title,.nav a.nav-logo{ font-family:'Jua','Noto Sans KR',sans-serif; }
-.nav a.nav-logo{ font-size:34px !important; color:var(--logo) !important; font-weight:400 !important; }
-
-.wrap{opacity:0;transition:opacity .3s} body.ready .wrap{opacity:1}
-@media (prefers-reduced-motion:reduce){ .wrap{opacity:1} }
-
-/* ═══════════════════════════════════════════════════════════
-   🍏 다꾸 테마 레이어 — 메인/프로필과 카테고리 페이지 통일
-   (HTML 구조는 그대로, 스타일만 덮어씀)
-   ═══════════════════════════════════════════════════════════ */
-:root{
-  --tape-m:rgba(158,212,191,.72); --tape-g:rgba(181,223,160,.72);
-  --tape-b:rgba(190,225,245,.72); --tape-y:rgba(255,224,178,.8);
-  --ink:#37554A; --apple:#5E8A4E; --apple-l:#B5DFA0;
+/* ═══ 서곱철 테마 추가 (영수증 · 카드) ═══ */
+.slip{
+  background:linear-gradient(180deg,var(--paper),var(--paper2));position:relative;padding:20px;
+  box-shadow:0 12px 28px rgba(120,80,70,.2);color:var(--text);
+  clip-path:polygon(0 5px,4% 0,8% 5px,12% 0,16% 5px,20% 0,24% 5px,28% 0,32% 5px,36% 0,40% 5px,44% 0,48% 5px,52% 0,56% 5px,60% 0,64% 5px,68% 0,72% 5px,76% 0,80% 5px,84% 0,88% 5px,92% 0,96% 5px,100% 0,100% calc(100% - 5px),96% 100%,92% calc(100% - 5px),88% 100%,84% calc(100% - 5px),80% 100%,76% calc(100% - 5px),72% 100%,68% calc(100% - 5px),64% 100%,60% calc(100% - 5px),56% 100%,52% calc(100% - 5px),48% 100%,44% calc(100% - 5px),40% 100%,36% calc(100% - 5px),32% 100%,28% calc(100% - 5px),24% 100%,20% calc(100% - 5px),16% 100%,12% calc(100% - 5px),8% 100%,4% calc(100% - 5px),0 100%);
 }
-body.dark{ --ink:#EAF6F0; --apple:#B5DFA0; --apple-l:#7FA05A; }
+.rl{border-top:1.5px dashed var(--pline);margin:11px 0}
+.mrow{display:flex;align-items:baseline;font-size:14px;padding:6px 0}
+.mrow>span:first-child{color:var(--text-soft);font-weight:700}
+.mrow .d{flex:1;border-bottom:1.5px dotted var(--pline);margin:0 8px;transform:translateY(-3px)}
+.mrow b{font-weight:900}
+.stp{border:2.5px solid #C0334A;color:#C0334A;font-family:var(--jua);font-size:11.5px;line-height:1.3;text-align:center;opacity:.85;flex:none}
+.stp.c{border-radius:50%;width:64px;height:64px;display:grid;place-content:center;transform:rotate(8deg)}
+.stp.s{border-radius:6px;width:62px;padding:7px 4px;transform:rotate(-7deg)}
+body.dark .stp{border-color:#FF8DA0;color:#FF8DA0}
+.jua{font-family:var(--jua)}
 
-@keyframes fallDown{from{transform:translateY(-5vh) rotate(0)}to{transform:translateY(108vh) rotate(50deg)}}
-@keyframes wobA{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
-@keyframes wobB{0%,100%{transform:rotate(1deg)}50%{transform:rotate(-1deg)}}
+/* 공통 푸터 (§8.5) */
+footer{ text-align:center; color:var(--text-soft); font-size:12px; line-height:1.8; margin-top:24px; padding-bottom:10px; }
 
-/* 떨어지는 꾸밈 (JS가 #fallbox 주입) */
-#fallbox{position:fixed;inset:0;pointer-events:none;z-index:6;overflow:hidden}
-#fallbox span{position:absolute;top:-40px;line-height:1}
-
-/* ── 내비 = 마스킹테이프 ── */
-.nav{ background:transparent !important; border:none !important; box-shadow:none !important; backdrop-filter:none !important; }
-.nav-inner{
-  max-width:var(--page-width); margin:0 auto;
-  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
-  gap:10px 8px; padding:22px clamp(14px,3vw,32px) 26px;
-}
-.nav a.nav-logo{
-  font-family:'Gaegu',cursive !important; font-weight:700 !important;
-  font-size:24px !important; color:var(--main-dark) !important;
-  background:var(--card) !important; border-radius:999px !important;
-  padding:9px 24px !important; box-shadow:0 4px 14px rgba(62,142,126,.14);
-  transform:rotate(-1.5deg); width:100%; text-align:center; margin-bottom:6px;
-  background-image:none !important;
-}
-.nav a:not(.nav-logo){
-  font-family:'Gaegu',cursive; font-weight:700; font-size:20px;
-  color:var(--ink) !important; text-decoration:none; padding:8px 22px;
-  border:none; border-radius:0; background:none;
-  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.4) 0 8px,transparent 8px 16px);
-  box-shadow:0 2px 5px rgba(62,142,126,.2); transition:transform .15s;
-}
-.nav a:not(.nav-logo):nth-of-type(2){transform:rotate(-2deg);background-color:var(--tape-m)}
-.nav a:not(.nav-logo):nth-of-type(3){transform:rotate(1.5deg);background-color:var(--tape-g)}
-.nav a:not(.nav-logo):nth-of-type(4){transform:rotate(-1deg);background-color:var(--tape-b)}
-.nav a:not(.nav-logo):nth-of-type(5){transform:rotate(2deg);background-color:var(--tape-m)}
-.nav a:not(.nav-logo):nth-of-type(6){transform:rotate(-1.5deg);background-color:var(--tape-g)}
-.nav a:not(.nav-logo):nth-of-type(7){transform:rotate(1deg);background-color:var(--tape-b)}
-.nav a:not(.nav-logo):nth-of-type(8){transform:rotate(-1deg);background-color:var(--tape-m)}
-.nav a:not(.nav-logo):nth-of-type(9){transform:rotate(1.5deg);background-color:var(--tape-g)}
-.nav a:not(.nav-logo):nth-of-type(10){transform:rotate(-1deg);background-color:var(--tape-y)}
-.nav a:not(.nav-logo):hover{ transform:translateY(-2px) rotate(0deg) !important; opacity:1; }
-.nav a.active{ box-shadow:0 3px 8px rgba(62,142,126,.32), inset 0 0 0 2.5px var(--main-dark); }
-
-/* 다크 토글 = 세로형, 마지막 링크 옆 */
-.theme-switch{
-  width:22px; height:33px; border-radius:12px;
-  border:2px solid var(--main) !important; background:var(--card) !important;
-  margin-left:8px; flex-shrink:0;
-}
-.theme-switch .knob{ font-size:11px; }
-
-/* ── 제목 = 둥근 폰트 ── */
-.page-title{
-  font-family:'Jua','Noto Sans KR',sans-serif !important;
-  color:var(--ink) !important; letter-spacing:0;
-}
-.page-subtitle{
-  font-family:'Gaegu',cursive !important; font-size:19px !important;
-  color:var(--text-soft) !important;
-}
-
-/* ── 카드 = 메모지 (비정형 라운드 + 테이프) ── */
-.card{
-  background:var(--card) !important;
-  border:none !important;
-  border-radius:14px 5px 16px 6px !important;
-  box-shadow:0 8px 20px rgba(62,142,126,.16) !important;
-  position:relative;
-}
-.card:nth-of-type(even){ border-radius:5px 15px 6px 16px !important; }
-.card::before{
-  content:''; position:absolute; top:-12px; left:50%;
-  width:92px; height:26px; transform:translateX(-50%) rotate(-3deg);
-  background-color:var(--tape-m);
-  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.4) 0 8px,transparent 8px 16px);
-  box-shadow:0 1px 3px rgba(0,0,0,.08); z-index:2; pointer-events:none;
-}
-.card-title{
-  font-family:'Jua','Noto Sans KR',sans-serif !important;
-  color:var(--ink) !important;
-}
-
-/* ── 리스트/아이템 = 손글씨 톤 ── */
-.notice-title,.up-title,.diary-title,.item-title,.song-title{
-  font-family:'Jua','Noto Sans KR',sans-serif !important; color:var(--ink) !important;
-}
-.notice-date,.up-date,.diary-date,.notice-count,.item-date{
-  font-family:'Gaegu',cursive !important; font-size:16px !important; color:var(--text-soft) !important;
-}
-.notice-item,.up-item,.diary-item{ border-radius:10px 4px 12px 5px !important; }
-.notice-item.pinned{ box-shadow:inset 0 0 0 2.5px var(--apple-l) !important; }
-
-/* 버튼·탭 = 다꾸 톤 */
-.btn,.tab,.cat-tab,.page-btn,.toggle-btn{
-  font-family:'Gaegu',cursive !important; font-weight:700 !important;
-  border-radius:16px 6px 16px 6px !important;
-}
-.tab.active,.cat-tab.active,.toggle-btn.active,.btn-primary{
-  background:var(--main) !important; color:#fff !important; border-color:var(--main) !important;
-}
-
-/* 달력(일정) */
-.cal-day,.cal-cell{ border-radius:10px 4px 12px 5px !important; }
-.cal-weekday,.cal-head{ font-family:'Jua','Noto Sans KR',sans-serif !important; color:var(--ink) !important; }
-
-/* 옷장 포스터 */
-.poster,.dress-card,.item-card{ border-radius:12px 5px 14px 6px !important; }
-
-/* 푸터 */
-footer{ font-family:'Gaegu',cursive !important; font-size:17px !important; padding:44px 0 24px !important; }
-
-@media (prefers-reduced-motion:reduce){ *{animation:none !important} }
-
-/* 이모지 → 이미지 아이콘 */
-.e-ico{display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.18em;background-size:contain;background-repeat:no-repeat;background-position:center;margin:0 .04em}
+/* FOUC 방지 (§9.5) */
+.wrap{opacity:0;transition:opacity .3s}
+body.ready .wrap{opacity:1}
+@media (prefers-reduced-motion: reduce){ .wrap{opacity:1} }
