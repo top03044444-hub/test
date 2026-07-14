@@ -208,7 +208,7 @@ tr:hover td { background: var(--main-light); }
 
 /* ── 폼 인풋 ── */
 .input {
-  width: 100%; padding: 10px 14px;
+  width: 100%; box-sizing: border-box; padding: 10px 14px;
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--main-light);
   font-size: 14px; font-family: inherit;

@@ -18,9 +18,9 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-grid .input, .form-grid textarea.input { width:100%; box-sizing:border-box; }
+    .form-grid .form-field.full { grid-column: 1 / -1; }
     .form-grid .full { grid-column: 1 / -1; }
-    .delete-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 16px; padding: 4px 8px; border-radius: 6px; transition: color 0.2s; }
-    .delete-btn:hover { color: #e05; }
     .avatar-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--main-light); display: none; }
     .ord-btn { width: 22px; height: 18px; line-height: 1; padding: 0; border: 1px solid var(--main-light); background: var(--card); color: var(--main-dark); border-radius: 5px; font-size: 9px; cursor: pointer; transition: background .2s; }
     .ord-btn:hover:not(:disabled) { background: var(--main-light); }
@@ -36,6 +36,17 @@
   .pal-row .input{ margin:0; height:32px; font-size:12px; padding:4px 8px; }
   .pal-row .pal-desc{ grid-column:1 / -1; font-size:11px; color:var(--text-soft); margin-top:2px; }
   @media(max-width:720px){ .palette{ grid-template-columns:1fr; } }
+
+  .table-wrap{ overflow-x:auto; }
+  .table-wrap table{ width:100%; border-collapse:collapse; }
+  .table-wrap th{ text-align:left; font-size:12px; font-weight:800; color:var(--main-dark); background:var(--main-light); padding:11px 14px; white-space:nowrap; }
+  .table-wrap th:first-child{ border-radius:9px 0 0 9px; }
+  .table-wrap th:last-child{ border-radius:0 9px 9px 0; text-align:center; width:56px; }
+  .table-wrap td{ font-size:13px; padding:12px 14px; border-bottom:1px solid var(--main-light); vertical-align:middle; }
+  .table-wrap td:last-child{ text-align:center; }
+  .table-wrap tr:last-child td{ border-bottom:0; }
+  .delete-btn{ background:none; border:none; cursor:pointer; color:var(--text-soft); font-size:16px; padding:4px 8px; border-radius:6px; transition:color .2s; }
+  .delete-btn:hover{ color:#e05; }
 </style>
 </head>
 <body>
@@ -65,6 +76,7 @@
       <button class="tab-btn" onclick="switchTab('work',this)">⚡ 업보</button>
       <button class="tab-btn" onclick="switchTab('dress',this)">👗 옷장</button>
       <button class="tab-btn" onclick="switchTab('inquiry',this)">✉️ 문의</button>
+      <button class="tab-btn" onclick="switchTab('theme',this)">🎨 테마</button>
     </div>
   </div>
 
@@ -153,27 +165,7 @@
       <div class="form-field"><label class="input-label">X (트위터)</label><input class="input" id="f-link-x" type="url" placeholder="https://"></div>
       <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
     </div>
-  <div class="card">
-      <div class="card-title">🎨 색상 팔레트</div>
-      <div class="hint" style="margin-bottom:12px">
-        여기서 색을 바꾸면 <b>메인 · 프로필 · 모든 카테고리 페이지</b>에 즉시 반영돼요. (다크모드는 그대로 유지)<br>
-        비워두면 기본 색으로 돌아갑니다.
-      </div>
-      <div class="palette">
-        <div class="pal-row"><input type="color" id="c-theme-main" oninput="syncColor('theme-main')"><label>메인 색</label><input class="input" id="f-theme-main" placeholder="#F4C2C2" oninput="syncHex('theme-main')"><div class="pal-desc">버튼·배지·강조</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-main-dark" oninput="syncColor('theme-main-dark')"><label>진한 메인</label><input class="input" id="f-theme-main-dark" placeholder="#C4586E" oninput="syncHex('theme-main-dark')"><div class="pal-desc">제목·요일 헤더</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-main-deep" oninput="syncColor('theme-main-deep')"><label>더 진한 메인</label><input class="input" id="f-theme-main-deep" placeholder="#B7485F" oninput="syncHex('theme-main-deep')"><div class="pal-desc">카드 제목</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-main-light" oninput="syncColor('theme-main-light')"><label>연한 메인</label><input class="input" id="f-theme-main-light" placeholder="#FCE8E8" oninput="syncHex('theme-main-light')"><div class="pal-desc">테두리·배경 톤</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-bg" oninput="syncColor('theme-bg')"><label>페이지 배경</label><input class="input" id="f-theme-bg" placeholder="#FBEAEA" oninput="syncHex('theme-bg')"><div class="pal-desc">바깥 배경색</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-logo" oninput="syncColor('theme-logo')"><label>로고 글자</label><input class="input" id="f-theme-logo" placeholder="#3E2B2B" oninput="syncHex('theme-logo')"><div class="pal-desc">상단 로고</div></div>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-        <button class="btn" onclick="resetPalette()">기본값으로</button>
-        <button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button>
-      </div>
-    </div>
-
-      </div>
+  </div>
 
   <div class="tab-panel" id="tab-profile">
 <div class="card">
@@ -420,6 +412,38 @@
       <div id="inquiry-list"><div class="spinner"></div></div>
     </div>
   </div>
+
+  <!-- 테마 탭 -->
+  <div class="tab-panel" id="tab-theme">
+    <div class="card">
+      <div class="card-title">🎨 색상 팔레트</div>
+      <div class="hint" style="margin-bottom:12px">
+        여기서 색을 바꾸면 <b>메인 · 프로필 · 모든 카테고리 페이지</b>에 즉시 반영돼요. (다크모드는 그대로 유지)<br>
+        비워두면 기본 색으로 돌아갑니다.
+      </div>
+      <div class="palette">
+        <div class="pal-row"><input type="color" id="c-theme-main" oninput="syncColor('theme-main')"><label>메인 색</label><input class="input" id="f-theme-main" placeholder="#F4C2C2" oninput="syncHex('theme-main')"><div class="pal-desc">버튼·배지·강조</div></div>
+        <div class="pal-row"><input type="color" id="c-theme-main-dark" oninput="syncColor('theme-main-dark')"><label>진한 메인</label><input class="input" id="f-theme-main-dark" placeholder="#C4586E" oninput="syncHex('theme-main-dark')"><div class="pal-desc">제목·요일 헤더</div></div>
+        <div class="pal-row"><input type="color" id="c-theme-main-deep" oninput="syncColor('theme-main-deep')"><label>더 진한 메인</label><input class="input" id="f-theme-main-deep" placeholder="#B7485F" oninput="syncHex('theme-main-deep')"><div class="pal-desc">카드 제목</div></div>
+        <div class="pal-row"><input type="color" id="c-theme-main-light" oninput="syncColor('theme-main-light')"><label>연한 메인</label><input class="input" id="f-theme-main-light" placeholder="#FCE8E8" oninput="syncHex('theme-main-light')"><div class="pal-desc">테두리·배경 톤</div></div>
+        <div class="pal-row"><input type="color" id="c-theme-bg" oninput="syncColor('theme-bg')"><label>페이지 배경</label><input class="input" id="f-theme-bg" placeholder="#FBEAEA" oninput="syncHex('theme-bg')"><div class="pal-desc">바깥 배경색</div></div>
+        <div class="pal-row"><input type="color" id="c-theme-logo" oninput="syncColor('theme-logo')"><label>로고 글자</label><input class="input" id="f-theme-logo" placeholder="#3E2B2B" oninput="syncHex('theme-logo')"><div class="pal-desc">상단 로고</div></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn" onclick="resetPalette()">기본값으로</button>
+        <button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">💡 팔레트 안내</div>
+      <div class="hint" style="line-height:2">
+        여기서 바꾼 색은 <b>메인·프로필·공지·일정·업보·옷장 전 페이지</b>에 한 번에 적용돼요.<br>
+        각 색을 바꾸고 <b>저장 ♥</b>을 누르면 사이트에 반영됩니다. (다크모드 색은 그대로 유지)<br>
+        <b>기본값으로</b> 버튼을 누르면 서곱철 기본 핑크로 되돌아가요.
+      </div>
+    </div>
+  </div>
+
 
 </div>
 <footer>© 2026 서곱철 관리자 ♥</footer>
