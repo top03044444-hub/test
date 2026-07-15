@@ -64,7 +64,7 @@ body.dark .dk .sw{background:var(--main-dark)}body.dark .dk .sw i{left:23px}
   background-size:cover,cover;
   border:1.5px solid var(--line)}
 /* 뒷모습 캐릭터 — 배경 위에 겹침(가운데 뒤쪽) */
-.hero .backchar{position:absolute;left:19%;bottom:0;
+.hero .backchar{position:absolute;left:6%;bottom:0;
   width:42%;height:100%;
   background-image:var(--backchar);background-size:contain;background-position:center bottom;background-repeat:no-repeat;
   pointer-events:none;z-index:1;opacity:.97}
@@ -79,7 +79,7 @@ body.dark .hero{background-image:
     linear-gradient(180deg,rgba(30,22,25,.72) 0%,rgba(30,22,25,.58) 100%),
     var(--hero);}
 .cb{display:grid;place-items:center}
-.hero .mid{position:absolute;left:47%;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;width:24%}
+.hero .mid{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;width:auto;margin:0 auto;pointer-events:none}
 #avatarWrap{cursor:pointer;position:absolute;left:3%;top:50%;transform:translateY(-50%);z-index:3;width:210px;height:210px}
 .avatar{width:190px;height:190px;border-radius:50%;object-fit:cover;display:block;
   border:5px solid var(--card);
@@ -155,11 +155,11 @@ body.dark .stp{border-color:#FF8DA0;color:#FF8DA0}
 .mainrow{align-items:stretch}
 .profcol{grid-row:1 / span 3;display:flex;flex-direction:column}
 .profcol .fill{flex:1;min-height:8px}
-.abtcard{grid-column:2;display:flex;flex-direction:column}
-.mbticard{grid-column:3;display:flex;flex-direction:column;justify-content:center}
-.schcard{grid-column:2 / span 2}
-.likecard{grid-column:2}
-.linkcard{grid-column:3}
+.schcard{grid-column:2 / span 2;grid-row:1}
+.abtcard{grid-column:2;grid-row:2;display:flex;flex-direction:column}
+.mbticard{grid-column:3;grid-row:2;display:flex;flex-direction:column;justify-content:center}
+.likecard{grid-column:2;grid-row:3}
+.linkcard{grid-column:3;grid-row:3}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .vodgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .vod-ph,.vod-item{background:var(--card);border:1.5px solid var(--line);border-radius:13px;padding:10px;transition:.18s}
@@ -208,7 +208,7 @@ body.ready .wrap{opacity:1}
   .hero h1{font-size:44px}
   .days{grid-template-columns:repeat(4,1fr)}
   .lks{grid-template-columns:repeat(2,1fr)}
-  .abtcard,.mbticard,.schcard,.likecard,.linkcard{grid-column:auto}
+  .abtcard,.mbticard,.schcard,.likecard,.linkcard{grid-column:auto;grid-row:auto}
   .profcol{grid-row:auto}
   .vodgrid{grid-template-columns:1fr}
   .rfoot{margin:18px -14px 0;padding:14px}
@@ -307,7 +307,21 @@ body.ready .wrap{opacity:1}
       <div class="bc"></div>
     </div>
 
-    <!-- About (2~3열 가로 span) -->
+    <!-- 이번 주 일정 (2~3열 가로 span) -->
+    <div class="card schcard">
+      <div class="ct">📅 이번 주 일정<span class="ln"></span><small>* 변경될 수 있어요!</small></div>
+      <div class="days">
+        <div class="day off"><div class="dh">월</div><div class="db" id="day-0">휴방</div></div>
+        <div class="day"><div class="dh">화</div><div class="db" id="day-1">오후 방송<small>20:00~</small></div></div>
+        <div class="day"><div class="dh">수</div><div class="db" id="day-2">게임 방송<small>19:00~</small></div></div>
+        <div class="day"><div class="dh">목</div><div class="db" id="day-3">잡담 방송<small>20:00~</small></div></div>
+        <div class="day"><div class="dh">금</div><div class="db" id="day-4">합방<small>21:00~</small></div></div>
+        <div class="day"><div class="dh">토</div><div class="db" id="day-5">노래 방송<small>20:00~</small></div></div>
+        <div class="day off"><div class="dh">일</div><div class="db" id="day-6">휴방</div></div>
+      </div>
+      <div style="font-size:11.5px;color:var(--text-soft);margin-top:9px">※ 방송시간은 랜덤 — 오방공 확인! 🩷</div>
+    </div>
+
     <!-- About -->
     <div class="card abtcard">
       <div class="ct">👩‍🍳 About 서곱철<span class="ln"></span></div>
@@ -322,21 +336,6 @@ body.ready .wrap{opacity:1}
         <div style="font-size:12px;color:var(--text-soft);font-weight:700;margin-bottom:7px">특징</div>
         <div class="tags" data-tags="info-tags"><span class="tag">똥꼬발랄</span><span class="tag">착함</span><span class="tag">해삐</span></div>
       </div>
-    </div>
-
-    <!-- 이번 주 일정 (2~3열 가로 span) -->
-    <div class="card schcard">
-      <div class="ct">📅 이번 주 일정<span class="ln"></span><small>* 변경될 수 있어요!</small></div>
-      <div class="days">
-        <div class="day off"><div class="dh">월</div><div class="db" id="day-0">휴방</div></div>
-        <div class="day"><div class="dh">화</div><div class="db" id="day-1">오후 방송<small>20:00~</small></div></div>
-        <div class="day"><div class="dh">수</div><div class="db" id="day-2">게임 방송<small>19:00~</small></div></div>
-        <div class="day"><div class="dh">목</div><div class="db" id="day-3">잡담 방송<small>20:00~</small></div></div>
-        <div class="day"><div class="dh">금</div><div class="db" id="day-4">합방<small>21:00~</small></div></div>
-        <div class="day"><div class="dh">토</div><div class="db" id="day-5">노래 방송<small>20:00~</small></div></div>
-        <div class="day off"><div class="dh">일</div><div class="db" id="day-6">휴방</div></div>
-      </div>
-      <div style="font-size:11.5px;color:var(--text-soft);margin-top:9px">※ 방송시간은 랜덤 — 오방공 확인! 🩷</div>
     </div>
 
     <!-- 좋아함/싫어함 -->
