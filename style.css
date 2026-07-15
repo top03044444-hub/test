@@ -53,18 +53,15 @@ body.dark {
 
 body { transition: background var(--transition), color var(--transition); }
 
-/* ── 배경: 깅엄 체크 테이블보 (body 배경 레이어 — §0.0.6) ── */
+/* ── 배경: 연핑크 (전 페이지 공통) ── */
 body {
-  background-color: var(--bg);
-  background-image:
-    repeating-linear-gradient(0deg, rgba(233,150,160,.14) 0 22px, transparent 22px 44px),
-    repeating-linear-gradient(90deg, rgba(233,150,160,.14) 0 22px, transparent 22px 44px);
+  background-color: #FCEEF1;
+  background-image: linear-gradient(180deg, #FDF2F5 0%, #FBE8ED 100%);
   background-attachment: fixed;
 }
 body.dark {
-  background-image:
-    repeating-linear-gradient(0deg, rgba(233,150,160,.05) 0 22px, transparent 22px 44px),
-    repeating-linear-gradient(90deg, rgba(233,150,160,.05) 0 22px, transparent 22px 44px);
+  background-color: var(--bg);
+  background-image: none;
 }
 
 /* ── wrap: 메인처럼 둥근 카드 박스 ── */
