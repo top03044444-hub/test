@@ -28,7 +28,7 @@
   --shadow:      0 6px 26px rgba(190,120,130,0.14);
   --shadow-hover:0 10px 34px rgba(190,120,130,0.26);
   --transition:  0.2s ease;
-  --page-width: 1100px; /* 페이지 가로폭. SOOP에서 카드가 nav선까지 안 차면 키우고, 비율 깨지면 줄이기 */
+  --page-width: 1280px; /* 페이지 가로폭. SOOP에서 카드가 nav선까지 안 차면 키우고, 비율 깨지면 줄이기 */
 }
 
 /* ── 다크모드 색 (검정 배경 + 밝은 슬레이트 글자) ── */
