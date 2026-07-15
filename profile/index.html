@@ -31,10 +31,12 @@
   opacity:.35;animation:spin2 22s linear infinite}
 @keyframes spin2{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.ring{animation:none}}
+.pheadcol{display:flex;flex-direction:column;align-items:flex-start;gap:9px}
 .phero h1{font-family:var(--katuri);font-weight:900;font-size:60px;letter-spacing:6px;
-  color:var(--logo);line-height:1.1;text-shadow:0 2px 0 rgba(255,252,248,.9),0 0 20px rgba(255,250,245,.85)}
+  color:var(--logo);line-height:1;margin:0;text-shadow:0 2px 0 rgba(255,252,248,.9),0 0 20px rgba(255,250,245,.85)}
 .rib{display:inline-block;background:var(--main);color:#fff;font-family:var(--jua);font-size:15px;
-  padding:7px 22px;border-radius:999px;margin-top:8px}
+  padding:7px 22px;border-radius:999px;margin:0}
+.pheadcol .hbadges{margin-top:8px}
 .hbadges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .hbadges span{background:var(--white);border:1.5px solid var(--main);color:var(--main-deep);
   font-family:var(--jua);font-size:13px;padding:6px 15px;border-radius:999px}
@@ -113,6 +115,7 @@ body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
 
 @media(max-width:1000px){
   .phero{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .pheadcol{align-items:center}
   .phero h1{font-size:42px}
   .hbadges{justify-content:center}
   .c2,.c3,.c-side{grid-template-columns:1fr}
@@ -152,7 +155,7 @@ body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
       <img class="avatar" src="https://profile.img.sooplive.co.kr/LOGO/mi/mimigkdms/mimigkdms.jpg"
            alt="서곱철" referrerpolicy="no-referrer">
     </div>
-    <div>
+    <div class="pheadcol">
       <h1 data-hook="info-name">서곱철</h1>
       <div class="rib" data-hook="info-catchphrase">곱창 좋아하고 쎄보이고 싶은 사람</div>
       <div class="hbadges">
