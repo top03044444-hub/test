@@ -395,7 +395,7 @@ body.ready .wrap{opacity:1}
 /* 우측: 발행정보 (등폭) */
 .ph-meta{
   justify-self:end;text-align:right;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:10.5px;line-height:1.7;color:#B06B7C;letter-spacing:.5px;
 }
 .ph-meta b{ color:#9C3F55; font-weight:700; }
@@ -403,7 +403,7 @@ body.ready .wrap{opacity:1}
 /* 중앙: 제목 */
 .ph-center{ min-width:0; }
 .pagehero .ph-title{
-  font-family:var(--katuri);font-weight:900;font-size:28px;letter-spacing:7px;
+  font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:28px;letter-spacing:7px;
   color:var(--main-deep);line-height:1.25;margin-right:-7px;
 }
 .pagehero .ph-line{
@@ -411,13 +411,13 @@ body.ready .wrap{opacity:1}
   border-top:1.5px dotted var(--pline2, #D5BC9B);
 }
 .pagehero .ph-sub{
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:11.5px;font-weight:700;color:#B06B7C;letter-spacing:.5px;
 }
 /* 좌측: 발행 라벨 (바코드 대체) */
 .ph-left{
   justify-self:start;text-align:left;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:10.5px;line-height:1.7;color:#B06B7C;letter-spacing:.5px;
 }
 .ph-left b{ color:#9C3F55; font-weight:700; }
