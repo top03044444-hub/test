@@ -3,8 +3,8 @@
    ✅ 이 파일 상단 두 줄만 본인 값으로 교체!
    ============================================= */
 
-const SUPABASE_URL  = 'https://evuszheracvnzjtbzxec.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2dXN6aGVyYWN2bnpqdGJ6eGVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMDk5MjYsImV4cCI6MjA5NzY4NTkyNn0.uEGBJZnaGHXIysGePIs9i4UpRVkrsbRZUArmof2JL_s';
+const SUPABASE_URL  = 'https://ajcmzyppnrvtrtwwvdhu.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqY216eXBwbnJ2dHJ0d3d2ZGh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NDk0MzQsImV4cCI6MjA5NzUyNTQzNH0.m1BADBmuP2EeL8Z0K_liLgwBDOePVAy996pCiFICMTc';
 
 // ── Supabase 클라이언트 초기화 ──
 const { createClient } = supabase;
@@ -32,7 +32,7 @@ async function fetchAll(table, options = {}) {
  */
 async function insertRow(table, row) {
   const { error } = await db.from(table).insert(row);
-  if (error) { console.error(`insertRow(${table}) 오류:`, error); return false; }
+  if (error) { console.error(`insertRow(${table}) 오류:`, error); window.__dbErr = error.message; return false; }
   return true;
 }
 
@@ -41,7 +41,7 @@ async function insertRow(table, row) {
  */
 async function deleteRow(table, id) {
   const { error } = await db.from(table).delete().eq('id', id);
-  if (error) { console.error(`deleteRow(${table}) 오류:`, error); return false; }
+  if (error) { console.error(`deleteRow(${table}) 오류:`, error); window.__dbErr = error.message; return false; }
   return true;
 }
 
@@ -50,7 +50,7 @@ async function deleteRow(table, id) {
  */
 async function updateRow(table, id, updates) {
   const { error } = await db.from(table).update(updates).eq('id', id);
-  if (error) { console.error(`updateRow(${table}) 오류:`, error); return false; }
+  if (error) { console.error(`updateRow(${table}) 오류:`, error); window.__dbErr = error.message; return false; }
   return true;
 }
 
@@ -135,19 +135,20 @@ function enableIframeAutoHeight() { initIframeResize(); }
 
 /* =============================================
    🎨 색상 팔레트 자동 적용 (전 페이지 공통)
-   admin > 🎨 테마 탭에서 저장한 색을 모든 페이지에 반영
+   admin/magazine.html > 🎨 테마 탭에서 저장한 색을 모든 페이지에 반영
    ============================================= */
 async function applyTheme(){
   try{
     const { data } = await db.from('profile').select('data').eq('id',1).single();
     const p = (data && data.data) || {};
     const map = {
-      'theme-main':      '--main',
-      'theme-main-dark': '--main-dark',
-      'theme-main-deep': '--main-deep',
-      'theme-main-light':'--main-light',
-      'theme-bg':        '--bg',
-      'theme-logo':      '--logo'
+      'theme-paper':     '--paper',
+      'theme-navy':      '--navy',
+      'theme-navy-deep': '--navy-deep',
+      'theme-blue-soft': '--blue-soft',
+      'theme-lime':      '--lime',
+      'theme-ink':       '--ink',
+      'theme-white':     '--white'
     };
     Object.keys(map).forEach(function(k){
       if(p[k]) document.documentElement.style.setProperty(map[k], p[k]);

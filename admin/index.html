@@ -3,9 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔐 서곱철 Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
+  <title>🔐 하요 Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:ital,wght@0,600;0,700&family=Sacramento&display=swap" rel="stylesheet">
+  <style>
+    /* ── 자체 내장 라임 디자인 시스템 (admin 전용) ── */
+    :root{
+      --main:#a2f058; --main-dark:#4f9d1c; --main-deep:#2f4d10; --main-light:#e9fbcf;
+      --bg:#f4f7ec; --card:#ffffff; --logo:#5aa11f; --ink:#2b2a26;
+      --text:#3d3a2c; --text-mid:#6b6857; --text-soft:#9a9784;
+      --radius-lg:18px; --radius-md:14px; --radius-sm:10px;
+      --shadow:0 4px 20px rgba(90,130,40,.12); --shadow-hover:0 8px 28px rgba(90,130,40,.20);
+      --transition:.2s ease;
+      --pen:'Noto Sans KR',sans-serif; --mag:'Playfair Display',serif; --script:'Sacramento',cursive;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:var(--pen);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+    .container{max-width:1000px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:16px}
+    .page-title{font-family:var(--pen);font-weight:800;font-size:30px;color:var(--main-dark);text-align:center;margin-bottom:4px}
+    .page-subtitle{font-size:13px;color:var(--text-soft);text-align:center;margin-bottom:8px}
+    .card{background:var(--card);border-radius:var(--radius-lg);border:1.5px solid var(--main-light);box-shadow:var(--shadow);padding:22px}
+    .card-title{font-size:12px;font-weight:800;color:var(--main-dark);letter-spacing:.08em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .card-title::before{content:'';display:block;width:3px;height:14px;background:var(--main);border-radius:999px;flex-shrink:0}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;border:none;text-decoration:none;transition:all var(--transition)}
+    .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+    .btn-primary{background:var(--main);color:var(--main-deep)}.btn-primary:hover{background:var(--main-dark);color:#fff}
+    .badge{display:inline-block;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600}
+    .badge-pink{background:var(--main-light);color:var(--main-dark)}
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{padding:10px 12px;background:var(--main-light);color:var(--main-deep);font-weight:700;text-align:left;font-size:12px}
+    th:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm)}th:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+    td{padding:12px;border-bottom:1px solid var(--main-light);color:var(--text-mid);vertical-align:middle}
+    tr:last-child td{border-bottom:none}tr:hover td{background:var(--main-light)}
+    .input{width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--main-light);font-size:14px;font-family:inherit;outline:none;background:#fff;color:var(--text);transition:border-color var(--transition)}
+    .input:focus{border-color:var(--main)}
+    .input-label{display:block;font-size:11px;font-weight:700;color:var(--main-dark);letter-spacing:.04em;margin-bottom:5px}
+    .form-field{margin-bottom:12px}
+    .empty{text-align:center;padding:40px 20px;color:var(--text-soft);font-size:14px}.empty-icon{font-size:36px;margin-bottom:10px}
+    .spinner{width:28px;height:28px;border:3px solid var(--main-light);border-top-color:var(--main-dark);border-radius:50%;animation:spin .8s linear infinite;margin:30px auto}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    footer{text-align:center;padding:24px;font-size:12px;color:var(--text-soft);line-height:1.7}
+    .toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);background:var(--main-dark);color:#fff;padding:12px 26px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;transition:all .3s;pointer-events:none;z-index:9999;white-space:nowrap;box-shadow:0 8px 24px rgba(90,130,40,.3);max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
   <style>
     .login-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 999; }
     .login-box { background: var(--card); border-radius: 24px; border: 1.5px solid var(--main-light); box-shadow: var(--shadow-hover); padding: 40px 36px; text-align: center; width: 320px; }
@@ -18,36 +58,14 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .form-grid .input, .form-grid textarea.input { width:100%; box-sizing:border-box; }
-    .form-grid .form-field.full { grid-column: 1 / -1; }
     .form-grid .full { grid-column: 1 / -1; }
+    .delete-btn { background: none; border: none; cursor: pointer; color: #ccc; font-size: 16px; padding: 4px 8px; border-radius: 6px; transition: color 0.2s; }
+    .delete-btn:hover { color: #e05; }
     .avatar-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--main-light); display: none; }
     .ord-btn { width: 22px; height: 18px; line-height: 1; padding: 0; border: 1px solid var(--main-light); background: var(--card); color: var(--main-dark); border-radius: 5px; font-size: 9px; cursor: pointer; transition: background .2s; }
     .ord-btn:hover:not(:disabled) { background: var(--main-light); }
     .ord-btn:disabled { opacity: .3; cursor: default; }
-  
-  .hint{ font-size:11.5px; color:var(--text-soft); margin-top:6px; line-height:1.7; }
-  .hint code{ background:var(--main-light); color:var(--main-dark); padding:2px 6px; border-radius:5px; font-size:11px; white-space:nowrap; }
-  .hint b{ color:var(--main-dark); }
-  .palette{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .pal-row{ display:grid; grid-template-columns:42px 1fr; grid-template-rows:auto auto; gap:4px 10px; align-items:center; padding:10px 12px; border:1.5px solid var(--main-light); border-radius:12px; }
-  .pal-row input[type=color]{ grid-row:1 / span 2; width:42px; height:42px; border:1.5px solid var(--main-light); border-radius:9px; background:none; cursor:pointer; padding:2px; align-self:center; }
-  .pal-row label{ font-size:13px; font-weight:800; color:var(--text); }
-  .pal-row .input{ margin:0; height:32px; font-size:12px; padding:4px 8px; }
-  .pal-row .pal-desc{ grid-column:1 / -1; font-size:11px; color:var(--text-soft); margin-top:2px; }
-  @media(max-width:720px){ .palette{ grid-template-columns:1fr; } }
-
-  .table-wrap{ overflow-x:auto; }
-  .table-wrap table{ width:100%; border-collapse:collapse; }
-  .table-wrap th{ text-align:left; font-size:12px; font-weight:800; color:var(--main-dark); background:var(--main-light); padding:11px 14px; white-space:nowrap; }
-  .table-wrap th:first-child{ border-radius:9px 0 0 9px; }
-  .table-wrap th:last-child{ border-radius:0 9px 9px 0; text-align:center; width:56px; }
-  .table-wrap td{ font-size:13px; padding:12px 14px; border-bottom:1px solid var(--main-light); vertical-align:middle; }
-  .table-wrap td:last-child{ text-align:center; }
-  .table-wrap tr:last-child td{ border-bottom:0; }
-  .delete-btn{ background:none; border:none; cursor:pointer; color:var(--text-soft); font-size:16px; padding:4px 8px; border-radius:6px; transition:color .2s; }
-  .delete-btn:hover{ color:#e05; }
-</style>
+  </style>
 </head>
 <body>
 
@@ -69,164 +87,173 @@
 
   <div class="card" style="padding:6px">
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('main',this)">🏠 곱페이지</button>
-      <button class="tab-btn" onclick="switchTab('profile',this)">🎀 소개</button>
-      <button class="tab-btn" onclick="switchTab('notice',this)">📢 곱뱅공</button>
-      <button class="tab-btn" onclick="switchTab('schedule',this)">📅 스케줄</button>
-      <button class="tab-btn" onclick="switchTab('work',this)">🎁 선물</button>
-      <button class="tab-btn" onclick="switchTab('dress',this)">👗 코디</button>
+      <button class="tab-btn active" onclick="switchTab('main',this)">🏠 메인</button>
+      <button class="tab-btn" onclick="switchTab('profile',this)">🎀 프로필</button>
+      <button class="tab-btn" onclick="switchTab('notice',this)">📢 공지</button>
+      <button class="tab-btn" onclick="switchTab('schedule',this)">📅 일정</button>
+      <button class="tab-btn" onclick="switchTab('work',this)">⚡ 업보</button>
+      <button class="tab-btn" onclick="switchTab('song',this)">🎵 노래</button>
+      <button class="tab-btn" onclick="switchTab('dress',this)">👗 옷장</button>
       <button class="tab-btn" onclick="switchTab('inquiry',this)">✉️ 문의</button>
-      <button class="tab-btn" onclick="switchTab('theme',this)">🎨 테마</button>
+    </div>
+  </div>
+
+<div class="tab-panel active" id="tab-main">
+    <div class="card" style="background:var(--main-light);border:none">
+      <div style="font-size:13px;color:var(--main-dark);font-weight:700">🏠 메인(첫 화면)에 보이는 글·이미지·문구를 여기서 바꿔요.</div>
+      <div style="font-size:12px;color:var(--text-mid);margin-top:4px">이름·생일·데뷔·소속·팬닉·링크·프사는 <b>프로필 탭</b>에서 바꾸면 메인에도 같이 반영돼요.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">상단 (로고 · 카테고리)</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">로고 글자</label><input class="input" id="mn-brand" placeholder="Hayo"></div>
+        <div class="form-field"><label class="input-label">로고 밑 소제목</label><input class="input" id="mn-sub" placeholder="V T U B E R · D A I L Y"></div>
+        <div class="form-field full"><label class="input-label">카테고리 (작은 머리말)</label><input class="input" id="mn-kicker" placeholder="PROFILE · 🐰🍀"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveMain()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">메인 기사</div>
+      <div class="form-field"><label class="input-label">큰 제목 (앞부분)</label><input class="input" id="mn-headline" placeholder="소통하고 게임하는,"></div>
+      <div class="form-field"><label class="input-label">큰 제목 강조 (초록색 부분 · 선택)</label><input class="input" id="mn-headline_em" placeholder="해맑은 토끼 하요"></div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">BY (작성자)</label><input class="input" id="mn-by" placeholder="하잎이"></div>
+        <div class="form-field"><label class="input-label">ART BY (그림 · 선택)</label><input class="input" id="mn-art" placeholder="하요"></div>
+      </div>
+      <div class="form-field"><label class="input-label">대표 이미지 URL (비우면 기본 이미지 유지)</label><input class="input" id="mn-hero" type="url" placeholder="https://... 이미지 주소"></div>
+      <div class="form-field"><label class="input-label">이미지 위 서명 글씨</label><input class="input" id="mn-sign" placeholder="Hayo"></div>
+      <div class="form-field"><label class="input-label">이미지 아래 캡션</label><input class="input" id="mn-herocap" placeholder="— 오후 12시, 오늘도 하잎이를 기다리는 하요 🍀"></div>
+      <div class="form-field"><label class="input-label">소개 문단 (lead)</label><textarea class="input" id="mn-lead" rows="3"></textarea></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveMain()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">이번 주 일정 (요일별 시간)</div>
+      <div class="form-grid"><div class="form-field"><label class="input-label">일</label><input class="input" id="mn-week-0" placeholder="12:00"></div><div class="form-field"><label class="input-label">월</label><input class="input" id="mn-week-1" placeholder="12:00"></div><div class="form-field"><label class="input-label">화</label><input class="input" id="mn-week-2" placeholder="12:00"></div><div class="form-field"><label class="input-label">수</label><input class="input" id="mn-week-3" placeholder="12:00"></div><div class="form-field"><label class="input-label">목</label><input class="input" id="mn-week-4" placeholder="12:00"></div><div class="form-field"><label class="input-label">금</label><input class="input" id="mn-week-5" placeholder="12:00"></div><div class="form-field"><label class="input-label">토</label><input class="input" id="mn-week-6" placeholder="12:00"></div></div>
+      <div style="font-size:11px;color:var(--text-soft);margin-top:-4px;margin-bottom:8px">비워두면 그 요일 칸이 빈칸으로 보여요</div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveMain()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">사이드 (프로필 박스 · 인용 카드)</div>
+      <div class="form-field"><label class="input-label">프로필 박스 라벨</label><input class="input" id="mn-plabel" placeholder="Profile"></div>
+      <div class="form-field"><label class="input-label">인용 카드 윗 글씨</label><input class="input" id="mn-qlabel" placeholder="Today's words"></div>
+      <div class="form-field"><label class="input-label">인용 문구</label><textarea class="input" id="mn-quote" rows="2" placeholder="하잎이를 세상에서 제일 사랑하는 하요 🍀"></textarea></div>
+      <div class="form-field"><label class="input-label">인용 카드 배경 이미지 URL (비우면 기본 유지)</label><input class="input" id="mn-qimg" type="url" placeholder="https://... 이미지 주소"></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveMain()">저장 ♥</button></div>
     </div>
   </div>
 
   <!-- 프로필 탭 -->
-  <div class="tab-panel active" id="tab-main">
-
+  <div class="tab-panel" id="tab-profile">
     <div class="card">
       <div class="card-title">🖼 프로필 사진</div>
       <div class="form-field">
-        <label class="input-label">프사 이미지 링크 (URL) — 추천 ⭐</label>
+        <label class="input-label">프사 이미지 링크 (URL) — 비우면 SOOP 프사 자동</label>
         <input class="input" id="f-avatar" type="url" placeholder="https://.../image.png" oninput="previewAvatar()">
-        <div style="font-size:11px;color:var(--text-soft);margin-top:6px">원하는 이미지 주소(.png/.jpg/.gif)를 넣으면 <b>이 링크가 우선</b> 사용돼요 (SOOP 대신).</div>
       </div>
       <div class="form-field">
-        <label class="input-label">SOOP 아이디 (위 링크를 비우면 이걸로 자동 연동)</label>
-        <input class="input" id="f-soop-id" type="text" placeholder="mimigkdms" oninput="previewAvatar()">
+        <label class="input-label">SOOP 아이디</label>
+        <input class="input" id="f-soop_id" type="text" placeholder="hayodayong" oninput="previewAvatar()">
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
         <div style="width:64px;height:64px;border-radius:50%;overflow:hidden;background:var(--main-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px">
-          <img id="av-preview" alt="" style="width:100%;height:100%;object-fit:cover;display:none" onerror="this.style.display='none';var p=document.getElementById('av-ph');if(p)p.style.display='flex'">
-          <span id="av-ph">🙂</span>
+          <img id="av-preview" alt="" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:cover;display:none" onerror="this.style.display='none';var q=document.getElementById('av-ph');if(q)q.style.display='flex'">
+          <span id="av-ph">🐰</span>
         </div>
-        <span style="font-size:12px;color:var(--text-soft)">← 실제로 표시될 프사 미리보기</span>
-        <button class="btn btn-primary" style="margin-left:auto" onclick="saveLocalProfile()">저장 ♥</button>
+        <span style="font-size:12px;color:var(--text-soft)">← 표시될 프사 미리보기</span>
+        <button class="btn btn-primary" style="margin-left:auto" onclick="saveProfile()">저장 ♥</button>
       </div>
-    </div>
-    <div class="card">
-      <div class="card-title">📋 프로필 정보</div>
-      <div class="form-field"><label class="input-label">이름</label><input class="input" id="f-info-name" type="text" placeholder="서곱철"></div>
-      <div class="form-field"><label class="input-label">한마디로 (부제)</label><input class="input" id="f-info-catchphrase" type="text" placeholder="곱창 좋아하고 쎄보이고 싶은 사람"></div>
-      <div class="form-field"><label class="input-label">데뷔일</label><input class="input" id="f-info-debut" type="text" placeholder="2024.06.14"></div>
-      <div class="form-field"><label class="input-label">생일 (MM.DD — D-Day 자동계산)</label><input class="input" id="f-info-birth" type="text" placeholder="06.08"></div>
-      <div class="form-field"><label class="input-label">팬 애칭</label><input class="input" id="f-info-fandom" type="text" placeholder="단골"></div>
-      <div class="form-field"><label class="input-label">소속</label><input class="input" id="f-info-agency" type="text" placeholder="쌍룡파"></div>
-      <div class="form-field"><label class="input-label">포지션</label><input class="input" id="f-info-position" type="text" placeholder="탱커"></div>
-      <div class="form-field"><label class="input-label">MBTI</label><input class="input" id="f-info-mbti" type="text" placeholder="ESFP"></div>
-      <div class="form-field"><label class="input-label">특징 태그 (쉼표 구분)</label><input class="input" id="f-info-tags" type="text" placeholder="똥꼬발랄, 착함, 해삐"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
     </div>
 
     <div class="card">
-      <div class="card-title">🎮 추가 정보</div>
-      <div class="form-field"><label class="input-label">주력 게임</label><input class="input" id="f-info-game" type="text" placeholder="배틀그라운드"></div>
-      <div class="form-field"><label class="input-label">응원 팀</label><input class="input" id="f-info-team" type="text" placeholder="한화이글스"></div>
-      <div class="form-field"><label class="input-label">애창곡</label><input class="input" id="f-info-song" type="text" placeholder="폰서트"></div>
-      <div class="form-field"><label class="input-label">컨텐츠</label><input class="input" id="f-info-content" type="text" placeholder="게임 · 소통"></div>
-      <div class="form-field"><label class="input-label">지금 진행 중 (NOW · 줄바꿈=엔터)</label><textarea class="input" id="f-now" rows="3" placeholder="6월 생일 기념 굿즈 통판 🎂"></textarea></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div class="card-title">🐰 기본 정보</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">이름 (한글)</label><input class="input" id="f-name" placeholder="하요"></div>
+        <div class="form-field"><label class="input-label">이름 (영문)</label><input class="input" id="f-name_en" placeholder="HAYO"></div>
+        <div class="form-field"><label class="input-label">생일 (MM-DD)</label><input class="input" id="f-birthday" placeholder="02-21"></div>
+        <div class="form-field"><label class="input-label">데뷔</label><input class="input" id="f-debut" placeholder="2026.04.11"></div>
+        <div class="form-field"><label class="input-label">소속</label><input class="input" id="f-agency" placeholder="개인세"></div>
+        <div class="form-field"><label class="input-label">MBTI</label><input class="input" id="f-mbti" placeholder="ENFP"></div>
+        <div class="form-field"><label class="input-label">나이 (선택)</label><input class="input" id="f-age" placeholder=""></div>
+        <div class="form-field"><label class="input-label">팬닉</label><input class="input" id="f-fan_name" placeholder="하잎이"></div>
+        <div class="form-field full"><label class="input-label">한마디 (태그라인)</label><input class="input" id="f-tagline" placeholder="짧은 인사 한 줄"></div>
+        <div class="form-field full"><label class="input-label">소개 (문단)</label><textarea class="input" id="f-intro" rows="3"></textarea></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
 
     <div class="card">
-      <div class="card-title">🩷 좋아함 / 싫어함</div>
-      <div class="form-field">
-        <label class="input-label">좋아함</label>
-        <input class="input" id="f-like-list" type="text" placeholder="곱창, 야구(한화이글스), 게임, 소통">
-        <div class="hint">쉼표(,)로 구분해서 한 줄로 적어주세요.</div>
+      <div class="card-title">♥ 좋아 · 싫어 (한 줄에 하나씩)</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">좋아하는 것</label><textarea class="input" id="f-likes" rows="3" placeholder="소통&#10;게임"></textarea></div>
+        <div class="form-field"><label class="input-label">싫어하는 것</label><textarea class="input" id="f-dislikes" rows="3" placeholder="거미&#10;매운거"></textarea></div>
       </div>
-      <div class="form-field">
-        <label class="input-label">싫어함</label>
-        <input class="input" id="f-dislike-list" type="text" placeholder="당근, 간지럼">
-        <div class="hint">쉼표(,)로 구분. 메인·프로필 양쪽에 같이 반영돼요.</div>
-      </div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
 
     <div class="card">
-      <div class="card-title">📅 방송 요일</div>
-      <div class="hint" style="margin-bottom:10px">체크한 요일만 <b>방송</b>으로 표시되고, 체크 안 한 요일은 자동으로 <b>휴방</b>이 돼요.</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="day-checks">
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="0">월</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="1">화</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="2">수</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="3">목</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="4">금</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="5">토</label>
-        <label style="display:flex;align-items:center;gap:4px;font-size:14px"><input type="checkbox" class="day-chk" value="6">일</label>
+      <div class="card-title">🎬 진행한 컨텐츠</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">날짜</label><input class="input" id="c-date" type="date"></div>
+        <div class="form-field full"><label class="input-label">제목 *</label><input class="input" id="c-title" placeholder="예: 마크 신서버 첫날!"></div>
+        <div class="form-field full"><label class="input-label">링크 URL (행 클릭 시 이동)</label><input class="input" id="c-url" placeholder="https://"></div>
       </div>
-      <input type="hidden" id="f-days">
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveDays()">저장 ♥</button></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🔗 관련 링크</div>
-      <div class="form-field"><label class="input-label">SOOP 방송국</label><div class="hint">체크한 요일만 방송으로 표시되고, 나머지는 자동으로 <b>휴방</b>이 돼요.</div><input class="input" id="f-link-soop" type="url" placeholder="https://"></div>
-      <div class="form-field"><label class="input-label">유튜브</label><input class="input" id="f-link-youtube" type="url" placeholder="https://"></div>
-      <div class="form-field"><label class="input-label">쌍룡파 카페</label><input class="input" id="f-link-cafe" type="url" placeholder="https://"></div>
-      <div class="form-field"><label class="input-label">X (트위터)</label><input class="input" id="f-link-x" type="url" placeholder="https://"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-  </div>
-
-  <div class="tab-panel" id="tab-profile">
-<div class="card">
-      <div class="card-title">⭐ 한마디 & 하고픈 말</div>
-      <div class="form-field"><label class="input-label">오늘의 한마디 (줄바꿈=엔터)</label><textarea class="input" id="f-quote" placeholder=""곱창처럼 쫄깃하게, 단골처럼 든든하게!"" rows="3"></textarea><div class="hint">프로필 페이지 상단 큰 따옴표 문구예요.</div></div>
-      <div class="form-field"><label class="input-label">하고픈 말</label><textarea class="input" id="f-msg" rows="3" placeholder="안녕하세요! 쌍룡파 직영점 사장 서곱철입니다!"></textarea><div class="hint">메인·프로필의 <b>About</b> 칸에 표시돼요. 줄바꿈=엔터.</div></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📊 능력치 (프로필 페이지)</div>
-      <div class="form-field">
-        <label class="input-label">능력치 목록</label>
-        <textarea class="input" id="f-stats" rows="6" placeholder="텐션:95&#10;탱커력:90&#10;허당력:85&#10;곱창 사랑:100&#10;쎈 언니 지수:40"></textarea>
-        <div class="hint"><b>규격</b> — 한 줄에 하나씩 <code>이름:숫자</code> 형식. 숫자는 0~100. 예) <code>텐션:95</code><br>비워두면 기본값(5개)이 그대로 표시돼요.</div>
-      </div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:6px"><button class="btn btn-primary" onclick="addContent()">+ 추가</button></div>
+      <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>날짜</th><th>제목</th><th>링크</th><th>삭제</th></tr></thead>
+      <tbody id="content-list"><tr><td colspan="4" style="text-align:center;color:#ccc;padding:16px">없음</td></tr></tbody></table></div>
     </div>
 
     <div class="card">
-      <div class="card-title">🎯 목표 (마일스톤)</div>
-      <div class="form-field">
-        <label class="input-label">목표 목록</label>
-        <textarea class="input" id="f-milestones" rows="6" placeholder="달성|단골 100명 모으기&#10;달성|첫 노래 방송 하기&#10;진행 중|단골 500명 모으기&#10;준비 중|곱창집 오프 팬미팅"></textarea>
-        <div class="hint"><b>규격</b> — 한 줄에 하나씩 <code>상태|내용</code> 형식. 상태를 <code>달성</code>으로 쓰면 취소선이 그어져요.<br>그 외 아무 글자(진행 중, 준비 중 …)는 그대로 표시됩니다.</div>
-      </div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div class="card-title">📊 능력치 (한 줄에 <b>라벨,숫자(0~100)</b>)</div>
+      <div class="form-field"><textarea class="input" id="f-stats" rows="4" placeholder="먹성,80&#10;텐션,95&#10;다정함,90"></textarea></div>
+      <div style="font-size:11px;color:var(--text-soft);margin-top:-4px;margin-bottom:8px">예: <b>텐션,95</b> — 비워두면 능력치 섹션이 숨겨져요</div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
 
     <div class="card">
-      <div class="card-title">♥ TMI</div>
-      <div class="form-field"><label class="input-label">좋아하는 음식</label><input class="input" id="f-tmi-food" type="text" placeholder="곱창 (당연하지!)"></div>
-      <div class="form-field"><label class="input-label">요즘 듣는 노래</label><input class="input" id="f-tmi-song" type="text" placeholder="폰서트"></div>
-      <div class="form-field"><label class="input-label">최근 읽은 책</label><input class="input" id="f-tmi-book" type="text" placeholder="인디"></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button></div>
+      <div class="card-title">📣 지금 진행 중 이벤트 (제목 비우면 숨김)</div>
+      <div class="form-field"><label class="input-label">이벤트 제목</label><input class="input" id="f-event-title" placeholder="예: 팔로우 이벤트"></div>
+      <div class="form-field"><label class="input-label">입장 코드 / 키워드 (선택)</label><input class="input" id="f-event-code" placeholder="예: HAYO"></div>
+      <div class="form-field"><label class="input-label">설명 (선택)</label><textarea class="input" id="f-event-note" rows="2"></textarea></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
+
     <div class="card">
-      <div class="card-title">🎵 서곱철 오리지널 곡</div>
+      <div class="card-title">🎯 목표 (목표치 0이면 숨김)</div>
+      <div class="form-grid">
+        <div class="form-field full"><label class="input-label">목표 이름</label><input class="input" id="f-goal-label" placeholder="예: 팔로워"></div>
+        <div class="form-field"><label class="input-label">현재</label><input class="input" id="f-goal-current" type="number" placeholder="0"></div>
+        <div class="form-field"><label class="input-label">목표</label><input class="input" id="f-goal-target" type="number" placeholder="1000"></div>
+        <div class="form-field full"><label class="input-label">다음 목표 (선택)</label><input class="input" id="f-goal-next" placeholder="예: 2000명"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎵 다시보기 / 클립 (VOD)</div>
       <div class="form-grid">
         <div class="form-field full"><label class="input-label">영상 제목 *</label><input class="input" id="os-title" placeholder="예: 노래 제목"></div>
         <div class="form-field full"><label class="input-label">SOOP VOD ID *</label><input class="input" id="os-vod" placeholder="194780409"></div>
-        <div class="form-field full"><label class="input-label">썸네일 URL (선택 · 비우면 자동 시도)</label><input class="input" id="os-thumb" placeholder="https:// (선택)"></div>
-        <div class="form-field full" style="font-size:12px;color:var(--text-soft)">💡 SOOP VOD 주소 sooplive.com/아이디/v/<b>194780409</b> 에서 숫자 부분만 입력</div>
+        <div class="form-field full"><label class="input-label">썸네일 URL (선택)</label><input class="input" id="os-thumb" placeholder="https:// (선택)"></div>
+        <div class="form-field full" style="font-size:12px;color:var(--text-soft)">💡 sooplive.com/아이디/v/<b>194780409</b> 에서 숫자만 입력</div>
         <div class="form-field full" style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addOriginalSong()">+ 추가</button></div>
       </div>
       <div id="os-list" style="margin-top:6px"></div>
     </div>
+
     <div class="card">
-      <div class="card-title">📖 사용법 · 규격 안내</div>
-      <div class="hint" style="line-height:2">
-        <b>· 프사</b> — SOOP 아이디만 넣으면 자동 연동. 직접 이미지 URL을 넣으면 그게 우선.<br>
-        <b>· 생일</b> — <code>MM.DD</code> (예: 06.08). D-Day가 자동 계산돼요.<br>
-        <b>· 방송 요일</b> — 체크한 요일만 방송으로 표시, 나머지는 자동 "휴방".<br>
-        <b>· 옷장 사진</b> — 세로 <b>3:4 (900×1200 권장)</b>. SOOP 비공개 게시판에 올린 뒤 사진 우클릭 → "이미지 주소 복사"로 얻은 <code>https://stimg.sooplive.com/…</code> 주소를 넣으세요. (게시글 주소 ✗)<br>
-        <b>· 공지/일기 이미지</b> — 위와 같은 방법. 원본 글을 지우면 이미지도 깨집니다.<br>
-        <b>· VOD</b> — SOOP 다시보기 주소의 <b>숫자 ID만</b> 입력 (예: <code>vod.sooplive.co.kr/player/<b>123456789</b></code>).<br>
-        <b>· 저장 후 반영이 안 보이면</b> — 페이지에서 <code>Ctrl+Shift+R</code> (강력 새로고침).
-      </div>
+      <div class="card-title">🔗 관련 링크</div>
+      <div class="form-field"><label class="input-label">SOOP URL</label><input class="input" id="f-link-soop" type="url" placeholder="https://ch.sooplive.co.kr/hayodayong"></div>
+      <div class="form-field"><label class="input-label">YouTube URL</label><input class="input" id="f-link-youtube" type="url" placeholder="https://"></div>
+      <div class="form-field"><label class="input-label">X (트위터) URL</label><input class="input" id="f-link-x" type="url" placeholder="https://"></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveProfile()">저장 ♥</button></div>
     </div>
+  </div>
 
-      </div>
-
+  <!-- 공지 탭 -->
   <div class="tab-panel" id="tab-notice">
     <div class="card">
       <div class="card-title">공지 추가</div>
@@ -262,7 +289,7 @@
           <select class="input" id="sch-type"><option value="방송">방송</option><option value="휴방">휴방</option></select>
         </div>
         <div class="form-field full">
-          <label class="input-label">색상</label>
+          <label class="input-label">1부 색상</label>
           <div class="color-pick">
             <label><input type="radio" name="schcolor" value="green" checked><span class="cdot-green"></span></label>
             <label><input type="radio" name="schcolor" value="pink"><span class="cdot-pink"></span></label>
@@ -278,6 +305,19 @@
         <div class="form-field"><label class="input-label">1부 제목 (휴방이면 비워도 됨)</label><input class="input" id="sch-title" placeholder="방송 제목"></div>
         <div class="form-field"><label class="input-label">2부 시간 (선택)</label><input class="input" id="sch-time2" placeholder="오후 9시"></div>
         <div class="form-field"><label class="input-label">2부 제목 (선택)</label><input class="input" id="sch-title2" placeholder="2부 있을 경우"></div>
+        <div class="form-field full">
+          <label class="input-label">2부 색상 (2부 있을 때)</label>
+          <div class="color-pick">
+            <label><input type="radio" name="schcolor2" value="green"><span class="cdot-green"></span></label>
+            <label><input type="radio" name="schcolor2" value="pink"><span class="cdot-pink"></span></label>
+            <label><input type="radio" name="schcolor2" value="yellow"><span class="cdot-yellow"></span></label>
+            <label><input type="radio" name="schcolor2" value="orange"><span class="cdot-orange"></span></label>
+            <label><input type="radio" name="schcolor2" value="blue" checked><span class="cdot-blue"></span></label>
+            <label><input type="radio" name="schcolor2" value="purple"><span class="cdot-purple"></span></label>
+            <label><input type="radio" name="schcolor2" value="red"><span class="cdot-red"></span></label>
+            <label><input type="radio" name="schcolor2" value="gray"><span class="cdot-gray"></span></label>
+          </div>
+        </div>
         <div class="form-field full"><label class="input-label">설명 (선택)</label><textarea class="input" id="sch-desc" rows="2"></textarea></div>
         <div class="form-field full"><label><input type="checkbox" id="sch-hl"> ⭐ 하이라이트 (달력에서 강조)</label></div>
         <div class="form-field full" style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addSchedule()">+ 추가</button></div>
@@ -380,13 +420,35 @@
     </div>
   </div>
 
-  <!-- 일기 탭 -->
+  <!-- 노래 탭 -->
+  <div class="tab-panel" id="tab-song">
+    <div class="card">
+      <div class="card-title">곡 추가</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="input-label">장르</label>
+          <select class="input" id="song-genre"><option>K-Pop</option><option>J-Pop</option><option>Pop</option><option>애교송</option><option>기타</option></select>
+        </div>
+        <div class="form-field"><label class="input-label">아티스트</label><input class="input" id="song-artist" placeholder="아티스트명"></div>
+        <div class="form-field"><label class="input-label">제목 *</label><input class="input" id="song-title" placeholder="곡명"></div>
+        <div class="form-field"><label class="input-label">난이도 (1~5)</label><input class="input" id="song-diff" type="number" min="1" max="5" value="3"></div>
+        <div class="form-field full" style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="addSong()">+ 추가</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">노래 목록</div>
+      <input class="input" id="song-search" placeholder="🔍 검색..." style="margin-bottom:12px" oninput="renderSongs()">
+      <div class="table-wrap"><table><thead><tr><th>제목</th><th>아티스트</th><th>장르</th><th>난이도</th><th>삭제</th></tr></thead>
+      <tbody id="song-list"><tr><td colspan="5"><div class="spinner"></div></td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- 옷장 탭 -->
   <div class="tab-panel" id="tab-dress">
     <div class="card">
-      <div class="card-title">👗 코디 항목 추가</div>
+      <div class="card-title">👗 옷장 항목 추가</div>
       <div class="form-grid">
         <div class="form-field"><label class="input-label">분류</label>
-          <select class="input" id="dr-cat"><option value="hair">헤어</option><option value="outfit">의상</option><option value="lens">렌즈</option></select>
+          <select class="input" id="dr-cat"><option value="outfit">의상</option><option value="hair">헤어</option><option value="lens">렌즈</option></select>
         </div>
         <div class="form-field"><label class="input-label">순서 (작을수록 앞 · 비우면 맨 뒤)</label>
           <input class="input" id="dr-order" type="number" min="0" placeholder="비워두면 맨 뒤">
@@ -413,65 +475,57 @@
     </div>
   </div>
 
-  <!-- 테마 탭 -->
-  <div class="tab-panel" id="tab-theme">
-    <div class="card">
-      <div class="card-title">🎨 색상 팔레트</div>
-      <div class="hint" style="margin-bottom:12px">
-        여기서 색을 바꾸면 <b>메인 · 프로필 · 모든 카테고리 페이지</b>에 즉시 반영돼요. (다크모드는 그대로 유지)<br>
-        비워두면 기본 색으로 돌아갑니다.
-      </div>
-      <div class="palette">
-        <div class="pal-row"><input type="color" id="c-theme-main" oninput="syncColor('theme-main')"><label>메인 색</label><input class="input" id="f-theme-main" placeholder="#F4C2C2" oninput="syncHex('theme-main')"><div class="pal-desc">버튼·배지·강조</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-main-dark" oninput="syncColor('theme-main-dark')"><label>진한 메인</label><input class="input" id="f-theme-main-dark" placeholder="#C4586E" oninput="syncHex('theme-main-dark')"><div class="pal-desc">제목·요일 헤더</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-main-deep" oninput="syncColor('theme-main-deep')"><label>더 진한 메인</label><input class="input" id="f-theme-main-deep" placeholder="#B7485F" oninput="syncHex('theme-main-deep')"><div class="pal-desc">카드 제목</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-main-light" oninput="syncColor('theme-main-light')"><label>연한 메인</label><input class="input" id="f-theme-main-light" placeholder="#FCE8E8" oninput="syncHex('theme-main-light')"><div class="pal-desc">테두리·배경 톤</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-bg" oninput="syncColor('theme-bg')"><label>페이지 배경</label><input class="input" id="f-theme-bg" placeholder="#FBEAEA" oninput="syncHex('theme-bg')"><div class="pal-desc">바깥 배경색</div></div>
-        <div class="pal-row"><input type="color" id="c-theme-logo" oninput="syncColor('theme-logo')"><label>로고 글자</label><input class="input" id="f-theme-logo" placeholder="#3E2B2B" oninput="syncHex('theme-logo')"><div class="pal-desc">상단 로고</div></div>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-        <button class="btn" onclick="resetPalette()">기본값으로</button>
-        <button class="btn btn-primary" onclick="saveLocalProfile()">저장 ♥</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">💡 팔레트 안내</div>
-      <div class="hint" style="line-height:2">
-        여기서 바꾼 색은 <b>메인·프로필·공지·일정·업보·옷장 전 페이지</b>에 한 번에 적용돼요.<br>
-        각 색을 바꾸고 <b>저장 ♥</b>을 누르면 사이트에 반영됩니다. (다크모드 색은 그대로 유지)<br>
-        <b>기본값으로</b> 버튼을 누르면 서곱철 기본 핑크로 되돌아가요.
-      </div>
-    </div>
-  </div>
-
-
 </div>
-<footer>© 2026 서곱철 관리자 ♥</footer>
+<footer>© 2026 Hayo 관리자 ♥</footer>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
 <script>
-  const ADMIN_PASSWORD = '1234';
-
-  const profileKeys = [
-    'avatar','soop-id',
-    'info-name','info-catchphrase','info-debut','info-birth','info-fandom','info-agency',
-    'info-position','info-mbti','info-game','info-team','info-song','info-content','info-tags',
-    'quote','msg','now','like-list','dislike-list','stats','milestones',
-    'tmi-food','tmi-song','tmi-book','days',
-    'link-soop','link-youtube','link-x','link-cafe',
-    'theme-main','theme-main-dark','theme-main-deep','theme-main-light','theme-bg','theme-logo'
-  ];
+  const ADMIN_PASSWORD = 'Nana@4560';
 
   function tryLogin() {
     if (document.getElementById('pwInput').value === ADMIN_PASSWORD) {
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('adminBody').style.display = 'flex';
-      loadProfileFields();
-      loadNotice(); loadSchedule(); loadWork(); loadDiary(); loadSong(); loadDress(); loadInquiry(); loadOriginalSongs();
+      checkDb();
+      loadProfileFields(); loadMain(); loadContents();
+      loadNotice(); loadSchedule(); loadWork(); loadSong(); loadDress(); loadInquiry(); loadOriginalSongs();
     } else {
       document.getElementById('loginErr').textContent = '비밀번호가 틀렸어요 >﹏<';
+    }
+  }
+  // DB 연결/설정 점검: 실패하면 화면 상단에 빨간 배너로 원인 안내
+  async function checkDb() {
+    var banner = document.getElementById('db-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'db-banner';
+      banner.style.cssText = 'display:none;background:#ffe0e0;color:#b3261e;border:1.5px solid #f3b4ae;border-radius:12px;padding:14px 18px;font-size:13px;line-height:1.6;margin-bottom:8px';
+      var body = document.getElementById('adminBody');
+      body.insertBefore(banner, body.children[1] || null);
+    }
+    try {
+      if (SUPABASE_URL.indexOf('{{') !== -1 || SUPABASE_ANON.indexOf('{{') !== -1) {
+        banner.innerHTML = '⚠️ <b>supabase.js</b> 상단 2줄(프로젝트 URL · anon 키)이 아직 안 채워졌어요. 채우기 전에는 저장이 안 돼요.';
+        banner.style.display = 'block'; return;
+      }
+      // 1) 읽기 테스트
+      var rd = await db.from('profile').select('id').limit(1);
+      if (rd.error) {
+        banner.innerHTML = '⚠️ <b>읽기 실패</b>: ' + rd.error.message + '<br>→ 대개 <b>supabase_setup.sql</b>을 안 돌렸거나(테이블 없음), URL/키가 안 맞아서예요.';
+        banner.style.display = 'block'; return;
+      }
+      // 2) 쓰기 테스트 (profile 행 updated_at만 갱신 — 데이터 변화 없음)
+      var wt = await db.from('profile').update({ updated_at: new Date().toISOString() }).eq('id', 1);
+      if (wt.error) {
+        banner.innerHTML = '⚠️ <b>저장(쓰기) 실패</b>: ' + wt.error.message + '<br>→ 읽기는 되는데 저장이 안 되면 <b>RLS 정책</b> 문제예요. Supabase SQL Editor에 <b>supabase_setup.sql 전체</b>를 다시 Run 하세요(정책까지 다시 생성됨).';
+        banner.style.display = 'block'; return;
+      }
+      banner.style.display = 'none';
+    } catch (e) {
+      banner.innerHTML = '⚠️ DB에 연결하지 못했어요: <b>' + (e && e.message ? e.message : e) + '</b><br>supabase.js의 URL/키를 확인하고, 배포본(또는 인터넷 연결)에서 열어주세요. (로컬 파일 미리보기는 저장이 안 될 수 있어요)';
+      banner.style.display = 'block';
     }
   }
 
@@ -482,17 +536,58 @@
     btn.classList.add('active');
   }
 
-  // ── 프로필 ──
-  async function loadProfileFields() {
-    let saved = {};
-    try {
-      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
-      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
-    } catch(e) {}
-    profileKeys.forEach(k => { const el = document.getElementById('f-' + k); if (el) el.value = saved[k] || ''; });
-    // 방송 요일 체크박스
-    const days = (saved.days || '').split(',').map(x=>x.trim());
-    document.querySelectorAll('.day-chk').forEach(c => { c.checked = days.includes(c.value); });
+  // ── 프로필 (프로필 페이지 모델과 동일 키) ──
+  const PSAVE = ['name','name_en','soop_id','avatar','tagline','intro','birthday','debut','agency','mbti','age','fan_name'];
+  const v  = id => (document.getElementById(id)?.value || '').trim();
+  const lns = id => (document.getElementById(id)?.value || '').split('\n').map(s=>s.trim()).filter(Boolean);
+  async function fetchProfile(){ try{ const {data:rows}=await db.from('profile').select('data').eq('id',1); if(rows&&rows[0]&&rows[0].data) return rows[0].data; }catch(e){} return {}; }
+  // ── 진행한 컨텐츠 (profile.data.contents 배열로 관리) ──
+  let CONTENTS_CACHE = [];
+  function ckeyA(c){ return (c && c.date ? String(c.date).replace(/[^0-9]/g,'') : ''); }
+  async function loadContents(){
+    const d = await fetchProfile();
+    CONTENTS_CACHE = Array.isArray(d.contents) ? d.contents : [];
+    const t = document.getElementById('content-list');
+    if(!CONTENTS_CACHE.length){ t.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ccc;padding:16px">없음</td></tr>'; return; }
+    // 원본 인덱스 보존하며 날짜 최신순 표시
+    const rows = CONTENTS_CACHE.map(function(c,i){ return {c:c,i:i}; }).sort(function(a,b){ var ka=ckeyA(a.c),kb=ckeyA(b.c); if(ka&&kb) return kb.localeCompare(ka); if(ka) return -1; if(kb) return 1; return 0; });
+    t.innerHTML = rows.map(function(r){
+      var c=r.c;
+      var link = c.url ? '<a href="'+esc(c.url)+'" target="_blank" rel="noreferrer" style="color:var(--main-dark);font-weight:700">링크</a>' : '-';
+      return '<tr><td>'+(c.date?esc(c.date):'-')+'</td><td>'+esc(c.title||'')+'</td><td>'+link+'</td><td><button class="delete-btn" onclick="delContent('+r.i+')">🗑</button></td></tr>';
+    }).join('');
+  }
+  async function addContent(){
+    const title = document.getElementById('c-title').value.trim();
+    if(!title){ showToast('❗ 제목 필수!'); return; }
+    const item = { date: document.getElementById('c-date').value || '', title: title, url: document.getElementById('c-url').value.trim() };
+    const d = await fetchProfile();
+    d.contents = Array.isArray(d.contents) ? d.contents : [];
+    d.contents.push(item);
+    const { error } = await db.from('profile').upsert({ id:1, data:d });
+    if(error){ showToast('❌ 추가 실패: ' + error.message); return; }
+    showToast('✅ 추가!');
+    ['c-date','c-title','c-url'].forEach(function(id){ document.getElementById(id).value=''; });
+    loadContents();
+  }
+  async function delContent(idx){
+    const d = await fetchProfile();
+    if(!Array.isArray(d.contents)) return;
+    d.contents.splice(idx,1);
+    const { error } = await db.from('profile').upsert({ id:1, data:d });
+    if(error){ showToast('❌ 삭제 실패: ' + error.message); return; }
+    showToast('🗑 삭제!');
+    loadContents();
+  }
+  async function loadProfileFields(){
+    const d = await fetchProfile();
+    PSAVE.forEach(k=>{ const el=document.getElementById('f-'+k); if(el) el.value = d[k]||''; });
+    document.getElementById('f-likes').value    = (d.likes||[]).join('\n');
+    document.getElementById('f-dislikes').value = (d.dislikes||[]).join('\n');
+    document.getElementById('f-stats').value    = (d.stats||[]).map(s=>`${s.label},${s.value}`).join('\n');
+    const ev=d.event||{}; document.getElementById('f-event-title').value=ev.title||''; document.getElementById('f-event-code').value=ev.code||''; document.getElementById('f-event-note').value=ev.note||'';
+    const g=d.goal||{};  document.getElementById('f-goal-label').value=g.label||''; document.getElementById('f-goal-current').value=(g.current!=null?g.current:''); document.getElementById('f-goal-target').value=(g.target!=null?g.target:''); document.getElementById('f-goal-next').value=g.next||'';
+    const L=d.links||{}; document.getElementById('f-link-soop').value=L.soop||''; document.getElementById('f-link-youtube').value=L.youtube||''; document.getElementById('f-link-x').value=L.x||'';
     previewAvatar();
   }
   function soopAvatarUrl(id) {
@@ -502,28 +597,49 @@
   }
   function previewAvatar() {
     const direct = (document.getElementById('f-avatar')?.value || '').trim();
-    const url = direct || soopAvatarUrl(document.getElementById('f-soop-id')?.value);
+    const url = direct || soopAvatarUrl(document.getElementById('f-soop_id')?.value);
     const img = document.getElementById('av-preview');
     const ph = document.getElementById('av-ph');
     if (!img) return;
     if (url) { img.src = url; img.style.display = 'block'; if (ph) ph.style.display = 'none'; }
     else { img.style.display = 'none'; if (ph) ph.style.display = 'flex'; }
   }
-  async function saveDays() {
-    const days = [...document.querySelectorAll('.day-chk:checked')].map(c=>c.value).join(',');
-    document.getElementById('f-days').value = days;
-    await saveLocalProfile();
-  }
-  async function saveLocalProfile() {
-    let saved = {};
-    try {
-      const { data: rows } = await db.from('profile').select('data').eq('id', 1);
-      if (rows && rows.length > 0 && rows[0].data) saved = rows[0].data;
-    } catch(e) {}
-    profileKeys.forEach(k => { const el = document.getElementById('f-' + k); if (el) saved[k] = el.value; });
-    const { error } = await db.from('profile').upsert({ id: 1, data: saved });
-    if (error) { showToast('❌ 저장 실패: ' + error.message); return; }
+  async function saveProfile(){
+    const d = await fetchProfile();
+    PSAVE.forEach(k=>{ d[k]=v('f-'+k); });
+    d.likes=lns('f-likes'); d.dislikes=lns('f-dislikes');
+    d.stats = lns('f-stats').map(row=>{ const i=row.lastIndexOf(','); if(i<0) return {label:row,value:0}; return {label:row.slice(0,i).trim(), value:Math.max(0,Math.min(100,parseInt(row.slice(i+1))||0))}; });
+    d.event = { title:v('f-event-title'), code:v('f-event-code'), note:v('f-event-note') };
+    d.goal  = { label:v('f-goal-label'), current:Number(v('f-goal-current'))||0, target:Number(v('f-goal-target'))||0, next:v('f-goal-next') };
+    d.links = { soop:v('f-link-soop'), youtube:v('f-link-youtube'), x:v('f-link-x') };
+    const { error } = await db.from('profile').upsert({ id:1, data:d });
+    if(error){ showToast('❌ 저장 실패: '+error.message); return; }
     showToast('✅ 저장됐어요!');
+  }
+  // ── 메인(첫 화면) — data.main 으로 저장 ──
+  async function loadMain(){
+    const d = await fetchProfile(); const m = d.main || {};
+    const g=(id,val)=>{ const e=document.getElementById(id); if(e) e.value = val||''; };
+    g('mn-brand',m.brand); g('mn-sub',m.masthead_sub); g('mn-kicker',m.kicker);
+    g('mn-headline',m.headline); g('mn-headline_em',m.headline_em);
+    g('mn-by',m.byline_by); g('mn-art',m.byline_art);
+    g('mn-hero',m.hero_img); g('mn-sign',m.hero_sign); g('mn-herocap',m.herocap); g('mn-lead',m.lead);
+    g('mn-plabel',m.pbox_label); g('mn-qlabel',m.quote_label); g('mn-quote',m.quote); g('mn-qimg',m.quote_img);
+    const wk=m.week||[]; for(let i=0;i<7;i++){ const e=document.getElementById('mn-week-'+i); if(e) e.value=wk[i]||''; }
+  }
+  async function saveMain(){
+    const d = await fetchProfile();
+    const wk=[]; for(let i=0;i<7;i++){ wk.push((document.getElementById('mn-week-'+i)?.value||'').trim()); }
+    d.main = {
+      brand:v('mn-brand'), masthead_sub:v('mn-sub'), kicker:v('mn-kicker'),
+      headline:v('mn-headline'), headline_em:v('mn-headline_em'),
+      byline_by:v('mn-by'), byline_art:v('mn-art'),
+      hero_img:v('mn-hero'), hero_sign:v('mn-sign'), herocap:v('mn-herocap'), lead:v('mn-lead'),
+      week:wk, pbox_label:v('mn-plabel'), quote_label:v('mn-qlabel'), quote:v('mn-quote'), quote_img:v('mn-qimg')
+    };
+    const { error } = await db.from('profile').upsert({ id:1, data:d });
+    if(error){ showToast('❌ 저장 실패: '+error.message); return; }
+    showToast('✅ 메인 저장됐어요!');
   }
   function showCurrentAvatar(url) {
     const cur = document.getElementById('current-avatar');
@@ -594,7 +710,7 @@
     const image_url = images[0] || null;
     const ok = await insertRow('notice', { title, content: document.getElementById('noti-content').value, pinned: document.getElementById('noti-pin').checked, image_url, images });
     if (ok) { showToast('✅ 추가!'); ['noti-title','noti-content','noti-image-url'].forEach(id=>document.getElementById(id).value=''); document.getElementById('noti-pin').checked=false; loadNotice(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 일정 ──
@@ -605,7 +721,10 @@
     t.innerHTML = data.map(s => {
       const isOff = s.type === '휴방';
       const badge = isOff ? '<span class="badge" style="background:#eceef1;color:#6b7280">휴방</span>' : '<span class="badge" style="background:#d6f0e4;color:#1f7a52">방송</span>';
-      return `<tr><td>${s.date}</td><td>${s.time||'-'}</td><td>${badge}</td><td>${s.title||'-'}</td><td><button class="delete-btn" onclick="del('schedule',${s.id},loadSchedule)">🗑</button></td></tr>`;
+      const has2 = !!(s.time2 || s.title2);
+      const timeCell = (s.time||'-') + (has2 ? ` <span style="color:var(--text-soft);font-size:11px">/ 2부 ${s.time2||'-'}</span>` : '');
+      const titleCell = (s.title||'-') + (has2 ? ` <span style="color:var(--text-soft);font-size:11px">/ ${s.title2||'2부'}</span>` : '');
+      return `<tr><td>${s.date}</td><td>${timeCell}</td><td>${badge}</td><td>${titleCell}</td><td><button class="delete-btn" onclick="del('schedule',${s.id},loadSchedule)">🗑</button></td></tr>`;
     }).join('');
   }
   async function addSchedule() {
@@ -615,8 +734,9 @@
     let title = document.getElementById('sch-title').value.trim();
     if (!title) title = (type === '휴방' ? '휴방' : '방송');
     const color = (document.querySelector('input[name="schcolor"]:checked')||{}).value || 'green';
+    const color2 = (document.querySelector('input[name="schcolor2"]:checked')||{}).value || 'blue';
     const row = {
-      title, date, type, color,
+      title, date, type, color, color2,
       time: document.getElementById('sch-time').value,
       time2: document.getElementById('sch-time2').value,
       title2: document.getElementById('sch-title2').value.trim(),
@@ -629,7 +749,7 @@
       ['sch-title','sch-date','sch-time','sch-time2','sch-title2','sch-desc'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('sch-hl').checked = false;
       loadSchedule();
-    } else showToast('❌ 실패');
+    } else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 업보 시스템 v2 ──
@@ -716,7 +836,7 @@
     const maxOrder = viewers.reduce((m,v)=>Math.max(m, v.sort_order||0), 0);
     const ok = await insertRow('viewers', { nickname: nick, soop_id: document.getElementById('v-soop').value.trim(), sort_order: maxOrder+1 });
     if (ok) { showToast('✅ 추가!'); document.getElementById('v-nick').value=''; document.getElementById('v-soop').value=''; loadWork(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
   async function editViewer(id) {
     const v = viewers.find(x=>x.id===id);
@@ -751,7 +871,7 @@
     const maxOrder = types.reduce((m,t)=>Math.max(m, t.sort_order||0), 0);
     const ok = await insertRow('upbo_types', { name, category: document.getElementById('t-cat').value, sort_order: maxOrder+1 });
     if (ok) { showToast('✅ 추가!'); document.getElementById('t-name').value=''; loadWork(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
   async function editType(id) {
     const t = types.find(x=>x.id===id);
@@ -767,27 +887,10 @@
     showToast('🗑 삭제!'); loadWork();
   }
 
-  // ── 일기 ──
-  async function loadDiary() {
-    const data = await fetchAll('diary', { order: 'diary_date', asc: false });
-    const t = document.getElementById('diary-list');
-    if (!data.length) { t.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ccc;padding:20px">없음</td></tr>'; return; }
-    t.innerHTML = data.map(d => `<tr><td>${d.diary_date||'-'}</td><td>${d.mood}</td><td>${d.title}</td><td></td></tr>`).join('');
-  }
-  async function addDiary() {
-    const title = document.getElementById('diary-title').value.trim();
-    if (!title) { showToast('❗ 제목 필수!'); return; }
-    const images = document.getElementById('diary-image-url').value.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
-    const image_url = images[0] || null;
-    const ok = await insertRow('diary', { title, content: document.getElementById('diary-content').value, mood: document.getElementById('diary-mood').value, diary_date: document.getElementById('diary-date').value, image_url, images });
-    if (ok) { showToast('✅ 추가!'); ['diary-title','diary-content','diary-date','diary-image-url'].forEach(id=>document.getElementById(id).value=''); loadDiary(); }
-    else showToast('❌ 실패');
-  }
-
   async function del(table, id, fn) {
     if (!confirm('정말 삭제?')) return;
     const ok = await deleteRow(table, id);
-    if (ok) { showToast('🗑 삭제!'); fn(); } else showToast('❌ 실패');
+    if (ok) { showToast('🗑 삭제!'); fn(); } else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 노래 ──
@@ -813,7 +916,7 @@
     diff = Math.min(5, Math.max(1, diff));
     const ok = await insertRow('songs', { title, artist: document.getElementById('song-artist').value.trim(), genre: document.getElementById('song-genre').value, difficulty: diff });
     if (ok) { showToast('✅ 추가!'); document.getElementById('song-title').value=''; document.getElementById('song-artist').value=''; loadSong(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 문의 ──
@@ -851,13 +954,13 @@
     if (!title || !vod) { showToast('❗ 제목/VOD ID 필수!'); return; }
     const ok = await insertRow('original_songs', { title, vod_id: vod, thumbnail: document.getElementById('os-thumb').value.trim() });
     if (ok) { showToast('✅ 추가!'); ['os-title','os-vod','os-thumb'].forEach(id=>document.getElementById(id).value=''); loadOriginalSongs(); }
-    else showToast('❌ 실패');
+    else showToast('❌ 실패' + (window.__dbErr ? ': ' + window.__dbErr : ''));
   }
 
   // ── 옷장 ──
   let dressCache = [];
   let dressFilter = 'all';   // 'all' | 'new'(새 옷/포스터) | 'old'(기존)
-  const DRESS_CATS = [['hair','헤어'],['outfit','의상'],['lens','렌즈']];   // 관리자 목록의 분류·순서 (분류를 바꿀 땐 위 select 옵션 + 옷장 페이지 탭도 함께 수정)
+  const DRESS_CATS = [['outfit','의상'],['hair','헤어'],['lens','렌즈']];   // 관리자 목록의 분류·순서 (분류를 바꿀 땐 위 select 옵션 + 옷장 페이지 탭도 함께 수정)
   const dressByOrder = (a,b)=> ((a.sort_order||0)-(b.sort_order||0)) || (new Date(a.created_at)-new Date(b.created_at));
   function hasNew(d){
     return (d.badges||[]).some(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().toUpperCase()==='NEW'; });
@@ -926,7 +1029,8 @@
       ? (d.badges||[]).filter(function(b){ var l=(b&&(b.label!=null?b.label:b))||''; return String(l).trim().toUpperCase()!=='NEW'; })
       : (d.badges||[]).concat([{label:'NEW'}]);
     showToast(had ? '🗂 기존으로 이동...' : '✨ 새 옷으로 이동...');
-    await updateRow('dress_items', id, { badges });
+    var ok = await updateRow('dress_items', id, { badges });
+    if(ok===false){ showToast('❌ 전환 실패: ' + (window.__dbErr||'권한/SQL 확인')); }
     loadDress();
   }
 
@@ -940,7 +1044,8 @@
     if(j<0 || j>=arr.length) return;
     [arr[i], arr[j]] = [arr[j], arr[i]];
     showToast('↕ 순서 변경 중...');
-    await Promise.all(arr.map((d,idx)=> updateRow('dress_items', d.id, { sort_order: idx })));
+    var rs = await Promise.all(arr.map((d,idx)=> updateRow('dress_items', d.id, { sort_order: idx })));
+    if(rs.some(function(r){return r===false;})){ showToast('❌ 순서 저장 실패: ' + (window.__dbErr||'권한(RLS)/SQL 확인')); }
     loadDress();
   }
   async function addDressItem(){
@@ -968,50 +1073,8 @@
       document.getElementById('dr-img-url').value=''; document.getElementById('dr-new').checked=false;
       document.getElementById('dr-order').value='';
       loadDress();
-    } else showToast('❌ 추가 실패 (옷장 SQL 실행했는지 확인)');
+    } else showToast('❌ 추가 실패: ' + (window.__dbErr || '옷장 SQL 실행했는지 확인'));
   }
-</script>
-<script>
-/* 🎨 색상 팔레트 */
-const PAL_DEFAULT = {
-  'theme-main':'#F4C2C2', 'theme-main-dark':'#C4586E', 'theme-main-deep':'#B7485F',
-  'theme-main-light':'#FCE8E8', 'theme-bg':'#FBEAEA', 'theme-logo':'#3E2B2B'
-};
-function syncColor(k){
-  const c=document.getElementById('c-'+k), f=document.getElementById('f-'+k);
-  if(c&&f){ f.value=c.value.toUpperCase(); previewPalette(); }
-}
-function syncHex(k){
-  const c=document.getElementById('c-'+k), f=document.getElementById('f-'+k);
-  if(c&&f && /^#[0-9a-fA-F]{6}$/.test(f.value)){ c.value=f.value; previewPalette(); }
-}
-function previewPalette(){
-  const map={'theme-main':'--main','theme-main-dark':'--main-dark','theme-main-deep':'--main-deep',
-             'theme-main-light':'--main-light','theme-bg':'--bg','theme-logo':'--logo'};
-  Object.keys(map).forEach(function(k){
-    const f=document.getElementById('f-'+k);
-    if(f && /^#[0-9a-fA-F]{6}$/.test(f.value)) document.documentElement.style.setProperty(map[k], f.value);
-  });
-}
-function resetPalette(){
-  Object.keys(PAL_DEFAULT).forEach(function(k){
-    const f=document.getElementById('f-'+k), c=document.getElementById('c-'+k);
-    if(f) f.value=''; if(c) c.value=PAL_DEFAULT[k];
-    document.documentElement.style.removeProperty('--'+k.replace('theme-',''));
-  });
-  alert('기본값으로 되돌렸어요. 저장 버튼을 눌러야 사이트에 반영됩니다.');
-}
-/* 로드 시 컬러피커 동기화 */
-window.addEventListener('load', function(){
-  setTimeout(function(){
-    Object.keys(PAL_DEFAULT).forEach(function(k){
-      const f=document.getElementById('f-'+k), c=document.getElementById('c-'+k);
-      if(!f||!c) return;
-      c.value = /^#[0-9a-fA-F]{6}$/.test(f.value) ? f.value : PAL_DEFAULT[k];
-    });
-    previewPalette();
-  }, 600);
-});
 </script>
 </body>
 </html>

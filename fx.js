@@ -16,9 +16,9 @@
    ============================================================ */
 
 /* ─────────── 설정 (이 사람에 맞게 바꾸세요) ─────────── */
-var FX_FLOAT = ['🩷','✦','🩷','✧','🩷','✦'];   // 떠다니는 입자 모양
-var FX_CLICK = '🩷';                           // 클릭/프사톡 모양. 글자·이모지 또는 이미지(data:… / https://… .svg·.png)도 가능
-var FX_COUNT = 14;                            // 떠다니는 입자 개수 (많을수록 무거움)
+var FX_FLOAT = ['🍀','✦','🐰','🍀','✧'];   // 떠다니는 입자 모양 (하요: 토끼·네잎클로버)
+var FX_CLICK = '🍀';                          // 클릭하면 터지는 모양
+var FX_COUNT = 16;                            // 떠다니는 입자 개수 (많을수록 무거움)
 var FX_TILT  = true;                          // 카드 마우스오버 살짝 기울기 (끄려면 false)
 
 /* ─ 로딩화면 + 페이지 전환(커지는 등장) — 보통 그대로 두세요 ─ */
@@ -46,7 +46,7 @@ var FX_TRANS_MS    = 800;    // 커지는 등장 길이(ms). 더 느리게 = 숫
     }
     .container, .wrap{ perspective:1300px; }
     .card{ transition:transform .25s ease, box-shadow .25s ease; will-change:transform; }
-    .fx-tilting{ box-shadow:var(--shadow-hover, 0 16px 36px rgba(31,60,90,.16)); }
+    .card.fx-tilting{ box-shadow:var(--shadow-hover); }
     .fx-heart{ position:fixed; z-index:500; pointer-events:none; color:var(--main); transform:translate(-50%,-50%); animation:fxHeart .95s ease-out forwards; }
     @keyframes fxHeart{
       0%{ opacity:0; transform:translate(-50%,-50%) scale(.4); }
@@ -60,7 +60,6 @@ var FX_TRANS_MS    = 800;    // 커지는 등장 길이(ms). 더 느리게 = 숫
     #fxload.fx-hide{ opacity:0; pointer-events:none; }
     #fxload.fx-hide .fxload-av, #fxload.fx-hide .fxload-dots i{ animation-play-state:paused; }
     #fxload .fxload-av{ width:96px; height:96px; border-radius:50%; background:var(--main-light); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; font-size:46px; font-weight:800; color:var(--main-dark); box-shadow:0 10px 28px rgba(0,0,0,.14); animation:fxBob 1.1s ease-in-out infinite; }
-    #fxload .fxload-av.mascot{ width:150px; height:150px; border-radius:0; background-color:transparent; background-size:contain; background-repeat:no-repeat; box-shadow:none; filter:drop-shadow(0 12px 22px rgba(0,0,0,.16)); }
     @keyframes fxBob{ 0%,100%{ transform:translateY(0) scale(1); } 50%{ transform:translateY(-12px) scale(1.04); } }
     #fxload .fxload-name{ font-weight:800; font-size:18px; color:var(--main-dark); letter-spacing:.02em; }
     #fxload .fxload-dots{ display:flex; gap:7px; }
@@ -94,7 +93,7 @@ var FX_TRANS_MS    = 800;    // 커지는 등장 길이(ms). 더 느리게 = 숫
     }
     var logoTxt = ((document.querySelector('.nav-logo') || {}).textContent || document.title || '').trim();
     if (FX_LOADER_IMG)            av.style.backgroundImage = 'url("' + FX_LOADER_IMG + '")';
-    else if (ch && ch !== 'none') { av.style.backgroundImage = ch; av.classList.add('mascot'); }  /* --char = 누끼 마스코트 그대로 */
+    else if (ch && ch !== 'none') av.style.backgroundImage = ch;          /* --char = url("data:...") */
     else if (img)                av.style.backgroundImage = 'url("' + img + '")';
     else                         av.textContent = (FX_LOADER_TEXT || logoTxt || '✿').charAt(0) || '✿';
     var nm = document.createElement('div'); nm.className = 'fxload-name';
@@ -154,24 +153,17 @@ var FX_TRANS_MS    = 800;    // 커지는 등장 길이(ms). 더 느리게 = 숫
       }
     }
     /* 카드 살짝 기울기 (데스크톱 마우스에서만) */
-    if (FX_TILT && mqFine && !mqReduce && !window.__fxTiltOn) {
-      window.__fxTiltOn = true;
-      var TILT_SEL = '.card, .item-card, .viewer-card, .notice-item, .up-item, .vod-ph';
-      var TILT_DEG = 2.5;                                   /* 감도 (기존 5) */
-      var _tiltEl = null;
-      document.addEventListener('mousemove', function (e) {
-        var card = e.target.closest ? e.target.closest(TILT_SEL) : null;
-        if (_tiltEl && _tiltEl !== card) { _tiltEl.style.transform = ''; _tiltEl.classList.remove('fx-tilting'); _tiltEl = null; }
-        if (!card) return;
-        var r = card.getBoundingClientRect();
-        var rx = (0.5 - (e.clientY - r.top) / r.height) * TILT_DEG;
-        var ry = ((e.clientX - r.left) / r.width - 0.5) * TILT_DEG;
-        card.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
-        card.classList.add('fx-tilting');
-        _tiltEl = card;
-      }, { passive: true });
-      document.addEventListener('mouseleave', function () {
-        if (_tiltEl) { _tiltEl.style.transform = ''; _tiltEl.classList.remove('fx-tilting'); _tiltEl = null; }
+    if (FX_TILT && mqFine && !mqReduce) {
+      document.querySelectorAll('.card').forEach(function (card) {
+        if (card.dataset.fxTilt) return; card.dataset.fxTilt = '1';
+        card.addEventListener('mousemove', function (e) {
+          var r = card.getBoundingClientRect();
+          var rx = (0.5 - (e.clientY - r.top) / r.height) * 5;
+          var ry = ((e.clientX - r.left) / r.width - 0.5) * 5;
+          card.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+          card.classList.add('fx-tilting');
+        });
+        card.addEventListener('mouseleave', function () { card.style.transform = ''; card.classList.remove('fx-tilting'); });
       });
     }
     /* 프사 톡(이스터에그): 프사를 클릭하면 모양이 펑 */
@@ -186,14 +178,9 @@ var FX_TRANS_MS    = 800;    // 커지는 등장 길이(ms). 더 느리게 = 숫
   window.fxHearts = function (x, y, n) {
     if (mqReduce) return;
     for (var i = 0; i < n; i++) {
-      var h = document.createElement('span'); h.className = 'fx-heart';
-      var _sz = (14 + Math.random() * 10);
-      if (/^data:|^https?:\/\//i.test(FX_CLICK)) {           // 이미지(SVG/PNG/gif 등)면 배경이미지로
-        h.style.width = _sz.toFixed(0) + 'px'; h.style.height = _sz.toFixed(0) + 'px';
-        h.style.backgroundImage = 'url("' + FX_CLICK + '")';
-        h.style.backgroundSize = 'contain'; h.style.backgroundRepeat = 'no-repeat'; h.style.backgroundPosition = 'center';
-      } else { h.textContent = FX_CLICK; h.style.fontSize = _sz.toFixed(0) + 'px'; }  // 글자/이모지면 텍스트로
+      var h = document.createElement('span'); h.className = 'fx-heart'; h.textContent = FX_CLICK;
       h.style.left = x + 'px'; h.style.top = y + 'px';
+      h.style.fontSize = (12 + Math.random() * 8).toFixed(0) + 'px';
       h.style.setProperty('--hx', (Math.random() * 64 - 32).toFixed(0) + 'px');
       h.style.animationDelay = (Math.random() * 0.12).toFixed(2) + 's';
       document.body.appendChild(h);

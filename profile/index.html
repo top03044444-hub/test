@@ -3,465 +3,292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>서곱철 · 프로필</title>
-<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/mi/mimigkdms/mimigkdms.jpg">
-<meta property="og:title" content="서곱철 · 프로필">
-<meta property="og:description" content="곱창 좋아하고 쎄보이고 싶은 사람">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Gothic+A1:wght@700;800;900&family=Jua&display=swap" rel="stylesheet">
+<title>하요 · 프로필</title>
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/ha/hayodayong/hayodayong.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&family=Geist+Mono:wght@400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <style>
-.wrap{max-width:var(--page-width);margin:0 auto;padding:22px 20px 40px}
+  #pmain{opacity:0;transition:opacity .4s}
+  #pmain.show{opacity:1}
+  /* 신원 */
+  .pwrap{display:grid;grid-template-columns:200px 1fr;gap:34px;align-items:center;margin-top:26px}
+  @media(max-width:640px){.pwrap{grid-template-columns:1fr;gap:18px;text-align:center}}
+  .pav{width:200px;height:200px;border-radius:50%;overflow:hidden;border:5px solid #fff;box-shadow:0 0 0 5px var(--main),0 12px 28px rgba(90,130,40,.25);margin:0 auto}
+  body.dark .pav{border-color:var(--card)}
+  .pav img{width:100%;height:100%;object-fit:cover}
+  .pname{font-family:var(--pen);font-weight:800;font-size:40px;color:var(--ink);line-height:1}
+  .pen{font-size:12px;letter-spacing:6px;font-weight:700;color:var(--text-soft);margin-top:6px}
+  .ptag{font-family:var(--serif);font-size:15px;color:var(--text-mid);margin-top:14px;line-height:1.6}
+  .ptbl{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+  @media(max-width:640px){.ptbl{grid-template-columns:1fr;text-align:left}}
+  .ptbl div{display:flex;justify-content:space-between;gap:12px;padding:9px 2px;border-bottom:1px dashed var(--main-light);font-size:13px}
+  .ptbl span{color:var(--text-soft);font-weight:700}.ptbl b{color:var(--main-dark)}
+  .ptbl .dd{font-size:10px;background:var(--main);color:#2f4d10;border-radius:6px;padding:1px 6px;margin-right:6px;font-weight:800}
+  body.dark .ptbl .dd{color:#16210b}
 
-/* 히어로 */
-.phero{border-radius:22px;padding:28px 30px;position:relative;overflow:hidden;
-  display:grid;grid-template-columns:230px 1fr;align-items:center;gap:26px;
-  background-color:var(--main-light);
-  background-image:
-    linear-gradient(180deg,rgba(255,250,246,.6) 0%,rgba(255,248,244,.32) 45%,rgba(255,240,238,.18) 100%),
-    repeating-linear-gradient(0deg,rgba(196,88,110,.07) 0 1px,transparent 1px 30px),
-    repeating-linear-gradient(90deg,rgba(196,88,110,.07) 0 1px,transparent 1px 30px);
-  border:1.5px solid var(--main-light);box-shadow:var(--shadow)}
-.avwrap{position:relative;display:grid;place-items:center;cursor:pointer}
-.avatar{width:180px;height:180px;border-radius:50%;object-fit:cover;display:block;
-  border:5px solid var(--card);
-  box-shadow:0 0 0 3px var(--main), 0 14px 30px rgba(150,90,100,.26);
-  background:var(--main-light);transition:transform .25s}
-.avwrap:hover .avatar{transform:scale(1.04)}
-.ring{position:absolute;width:214px;height:214px;border-radius:50%;border:2px dashed var(--main-dark);
-  opacity:.35;animation:spin2 22s linear infinite}
-@keyframes spin2{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.ring{animation:none}}
-.pheadcol{display:flex;flex-direction:column;align-items:flex-start;gap:9px}
-.phero h1{font-family:var(--katuri);font-weight:900;font-size:60px;letter-spacing:6px;
-  color:var(--logo);line-height:1;margin:0;text-shadow:0 2px 0 rgba(255,252,248,.9),0 0 20px rgba(255,250,245,.85)}
-.rib{display:inline-block;background:var(--main);color:#fff;font-family:var(--jua);font-size:15px;
-  padding:7px 22px;border-radius:999px;margin:0}
-.pheadcol .hbadges{margin-top:8px}
-.hbadges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.hbadges span{background:var(--white);border:1.5px solid var(--main);color:var(--main-deep);
-  font-family:var(--jua);font-size:13px;padding:6px 15px;border-radius:999px}
+  .sec{margin-top:6px}
+  .sec[hidden]{display:none}
+  .intro{font-size:15px;line-height:1.95;color:var(--text)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .lk2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:520px){.lk2{grid-template-columns:1fr}}
+  .lk2 .t{font-size:12px;letter-spacing:1px;font-weight:800;color:var(--text-soft);margin-bottom:9px}
 
-/* 그리드 */
-.g{display:grid;gap:15px;margin-top:15px}
-.c2{grid-template-columns:1fr 1fr}
-.c3{grid-template-columns:1fr 1fr 1fr}
-.c-side{grid-template-columns:.9fr 1.55fr}
-.card{background:var(--card);border:1.5px solid var(--main-light);border-radius:16px;padding:17px 19px;box-shadow:var(--shadow)}
-.ct{display:flex;align-items:center;gap:8px;font-family:var(--jua);font-size:16px;color:var(--main-deep);margin-bottom:12px}
-.ct .ln{flex:1;border-top:1.5px dotted var(--main-light)}
-.ct small{font-size:11px;font-weight:700;color:var(--text-soft);font-family:'Noto Sans KR'}
+  /* 능력치 */
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 26px}
+  @media(max-width:520px){.stats{grid-template-columns:1fr}}
+  .stat .sl{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px}
+  .stat .sl em{font-style:normal;color:var(--main-dark)}
+  .bar{height:9px;border-radius:999px;background:var(--main-light);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--main),var(--main-dark))}
 
-.tag{background:var(--main-light);color:var(--main-deep);border-radius:999px;padding:5px 13px;
-  font-family:var(--jua);font-size:12.5px;flex:none}
-.tag.dis{background:#EFE3E0;color:var(--text-soft)}
-body.dark .tag.dis{background:#4A3A3E}
-.tags{display:flex;flex-wrap:wrap;gap:7px}
+  /* 어록 */
+  .quotes{display:flex;flex-direction:column;gap:10px}
+  .quote{border-left:3px solid var(--main);background:var(--cream);border-radius:0 10px 10px 0;padding:12px 16px;font-family:var(--serif);font-size:15px;color:var(--text)}
+  /* 진행한 컨텐츠 (테이블) */
+  .ctable{width:100%;border-collapse:collapse}
+  .ctable th{text-align:left;font-size:12px;font-weight:800;color:var(--main-dark);background:var(--main-light);padding:11px 16px}
+  .ctable th:first-child{border-radius:8px 0 0 8px}.ctable th:last-child{border-radius:0 8px 8px 0}
+  .ctable td{padding:15px 16px;border-bottom:1px solid var(--rule);font-size:14px;vertical-align:middle}
+  .ctable tbody tr.lnk{cursor:pointer}
+  .ctable tbody tr.lnk:hover td{background:var(--cream)}
+  .ctable .cdate{color:var(--main-dark);font-weight:800;white-space:nowrap;width:128px}
+  .ctable .ctitle{color:var(--ink);font-weight:600}
+  .ctable .cchev{text-align:right;color:var(--main-dark);font-size:17px;width:26px}
+  .cpg{display:flex;justify-content:center;gap:6px;margin-top:16px;flex-wrap:wrap}
+  .cpgb{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--rule);background:var(--card);color:var(--text-mid);font-size:13px;font-weight:700;cursor:pointer}
+  .cpgb:hover{border-color:var(--main)}
+  .cpgb.on{background:var(--main);color:#2f4d10;border-color:var(--main)}
+  body.dark .cpgb.on{color:#16210b}
 
-/* 좋아/싫어 */
-.ldrow{display:flex;align-items:center;gap:10px;padding:9px 0}
-.ldrow .tag{align-self:center;flex:none}
-.ldrow+.ldrow{border-top:1.5px dotted var(--main-light)}
-.ldrow .v{font-size:13.5px;font-weight:700;line-height:1.6}
+  /* 이벤트 */
+  .evcard{border:1.5px solid var(--main);border-radius:10px;padding:18px 20px;position:relative;background:var(--cream)}
+  .evcard .now{position:absolute;top:-10px;left:16px;background:#e0466e;color:#fff;font-size:10px;font-weight:800;letter-spacing:1px;border-radius:999px;padding:3px 10px}
+  .evcard .evt{font-size:17px;font-weight:800;color:var(--ink)}
+  .evcard .evcode{display:inline-block;margin-top:8px;background:var(--main-dark);color:#fff;border-radius:8px;padding:5px 12px;font-weight:800;font-size:13px;letter-spacing:1px}
+  body.dark .evcard .evcode{color:#16210b}
+  .evcard .evnote{font-size:13px;color:var(--text-mid);margin-top:10px;line-height:1.6;white-space:pre-wrap}
 
-/* 능력치 */
-.stat{margin-bottom:11px}
-.stat .top{display:flex;justify-content:space-between;font-size:13px;font-weight:900;margin-bottom:5px}
-.stat .top i{font-style:normal;color:var(--main-deep)}
-.bar{height:9px;border-radius:999px;background:var(--main-light);overflow:hidden}
-.fill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--main),var(--main-dark))}
+  /* 목표 */
+  .goal .gl{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:7px}
+  .goal .gbar{height:16px;border-radius:999px;background:var(--main-light);overflow:hidden}
+  .goal .gbar i{display:block;height:100%;background:linear-gradient(90deg,var(--main),var(--main-dark));text-align:right;color:#1f3a08;font-size:10px;font-weight:800;line-height:16px;padding-right:8px}
+  .goal .gnext{font-size:12px;color:var(--text-soft);margin-top:8px}
 
-/* 일정 */
-.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1.5px solid var(--main-light);border-radius:11px;overflow:hidden}
-.day{border-right:1px solid var(--main-light);text-align:center;min-width:0}
-.day:last-child{border-right:0}
-.day .dh{background:var(--main-light);color:var(--main-deep);font-family:var(--jua);font-size:13px;padding:6px 0;border-bottom:1px solid var(--main-light)}
-.day .db{padding:12px 2px;font-size:12.5px;font-weight:700;line-height:1.5;min-height:66px;display:grid;place-content:center}
-.day.off .db{color:#D5798C}
-.day .db small{display:block;color:var(--text-soft);font-size:10.5px;font-weight:500;margin-top:2px}
+  /* VOD */
+  .vodgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:760px){.vodgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.vodgrid{grid-template-columns:1fr}}
+  .vodcell{border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--card)}
+  .vodcell .fr{aspect-ratio:16/9;width:100%;display:block;border:0}
+  .vodph{aspect-ratio:16/9;background:linear-gradient(135deg,var(--main-dark),#2f4d10);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}
+  .vodph .pl{font-size:36px}.vodph .pt{font-size:13px;font-weight:700}.vodph .pt2{font-size:11px;opacity:.85}
+  .vodcell .cap{padding:9px 12px;font-size:13px;font-weight:700;color:var(--ink)}
 
-/* VOD */
-.vodgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.vod-ph,.vod-item{border:1.5px solid var(--main-light);border-radius:13px;padding:10px;min-width:0;transition:.18s}
-.vod-ph:hover,.vod-item:hover{border-color:var(--main);box-shadow:var(--shadow-hover)}
-.vodgrid .thumb{aspect-ratio:16/9;border-radius:9px;display:grid;place-items:center;
-  background:linear-gradient(150deg,var(--main-light),#F2D4D8)}
-body.dark .vodgrid .thumb{background:linear-gradient(150deg,#3E2E33,#2C2226)}
-.vodgrid .thumb .play{width:44px;height:44px;border-radius:50%;background:var(--main-dark);color:#fff;
-  display:grid;place-items:center;font-size:15px;padding-left:3px;box-shadow:0 6px 16px rgba(196,88,110,.4)}
-.vodgrid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:9px;display:block;background:#000}
-.vodgrid .vt{font-family:var(--jua);font-size:14px;margin-top:9px}
-.vodgrid .vs{font-size:11.5px;color:var(--text-soft);font-weight:700;margin-top:2px}
-
-/* 링크 */
-.lks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.lk{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:var(--text);
-  border:1.5px solid var(--main-light);border-radius:12px;padding:13px 8px;font-weight:900;font-size:13px;text-align:center;min-width:0}
-.lk:hover{border-color:var(--main);background:var(--main-light)}
-.ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:900;flex:none}
-.i1{background:#0B4DF5}.i2{background:#F00}.i3{background:#111}.i4{background:#22B14C}
-
-/* NOW / 목표 */
-.now{background:linear-gradient(135deg,var(--main-light),#FBE0E4);border:1.5px dashed var(--main);border-radius:14px;padding:14px 16px}
-body.dark .now{background:linear-gradient(135deg,#3E2E33,#2E2428)}
-.mile{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13.5px;font-weight:700}
-.mile+.mile{border-top:1.5px dotted var(--main-light)}
-.mile .dot{width:10px;height:10px;border-radius:50%;background:var(--main);flex:none}
-.mile.done .dot{background:var(--main-dark)}
-.mile.done{color:var(--text-soft);text-decoration:line-through}
-.mile .d2{margin-left:auto;font-size:12px;color:var(--text-soft);font-weight:700}
-
-.quote{font-family:var(--jua);font-size:17px;line-height:1.9;text-align:center;color:var(--main-deep)}
-.speech{font-size:13.5px;line-height:2;text-align:center}
-
-@media(max-width:1000px){
-  .phero{grid-template-columns:1fr;text-align:center;justify-items:center}
-  .pheadcol{align-items:center}
-  .phero h1{font-size:42px}
-  .hbadges{justify-content:center}
-  .c2,.c3,.c-side{grid-template-columns:1fr}
-  .days{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .vodgrid{grid-template-columns:1fr}
-  .lks{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
+  /* 링크 */
+  .links{display:flex;gap:10px;flex-wrap:wrap}
+  .links a{padding:11px 22px;border:1.5px solid var(--main);border-radius:10px;text-decoration:none;font-size:13px;font-weight:800;color:var(--main-dark);background:var(--card)}
+  .links a:hover{background:var(--main);color:#2f4d10}
 </style>
 </head>
 <body>
-<script>if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');</script>
+<div class="wrap">
+  <header>
+    <div class="mast"><div class="logo"><span class="scr">Hayo</span><span class="sub">H A Y O · D A I L Y</span></div></div>
+    <div class="navrule"><nav class="nav">
+      <a href="../index.html">메인</a>
+      <a href="index.html" class="on">프로필</a>
+      <a href="../notice/">공지</a>
+      <a href="../schedule/">일정</a>
+      <a href="../dress/">옷장</a>
+      <a href="../work/">업보</a>
+      <a href="../song/">노래책</a>
+      <div class="actions"><button class="tsw" id="tsw" type="button" aria-label="다크"><span class="kn" id="kn">🌙</span></button></div>
+    </nav></div>
+  </header>
 
-<!-- nav -->
-<svg width="0" height="0" style="position:absolute">
-<symbol id="gop" viewBox="0 0 110 98">
-  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#C98E71" stroke-width="17" stroke-linejoin="round" stroke-linecap="round"/>
-  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#E9B79B" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
-  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#F7DCC7" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" opacity=".75"/>
-  <path d="M55 90C13 62 6 34 24 20 40 8 55 22 55 33 55 22 70 8 86 20c18 14 11 42-31 70Z" fill="none" stroke="#C98E71" stroke-width="15" stroke-dasharray="1.5 13" opacity=".5"/>
-</symbol>
-</svg>
+  <div class="kicker"><span class="cat">PROFILE · 🐰🍀</span><span class="date dbox"></span></div>
 
-<div class="pagewrap">
-  <div class="pagecard">
-<!-- nav -->
-  <div class="nav">
-    <a class="nav-logo" href="../"><span class="lg"><svg viewBox="0 0 110 98" style="width:24px;height:24px"><use href="#gop"/></svg></span>서곱철</a>
-    <nav class="nm"><a href="../">곱페이지</a><a href="../profile/" class="act">소개</a><a href="../schedule/">스케줄</a><a href="../notice/">곱뱅공</a><a href="../work/">선물</a><a href="../dress/">코디</a></nav>
-    <div class="dk" id="dkbox">다크 모드<span class="sw"><i></i></span></div>
-    <button class="ask" onclick="openAsk()">✉ 문의</button>
+  <div id="pmain">
+    <!-- 신원 -->
+    <div class="pwrap">
+      <div class="pav av"><img id="pav" src="" referrerpolicy="no-referrer" alt="하요"></div>
+      <div>
+        <div class="pname" id="pname">하요</div>
+        <div class="pen" id="pen">HAYO</div>
+        <div class="ptag" id="ptag"></div>
+        <div class="ptbl" id="ptbl"></div>
+      </div>
+    </div>
+
+    <!-- 소개 -->
+    <section class="sec" id="sec-intro"><div class="seclabel"><b>소개</b><span class="ln"></span></div><p class="intro" id="intro"></p></section>
+
+
+    <!-- 좋아 / 싫어 -->
+    <section class="sec" id="sec-pref"><div class="seclabel"><b>좋아 · 싫어</b><span class="ln"></span></div>
+      <div class="lk2">
+        <div><div class="t">LIKE ♡</div><div class="chips" id="likes"></div></div>
+        <div><div class="t">DISLIKE ✕</div><div class="chips" id="dislikes"></div></div>
+      </div>
+    </section>
+
+    <!-- 능력치 -->
+    <section class="sec" id="sec-stats"><div class="seclabel"><b>능력치</b><span class="ln"></span></div><div class="stats" id="stats"></div></section>
+
+    <!-- 어록 -->
+    <section class="sec" id="sec-contents"><div class="seclabel"><b>진행한 컨텐츠</b><span class="ln"></span></div><div id="contents"></div><div class="cpg" id="contents-pg"></div></section>
+
+    <!-- 지금 진행 중 이벤트 -->
+    <section class="sec" id="sec-event"><div class="seclabel"><b>지금 진행 중</b><span class="ln"></span></div><div id="event"></div></section>
+
+    <!-- 목표 -->
+    <section class="sec" id="sec-goal"><div class="seclabel"><b>목표</b><span class="ln"></span></div><div class="goal" id="goal"></div></section>
+
+    <!-- 다시보기 / 클립 -->
+    <section class="sec" id="sec-vod"><div class="seclabel"><b>다시보기 · 클립</b><span class="ln"></span></div>
+      <div class="vodgrid" id="ovod-grid"></div>
+    </section>
+
+    <!-- 관련 링크 -->
+    <section class="sec" id="sec-links"><div class="seclabel"><b>관련 링크</b><span class="ln"></span></div><div class="links" id="links"></div></section>
   </div>
 
-  <!-- 히어로 -->
-  <section class="phero">
-    <div class="avwrap" id="avatarWrap">
-      <span class="ring"></span>
-      <img class="avatar" src="https://profile.img.sooplive.co.kr/LOGO/mi/mimigkdms/mimigkdms.jpg"
-           alt="서곱철" referrerpolicy="no-referrer">
-    </div>
-    <div class="pheadcol">
-      <h1 data-hook="info-name">서곱철</h1>
-      <div class="rib" data-hook="info-catchphrase">곱창 좋아하고 쎄보이고 싶은 사람</div>
-      <div class="hbadges">
-        <span>🎂 생일 D-DAY <b class="ddv">D-?</b></span>
-        <span>🩷 단골 모집중</span>
-        <span>🎮 배틀그라운드</span>
-        <span>⚾ 한화이글스</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 영수증 프로필 + 한마디/능력치 -->
-  <section class="g c-side">
-    <div class="slip">
-      <div class="jua" style="text-align:center;font-size:16px;color:var(--main-deep)">프 로 필</div>
-      <div class="rl"></div>
-      <div class="mrow"><span>이름</span><i class="d"></i><b data-hook="info-name">서곱철</b></div>
-      <div class="mrow"><span>데뷔</span><i class="d"></i><b data-hook="info-debut">2024.06.14</b></div>
-      <div class="mrow"><span>생일</span><i class="d"></i><b data-hook="info-birth">06.08</b></div>
-      <div class="mrow"><span>팬명</span><i class="d"></i><b data-hook="info-fandom">단골</b></div>
-      <div class="mrow"><span>소속</span><i class="d"></i><b data-hook="info-agency">쌍룡파</b></div>
-      <div class="mrow"><span>포지션</span><i class="d"></i><b data-hook="info-position">탱커</b></div>
-      <div class="mrow"><span>MBTI</span><i class="d"></i><b data-hook="info-mbti">ESFP</b></div>
-      <div class="rl"></div>
-      <div class="mrow"><span>주력 게임</span><i class="d"></i><b data-hook="info-game">배틀그라운드</b></div>
-      <div class="mrow"><span>응원 팀</span><i class="d"></i><b data-hook="info-team">한화이글스</b></div>
-      <div class="mrow"><span>애창곡</span><i class="d"></i><b data-hook="info-song">폰서트</b></div>
-      <div class="mrow"><span>컨텐츠</span><i class="d"></i><b data-hook="info-content">게임 · 소통</b></div>
-      <div class="rl"></div>
-      <div style="text-align:center">
-        <div class="jua" style="font-size:13.5px;color:var(--main-deep);margin-bottom:6px">특징</div>
-        <div class="tags" style="justify-content:center" data-tags="info-tags">
-          <span class="tag">똥꼬발랄</span><span class="tag">착함</span><span class="tag">해삐</span>
-        </div>
-      </div>
-      <div class="rl"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-        <div class="stp s">단골<br>인증</div>
-        <div style="text-align:center;font-size:11px;font-weight:900;line-height:1.6">오늘도 와줘서<br>고마워, 단골!</div>
-        <div class="stp c">쌍룡파</div>
-      </div>
-    </div>
-
-    <div>
-      <div class="card">
-        <div class="ct">💬 한마디<span class="ln"></span></div>
-        <div class="quote" data-hook="quote">"곱창처럼 쫄깃하게, 단골처럼 든든하게!"</div>
-      </div>
-
-      <div class="g c2">
-        <div class="card">
-          <div class="ct">👩‍🍳 About 서곱철<span class="ln"></span></div>
-          <div class="speech" data-hook="msg">안녕하세요! 쌍룡파 직영점 사장 서곱철입니다!<br>곱창처럼 구수하고 쫄깃한 매력으로<br>여러분의 하루에 힘이 되고 싶어요.<br>오늘도 맛있게, 재밌게 놀다 가세요~!</div>
-        </div>
-        <div class="card">
-          <div class="ct">📊 능력치<span class="ln"></span></div>
-          <div id="stat-box">
-          <div class="stat"><div class="top"><span>텐션</span><i>95</i></div><div class="bar"><span class="fill" style="width:95%"></span></div></div>
-          <div class="stat"><div class="top"><span>탱커력</span><i>90</i></div><div class="bar"><span class="fill" style="width:90%"></span></div></div>
-          <div class="stat"><div class="top"><span>허당력</span><i>85</i></div><div class="bar"><span class="fill" style="width:85%"></span></div></div>
-          <div class="stat"><div class="top"><span>곱창 사랑</span><i>100</i></div><div class="bar"><span class="fill" style="width:100%"></span></div></div>
-          <div class="stat" style="margin:0"><div class="top"><span>쎈 언니 지수</span><i>40</i></div><div class="bar"><span class="fill" style="width:40%"></span></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="g c2">
-        <div class="card">
-          <div class="ct">🩷 좋아함 / 싫어함<span class="ln"></span></div>
-          <div class="ldrow"><span class="tag">좋아함</span><span class="v" data-hook="like-list">곱창 · 야구(한화이글스) · 게임 · 소통 · 칭찬</span></div>
-          <div class="ldrow"><span class="tag dis">싫어함</span><span class="v" data-hook="dislike-list">당근 · 간지럼</span></div>
-        </div>
-        <div class="card">
-          <div class="ct">🎯 TMI<span class="ln"></span></div>
-          <div class="mrow"><span>최애 음식</span><i class="d"></i><b data-hook="tmi-food">곱창 (당연하지!)</b></div>
-          <div class="mrow"><span>애창곡</span><i class="d"></i><b data-hook="tmi-song">폰서트</b></div>
-          <div class="mrow"><span>좋아하는 장르</span><i class="d"></i><b data-hook="tmi-book">인디</b></div>
-          <div class="mrow"><span>방송 시간</span><i class="d"></i><b>랜덤 (오방공 확인!)</b></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 일정 -->
-  <section class="card">
-    <div class="ct">📅 이번 주 일정<span class="ln"></span><small>* 방송시간은 랜덤 — 오방공 확인!</small></div>
-    <div class="days">
-      <div class="day off"><div class="dh">월</div><div class="db" id="day-0">휴방</div></div>
-      <div class="day"><div class="dh">화</div><div class="db" id="day-1">오후 방송<small>20:00~</small></div></div>
-      <div class="day"><div class="dh">수</div><div class="db" id="day-2">게임 방송<small>19:00~</small></div></div>
-      <div class="day"><div class="dh">목</div><div class="db" id="day-3">잡담 방송<small>20:00~</small></div></div>
-      <div class="day"><div class="dh">금</div><div class="db" id="day-4">합방<small>21:00~</small></div></div>
-      <div class="day"><div class="dh">토</div><div class="db" id="day-5">노래 방송<small>20:00~</small></div></div>
-      <div class="day off"><div class="dh">일</div><div class="db" id="day-6">휴방</div></div>
-    </div>
-  </section>
-
-  <!-- NOW / 목표 -->
-  <section class="g c2">
-    <div class="card">
-      <div class="ct">🔥 지금 진행 중<span class="ln"></span></div>
-      <div class="now" data-hook="now">
-        <div class="jua" style="font-size:16px;color:var(--main-deep);margin-bottom:5px">6월 생일 기념 굿즈 통판 🎂</div>
-        <div style="font-size:13px;font-weight:700;line-height:1.8">단골 여러분만을 위한 한정 굿즈!<br>자세한 내용은 공지에서 확인해 주세요.</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">🎯 목표 (마일스톤)<span class="ln"></span></div>
-      <div id="mile-box">
-      <div class="mile done"><span class="dot"></span>단골 100명 모으기<span class="d2">달성!</span></div>
-      <div class="mile done"><span class="dot"></span>첫 노래 방송 하기<span class="d2">달성!</span></div>
-      <div class="mile"><span class="dot"></span>단골 500명 모으기<span class="d2">진행 중</span></div>
-      <div class="mile"><span class="dot"></span>곱창집 오프 팬미팅<span class="d2">준비 중</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 다시보기 -->
-  <section class="card" id="songs-card">
-    <div class="ct">📺 다시보기 (VOD)<span class="ln"></span><small>SOOP VOD</small></div>
-    <div class="vodgrid" id="ovod-grid">
-      <div class="vod-ph"><div class="thumb"><span class="play">▶</span></div><div class="vt">VOD 1</div><div class="vs">관리자에서 VOD ID 입력</div></div>
-      <div class="vod-ph"><div class="thumb"><span class="play">▶</span></div><div class="vt">VOD 2</div><div class="vs">관리자에서 VOD ID 입력</div></div>
-      <div class="vod-ph"><div class="thumb"><span class="play">▶</span></div><div class="vt">VOD 3</div><div class="vs">관리자에서 VOD ID 입력</div></div>
-    </div>
-  </section>
-
-  <!-- 링크 -->
-  <section class="card">
-    <div class="ct">🔗 링크 모음<span class="ln"></span></div>
-    <div class="lks">
-      <a class="lk" id="lk-soop" href="https://www.sooplive.com/station/mimigkdms" target="_blank"><span class="ic i1">S</span>SOOP</a>
-      <a class="lk" id="lk-yt" href="#" target="_blank"><span class="ic i2">▶</span>유튜브</a>
-      <a class="lk" id="lk-x" href="#" target="_blank"><span class="ic i3">💗</span>팬심</a>
-      <a class="lk" id="lk-cafe" href="https://cafe.naver.com/leessangdo" target="_blank"><span class="ic i4">☕</span>쌍룡파 카페</a>
-    </div>
-  </section>
-
-  <footer>
-    © 2026 곱철 Official.<br>
-    비즈니스 문의 — gopcheol@naver.com
-  </footer>
-
-  </div>
 </div>
+
+<footer class="paperfoot">© 2026 하요 Official.<br>비즈니스 문의 — hayodayong@gmail.com</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
 <script>
-(async function(){
-  try{
-    const { data } = await db.from('profile').select('data').eq('id',1).single();
-    const p = (data && data.data) || {};
+/* ── 프로필 데이터 모델 (admin과 동일 키) ──
+   name name_en soop_id avatar tagline intro birthday(MM-DD) debut agency mbti age fan_name
+   tmi[] likes[] dislikes[] quotes[]
+   stats[{label,value}] event{title,code,note} goal{label,current,target,next} links{soop,youtube,x} */
+const DEFAULTS = {
+  name:'하요', name_en:'HAYO', soop_id:'hayodayong', avatar:'',
+  tagline:'하잎이를 세상에서 제일 사랑하는 하요예요 🍀',
+  intro:'해맑고 조금 바보같지만 누구보다 귀여운 개인세 토끼 버추얼, 하요예요. 오후 12시에 만나서 소통하고, 종겜하고, 가끔은 마크도 같이 해요 🐰🍀',
+  birthday:'02-21', debut:'2026.04.11', agency:'개인세', mbti:'', age:'', fan_name:'하잎이',
+  tmi:['오후 12시 칼출근 🐰','마크 좋아함 ⛏️','웃음소리 시끄러움 😂'],
+  likes:['소통','게임','하잎이','마크'],
+  dislikes:['거미','매운거'],
+  quotes:['오늘도 하잎이 보고 싶었어 🍀','우리 마크하러 가자~'],
+  contents:[{date:'2026.06.24',title:'예시 컨텐츠 (관리자에서 수정)',url:''}],
+  stats:[{label:'먹성',value:80},{label:'텐션',value:95},{label:'다정함',value:90},{label:'허당',value:85}],
+  event:{title:'',code:'',note:''},
+  goal:{label:'',current:0,target:0,next:''},
+  links:{soop:'https://ch.sooplive.co.kr/hayodayong', youtube:'', x:''}
+};
+const esc=s=>(s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const arr=v=>Array.isArray(v)?v.filter(x=>x!=='' && x!=null):(typeof v==='string'?v.split(/\n|,/).map(s=>s.trim()).filter(Boolean):[]);
+function avatarUrl(d){ if(d.avatar) return d.avatar; const id=d.soop_id||''; if(!id) return ''; return `https://profile.img.sooplive.co.kr/LOGO/${id.slice(0,2)}/${id}/${id}.jpg`; }
+function dday(mmdd){ if(!mmdd) return null; if(typeof window.fxDday==='function') return window.fxDday(mmdd);
+  var p=mmdd.split('-'),m=+p[0],d=+p[1],now=new Date();now.setHours(0,0,0,0);var nx=new Date(now.getFullYear(),m-1,d);if(nx<now)nx=new Date(now.getFullYear()+1,m-1,d);return Math.round((nx-now)/86400000); }
+function daysSince(s){ if(!s) return null; var t=String(s).replace(/[.]/g,'-').replace(/[^0-9-]/g,''); var dt=new Date(t); if(isNaN(dt)) return null; var now=new Date(); now.setHours(0,0,0,0); dt.setHours(0,0,0,0); return Math.floor((now-dt)/86400000); }
 
-    document.querySelectorAll('[data-hook]').forEach(function(el){
-      const k = el.dataset.hook, v = p[k];
-      if(v === undefined || v === null || v === '') return;
-      if(typeof v === 'object') return;              // 배열/객체는 전용 렌더러가 처리
-      el.innerHTML = String(v).replace(/\n/g,'<br>');
-    });
+function render(d){
+  // 신원
+  document.getElementById('pav').src = avatarUrl(d) || '';
+  document.getElementById('pname').textContent = d.name||'';
+  document.getElementById('pen').textContent = d.name_en||'';
+  const tag=document.getElementById('ptag'); tag.textContent=d.tagline||''; tag.style.display=d.tagline?'':'none';
+  // 표
+  const rows=[];
+  if(d.birthday){ const n=dday(d.birthday); const tag=(n===0?'오늘! 🎉':(n!=null?'D-'+n:'')); const bday=String(d.birthday).replace('-','.'); rows.push(['생일', (tag?`<em class="dd">${tag}</em>`:'')+esc(bday)]); }
+  if(d.debut){ const ds=daysSince(d.debut); const dplus=(ds!=null&&ds>=0?'D+'+ds:''); rows.push(['데뷔', (dplus?`<em class="dd">${dplus}</em>`:'')+esc(d.debut)]); }
+  if(d.agency) rows.push(['소속', esc(d.agency)]);
+  if(d.mbti) rows.push(['MBTI', esc(d.mbti)]);
+  if(d.age) rows.push(['나이', esc(d.age)]);
+  if(d.fan_name) rows.push(['팬닉', esc(d.fan_name)]);
+  document.getElementById('ptbl').innerHTML = rows.map(r=>`<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');
 
-    const av = document.querySelector('.avatar');
-    if(av){
-      if(p['avatar']) av.src = p['avatar'];
-      else if(p['soop-id']) av.src='https://profile.img.sooplive.co.kr/LOGO/'+p['soop-id'].slice(0,2)+'/'+p['soop-id']+'/'+p['soop-id']+'.jpg';
-    }
-
-    [['lk-soop','link-soop'],['lk-yt','link-youtube'],['lk-x','link-x'],['lk-cafe','link-cafe']].forEach(function(pr){
-      const el=document.getElementById(pr[0]); if(el && p[pr[1]]) el.href=p[pr[1]];
-    });
-
-    if(p['days']){
-      const on = String(p['days']).split(',').map(function(x){return x.trim()});
-      for(let i=0;i<7;i++){
-        const el=document.getElementById('day-'+i); if(!el) continue;
-        if(!on.includes(String(i))) el.closest('.day').classList.add('off');
-        else el.closest('.day').classList.remove('off');
-      }
-    }
-
-    if(p['info-birth']){
-      const m=String(p['info-birth']).match(/(\d{1,2})\D+(\d{1,2})/);
-      if(m){
-        const t=new Date(), y=t.getFullYear(), today=new Date(y,t.getMonth(),t.getDate());
-        let b=new Date(y,+m[1]-1,+m[2]); if(b<today) b=new Date(y+1,+m[1]-1,+m[2]);
-        const n=Math.round((b-today)/864e5);
-        document.querySelectorAll('.ddv').forEach(function(el){ el.textContent=(n===0)?'생일! 🎉':'D-'+n; });
-      }
-    }
-
-    // 특징 태그 (쉼표 구분)
-    document.querySelectorAll('[data-tags]').forEach(function(box){
-      const k = box.dataset.tags;
-      if(!p[k]) return;
-      box.innerHTML = String(p[k]).split(',').map(function(t){
-        t = t.trim(); return t ? '<span class="tag">'+t+'</span>' : '';
-      }).join('');
-    });
-
-    // 능력치 — 문자열("이름:숫자" 줄바꿈) / 배열 둘 다 허용
-    const sb = document.getElementById('stat-box');
-    if(sb && p['stats']){
-      const raw = p['stats'];
-      let rows = [];
-      if(Array.isArray(raw)){
-        rows = raw.map(function(it){
-          if(it && typeof it === 'object'){
-            const nm = it.name || it.label || it.key || '';
-            const vl = parseInt(it.value !== undefined ? it.value : (it.val !== undefined ? it.val : 0), 10) || 0;
-            return [String(nm).trim(), vl];
-          }
-          const m = String(it).split(':');
-          return [(m[0]||'').trim(), parseInt(m[1]||'0',10)||0];
-        });
-      } else if(typeof raw === 'string'){
-        rows = raw.split('\n').filter(Boolean).map(function(line){
-          const m = line.split(':');
-          return [(m[0]||'').trim(), parseInt(m[1]||'0',10)||0];
-        });
-      }
-      rows = rows.filter(function(r){ return r[0]; });
-      if(rows.length){
-        sb.innerHTML = rows.map(function(r,i){
-          const v = Math.max(0, Math.min(100, r[1]));
-          const last = (i===rows.length-1) ? ' style="margin:0"' : '';
-          return '<div class="stat"'+last+'><div class="top"><span>'+r[0]+'</span><i>'+v+'</i></div>'+
-                 '<div class="bar"><span class="fill" style="width:'+v+'%"></span></div></div>';
-        }).join('');
-      }
-    }
-
-    // 마일스톤 — 문자열("상태|내용" 줄바꿈) / 배열 둘 다 허용
-    const mb = document.getElementById('mile-box');
-    if(mb && p['milestones']){
-      const raw = p['milestones'];
-      let rows = [];
-      if(Array.isArray(raw)){
-        rows = raw.map(function(it){
-          if(it && typeof it === 'object') return [String(it.status || it.state || ''), String(it.text || it.name || '')];
-          const m = String(it).split('|');
-          return [(m[0]||'').trim(), (m[1]||'').trim()];
-        });
-      } else if(typeof raw === 'string'){
-        rows = raw.split('\n').filter(Boolean).map(function(line){
-          const m = line.split('|');
-          return [(m[0]||'').trim(), (m[1]||'').trim()];
-        });
-      }
-      rows = rows.filter(function(r){ return r[1]; });
-      if(rows.length){
-        mb.innerHTML = rows.map(function(r){
-          const done = (r[0] === '달성' || r[0] === '달성!');
-          return '<div class="mile'+(done?' done':'')+'"><span class="dot"></span>'+r[1]+
-                 '<span class="d2">'+(done?'달성!':r[0])+'</span></div>';
-        }).join('');
-      }
-    }
-
-    if(typeof loadOriginalSongs==='function') await loadOriginalSongs();
-  }catch(e){ console.warn('DB 로드 실패 — 기본값 유지', e); }
-  finally{ document.body.classList.add('ready'); }
-})();
-setTimeout(function(){ document.body.classList.add('ready'); }, 1200);
-
-/* 기본 D-Day (DB 실패해도 표시) */
-(function(){
-  var t=new Date(), y=t.getFullYear(), today=new Date(y,t.getMonth(),t.getDate());
-  var b=new Date(y,5,8); if(b<today) b=new Date(y+1,5,8);
-  var n=Math.round((b-today)/864e5);
-  document.querySelectorAll('.ddv').forEach(function(el){ el.textContent=(n===0)?'생일! 🎉':'D-'+n; });
-})();
-</script>
-
-<script src="../fx.js"></script>
-
-<div class="askmask" id="askmask">
-  <div class="askmodal">
-    <h3>💬 문의하기</h3>
-    <p>서곱철에게 하고 싶은 말을 남겨주세요! (익명)</p>
-    <textarea id="askmsg" placeholder="문의 내용을 입력해주세요..."></textarea>
-    <div class="askbtns">
-      <button class="no" onclick="closeAsk()">취소</button>
-      <button class="yes" onclick="sendAsk()">보내기</button>
-    </div>
-  </div>
-</div>
-<script>
-function openAsk(){ document.getElementById('askmask').classList.add('on'); }
-function closeAsk(){ document.getElementById('askmask').classList.remove('on'); }
-async function sendAsk(){
-  var t = document.getElementById('askmsg');
-  var v = (t.value || '').trim();
-  if(!v){ alert('내용을 입력해주세요!'); return; }
-  try{ await insertRow('inquiries', { message: v }); alert('문의가 전송되었습니다! 고맙곱창 🩷'); }
-  catch(e){ alert('전송에 실패했어요. 잠시 후 다시 시도해 주세요.'); }
-  t.value = ''; closeAsk();
+  // 소개
+  sec('sec-intro', !!d.intro, ()=>{document.getElementById('intro').textContent=d.intro;});
+  // 좋아/싫어
+  const likes=arr(d.likes),dis=arr(d.dislikes);
+  sec('sec-pref', likes.length||dis.length, ()=>{
+    document.getElementById('likes').innerHTML=likes.map(t=>`<span class="pill">${esc(t)}</span>`).join('')||'<span class="pill" style="opacity:.5">-</span>';
+    document.getElementById('dislikes').innerHTML=dis.map(t=>`<span class="pill no">${esc(t)}</span>`).join('')||'<span class="pill no" style="opacity:.5">-</span>';
+  });
+  // 능력치
+  const stats=(d.stats||[]).filter(s=>s&&s.label);
+  sec('sec-stats', stats.length, ()=>{document.getElementById('stats').innerHTML=stats.map(s=>{
+    const v=Math.max(0,Math.min(100,+s.value||0));
+    return `<div class="stat"><div class="sl">${esc(s.label)}<em>${v}</em></div><div class="bar"><i style="width:${v}%"></i></div></div>`;
+  }).join('');});
+  // 어록
+  const cts=(d.contents||[]).filter(c=>c&&c.title); sec('sec-contents', cts.length, ()=>renderContents(cts));
+  // 이벤트
+  const ev=d.event||{}; sec('sec-event', !!ev.title, ()=>{document.getElementById('event').innerHTML=
+    `<div class="evcard"><span class="now">NOW</span><div class="evt">${esc(ev.title)}</div>${ev.code?`<div class="evcode">${esc(ev.code)}</div>`:''}${ev.note?`<div class="evnote">${esc(ev.note)}</div>`:''}</div>`;});
+  // 목표
+  const g=d.goal||{}; const has=g.target&&+g.target>0; sec('sec-goal', has, ()=>{
+    const pct=Math.max(0,Math.min(100,Math.round((+g.current||0)/(+g.target)*100)));
+    document.getElementById('goal').innerHTML=
+      `<div class="gl"><span>${esc(g.label||'목표')}</span><span>${(+g.current||0).toLocaleString()} / ${(+g.target).toLocaleString()}</span></div>
+       <div class="gbar"><i style="width:${pct}%">${pct}%</i></div>${g.next?`<div class="gnext">다음 목표 — ${esc(g.next)}</div>`:''}`;
+  });
+  // 링크
+  const L=d.links||{}; const linkDefs=[['soop','SOOP',L.soop],['youtube','YouTube',L.youtube],['x','X',L.x]];
+  const links=linkDefs.filter(x=>x[2]);
+  sec('sec-links', links.length, ()=>{document.getElementById('links').innerHTML=links.map(x=>`<a href="${esc(x[2])}" target="_blank" rel="noreferrer">${x[1]}</a>`).join('');});
 }
-document.getElementById('askmask').onclick = function(e){ if(e.target.id === 'askmask') closeAsk(); };
-(function(){
-  var box = document.getElementById('dkbox'); if(!box) return;
-  box.onclick = function(){
-    document.body.classList.toggle('dark');
-    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-  };
-})();
-</script>
+function sec(id,show,fill){ const el=document.getElementById(id); if(show){el.hidden=false;fill();} else {el.hidden=true;} }
+var CONTENTS=[], CPAGE=1; const CPER=5;
+function ckey(c){ return (c && c.date ? String(c.date).replace(/[^0-9]/g,'') : ''); }
+function renderContents(items){ CONTENTS=items.slice().sort(function(a,b){ var ka=ckey(a),kb=ckey(b); if(ka&&kb) return kb.localeCompare(ka); if(ka) return -1; if(kb) return 1; return 0; }); CPAGE=1; drawContents(); }
+function drawContents(){
+  const total=Math.ceil(CONTENTS.length/CPER)||1; if(CPAGE>total) CPAGE=1;
+  const slice=CONTENTS.slice((CPAGE-1)*CPER, CPAGE*CPER);
+  const rows=slice.map(function(c){
+    const d=c.date?esc(String(c.date).replace(/-/g,'.')):'';
+    const t=esc(c.title);
+    const click=c.url?` class="lnk" onclick="window.open('${esc(c.url)}','_blank','noopener')"`:'';
+    return `<tr${click}><td class="cdate">${d}</td><td class="ctitle">${t}</td><td class="cchev">${c.url?'›':''}</td></tr>`;
+  }).join('');
+  document.getElementById('contents').innerHTML =
+    `<table class="ctable"><thead><tr><th>날짜</th><th>컨텐츠</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  const pg=document.getElementById('contents-pg');
+  if(total>1){ let s=''; for(let i=1;i<=total;i++) s+=`<button class="cpgb${i===CPAGE?' on':''}" onclick="goContents(${i})">${i}</button>`; pg.innerHTML=s; }
+  else pg.innerHTML='';
+}
+function goContents(n){ CPAGE=n; drawContents(); }
 
+async function loadOriginalSongs(){
+  const grid=document.getElementById('ovod-grid'); if(!grid) return;
+  let rows=[]; try{ rows=await fetchAll('original_songs',{order:'created_at',asc:false}); }catch(e){ rows=[]; }
+  if(!rows.length){
+    grid.innerHTML=`<div class="vodcell"><div class="vodph"><div class="pl">▶</div><div class="pt">다시보기 준비중</div><div class="pt2">곧 올라올 예정이에요</div></div></div>`;
+    return;
+  }
+  grid.innerHTML=rows.map(r=>{
+    const id=(r.vod_id||'').trim();
+    const fr=id?`<iframe class="fr" src="https://vod.sooplive.co.kr/player/${encodeURIComponent(id)}/embed" allowfullscreen loading="lazy"></iframe>`
+               :`<div class="vodph"><div class="pl">▶</div><div class="pt">${esc(r.title||'영상')}</div></div>`;
+    return `<div class="vodcell">${fr}<div class="cap">${esc(r.title||'영상')}</div></div>`;
+  }).join('');
+}
+
+async function init(){
+  let d = JSON.parse(JSON.stringify(DEFAULTS));
+  try{
+    const rows = await fetchAll('profile');
+    const row = (rows||[]).find(r=>r.id===1) || (rows||[])[0];
+    if(row && row.data && typeof row.data==='object') d = Object.assign(d, row.data);
+  }catch(e){ /* 키 미입력/네트워크 시 기본값 사용 */ }
+  render(d);
+  await loadOriginalSongs();
+  document.getElementById('pmain').classList.add('show');
+  if(typeof enableIframeAutoHeight==='function') enableIframeAutoHeight();
+}
+init();
+setTimeout(()=>document.getElementById('pmain').classList.add('show'), 2500); // FOUC 안전장치
+(function(){var M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];var t=new Date();var s=t.getFullYear()+' · '+M[t.getMonth()]+' '+t.getDate();document.querySelectorAll('.dbox').forEach(function(e){e.textContent=s});})();
+</script>
+<script>
+(function(){if(localStorage.getItem('theme')==='dark')document.body.classList.add('dark');var sw=document.getElementById('tsw'),kn=document.getElementById('kn');function r(){if(kn)kn.textContent=document.body.classList.contains('dark')?'☀️':'🌙';}if(sw)sw.addEventListener('click',function(){document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');r();});r();})();
+</script>
+<script src="../fx.js"></script>
 </body>
 </html>

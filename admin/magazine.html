@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HAYO 관리자</title>
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/ha/hayodayong/hayodayong.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#f5f3ed;color:#14253a;font-family:'Noto Sans KR',sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 120px}
+h1{margin:0 0 6px;font-size:26px;font-weight:800;color:#173351}
+.sub{margin:0 0 22px;font-size:13px;color:#4c5a70;line-height:1.7}
+.card{background:#fffef9;border:1.5px solid #e4e0d5;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(23,51,81,.05)}
+.card h2{margin:0 0 4px;font-size:16px;font-weight:800;color:#173351}
+.card .desc{margin:0 0 14px;font-size:12px;color:#5b6472;line-height:1.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.field{margin-bottom:12px}
+.grid2 .field{margin-bottom:0}
+label{display:block;margin-bottom:5px;font-size:12.5px;font-weight:700;color:#33455c}
+.hint{display:block;margin-top:4px;font-size:11px;color:#5b6472;line-height:1.55}
+.input{width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #dcd8cc;border-radius:10px;background:#fff;color:#14253a;font:inherit;font-size:14px}
+.input:focus{outline:none;border-color:#a2f058;box-shadow:0 0 0 3px rgba(162,240,88,.25)}
+textarea.input{resize:vertical;min-height:74px;line-height:1.6}
+.imgprv{display:block;margin-top:8px;width:110px;height:82px;object-fit:cover;border:1.5px solid #dcd8cc;border-radius:8px;background:#eee}
+/* 로그인 */
+#loginBox{max-width:360px;margin:14vh auto 0;padding:28px;background:#fffef9;border:1.5px solid #e4e0d5;border-radius:18px;text-align:center;box-shadow:0 4px 14px rgba(23,51,81,.08)}
+#loginBox h1{font-size:22px;margin-bottom:14px}
+#adminApp{display:none}
+/* 탭 */
+.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.tabbtn{padding:9px 18px;border:1.5px solid #dcd8cc;border-radius:999px;background:#fffef9;color:#33455c;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.tabbtn.active{background:#173351;border-color:#173351;color:#fffef9}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+/* 테마 */
+.trow{display:grid;grid-template-columns:150px 52px 1fr;gap:10px;align-items:center;margin-bottom:12px}
+.trow label{margin:0}
+.trow input[type=color]{width:52px;height:40px;padding:2px;border:1.5px solid #dcd8cc;border-radius:10px;background:#fff;cursor:pointer}
+.trow .hint{grid-column:1 / -1;margin-top:-4px}
+.btn{padding:10px 18px;border:1.5px solid #dcd8cc;border-radius:12px;background:#fffef9;color:#33455c;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.btn:hover{border-color:#173351}
+/* 테마 미리보기 */
+#themePrev{--paper:#f5f3ed;--navy:#173351;--navy-deep:#0f243c;--blue-soft:#98a8c5;--lime:#a2f058;--ink:#14253a;--white:#fffef9;
+  margin-top:6px;padding:18px;border-radius:12px;background:var(--paper);border:1.5px solid #dcd8cc;position:relative;overflow:hidden}
+#themePrev .pv-title{color:var(--navy);font-weight:900;font-size:34px;letter-spacing:-.04em;line-height:1}
+#themePrev .pv-script{color:var(--lime);font-style:italic;font-weight:800;font-size:20px;text-shadow:1px 1px 0 var(--blue-soft);margin-top:2px}
+#themePrev .pv-badge{display:inline-block;margin-top:10px;padding:3px 10px;background:var(--blue-soft);color:var(--white);font-size:11px;font-weight:800;letter-spacing:.05em}
+#themePrev .pv-card{margin-top:10px;padding:10px 12px;background:var(--white);color:var(--ink);border:1px solid rgba(23,51,81,.25);font-size:12px;box-shadow:4px 5px 0 rgba(23,51,81,.14)}
+#themePrev .pv-chips{display:flex;gap:5px;margin-top:10px}
+#themePrev .pv-chips i{width:17px;height:17px;display:block}
+#themePrev .pv-chips .c1{background:var(--navy-deep)}
+#themePrev .pv-chips .c2{background:#42608a}
+#themePrev .pv-chips .c3{background:#aab4c8}
+#themePrev .pv-chips .c4{background:var(--lime)}
+/* 저장 바 */
+.savebar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px;background:rgba(255,254,249,.94);border-top:1.5px solid #e4e0d5;backdrop-filter:blur(6px);z-index:50}
+.savebar .in{max-width:860px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:flex-end}
+.savebar .note{margin-right:auto;font-size:11.5px;color:#5b6472}
+#saveBtn{padding:12px 26px;border:none;border-radius:12px;background:#173351;color:#fffef9;font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+#saveBtn:hover{background:#0f243c}
+#saveBtn:disabled{opacity:.6;cursor:wait}
+/* 토스트 */
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%) translateY(16px);padding:11px 20px;background:#173351;color:#fffef9;border-radius:999px;font-size:13.5px;font-weight:700;opacity:0;pointer-events:none;transition:all .25s ease;z-index:99;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:640px){
+  .grid2{grid-template-columns:1fr}
+  .trow{grid-template-columns:1fr 52px 110px}
+}
+</style>
+</head>
+<body>
+
+<!-- 로그인 -->
+<div id="loginBox">
+  <h1>🔐 HAYO 관리자</h1>
+  <div class="field">
+    <input class="input" id="pwInput" type="password" placeholder="비밀번호">
+  </div>
+  <button class="btn" id="loginBtn" style="width:100%;background:#173351;color:#fffef9;border-color:#173351">입장</button>
+</div>
+
+<!-- 본체 -->
+<div id="adminApp">
+<div class="wrap">
+  <h1>📰 HAYO 매거진 관리자</h1>
+  <p class="sub">메인페이지에 보이는 <b>모든 글자·캐릭터 이미지·색</b>을 여기서 수정합니다.<br>
+  칸을 <b>비워두고 저장</b>하면 그 항목은 원래(기본) 콘텐츠로 표시돼요. 저장 후 메인페이지를 새로고침하면 반영됩니다.</p>
+
+  <div class="tabs">
+    <button class="tabbtn active" data-tab="tab-main" type="button">🏠 메인</button>
+    <button class="tabbtn" data-tab="tab-theme" type="button">🎨 테마</button>
+  </div>
+
+  <!-- ───────── 🏠 메인 탭 ───────── -->
+  <div class="tab-panel active" id="tab-main">
+
+    <div class="card">
+      <h2>📰 상단 헤더</h2>
+      <p class="desc">화면 맨 위 한 줄 — 시리즈 문구·로고·오른쪽 라벨 박스.</p>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-hd-series-en">시리즈 문구 (윗줄·영문)</label>
+          <input class="input" id="f-hd-series-en" type="text">
+        </div>
+        <div class="field">
+          <label for="f-hd-series-jp">시리즈 문구 (아랫줄·일문)</label>
+          <input class="input" id="f-hd-series-jp" type="text">
+        </div>
+        <div class="field">
+          <label for="f-hd-logo">로고 큰 글자</label>
+          <input class="input" id="f-hd-logo" type="text">
+          <span class="hint">기울어진 흰색 큰 로고. 짧은 영문 추천 (예: HAYO)</span>
+        </div>
+        <div class="field">
+          <label for="f-hd-logo-sub">로고 작은 글자</label>
+          <input class="input" id="f-hd-logo-sub" type="text">
+          <span class="hint">로고 아래 붙는 작은 글자 (예: mag.)</span>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label for="f-hd-label">오른쪽 라벨 박스</label>
+        <textarea class="input" id="f-hd-label" rows="2"></textarea>
+        <span class="hint">줄바꿈 = 화면에서도 줄바꿈. 모바일에서는 숨겨지는 요소예요.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>✨ 커버 타이틀</h2>
+      <p class="desc">화면을 꽉 채우는 큰 이름 + 라임색 필기체.</p>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-hero-name">큰 이름</label>
+          <input class="input" id="f-hero-name" type="text">
+          <span class="hint">대문자로 표시되고, 글자 위 반짝임 효과도 자동으로 같이 바뀌어요.</span>
+        </div>
+        <div class="field">
+          <label for="f-hero-script">필기체 이름</label>
+          <input class="input" id="f-hero-script" type="text">
+          <span class="hint">큰 이름 위에 겹쳐지는 라임색 필기체.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🧾 프로필 팩트 (왼쪽 세로 카드)</h2>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-facts-jp">일문 이름</label>
+          <input class="input" id="f-facts-jp" type="text">
+        </div>
+        <div class="field">
+          <label for="f-facts-en">영문 배지</label>
+          <input class="input" id="f-facts-en" type="text">
+          <span class="hint">연블루 배경의 작은 배지 글자.</span>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label for="f-facts-list">팩트 목록</label>
+        <textarea class="input" id="f-facts-list" rows="4"></textarea>
+        <span class="hint">한 줄에 하나씩, <b>라벨: 값</b> 형식 (예: NAME: HAYO). 줄을 늘리거나 줄여도 돼요.</span>
+      </div>
+      <div class="field">
+        <label for="f-facts-keywords">키워드 (굵은 글자 줄)</label>
+        <textarea class="input" id="f-facts-keywords" rows="4"></textarea>
+        <span class="hint">한 줄 = 한 단어. 팩트 목록 아래 진남색 굵은 글자로 표시됩니다.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💬 문구 · 인용</h2>
+      <p class="desc">화면 곳곳에 흩어진 손글씨/인용 문구들.</p>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-quote-top">상단 인용 (스냅사진 아래)</label>
+          <input class="input" id="f-quote-top" type="text">
+        </div>
+        <div class="field">
+          <label for="f-quote-top-by">상단 인용 서명</label>
+          <input class="input" id="f-quote-top-by" type="text">
+          <span class="hint">예: — HAYO</span>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label for="f-strip-jp">세로 일본어 띠</label>
+        <textarea class="input" id="f-strip-jp" rows="3"></textarea>
+        <span class="hint">파란 세로 띠. 한 줄 = 한 칸. 모바일에서는 숨겨져요.</span>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-polaroid-cap">폴라로이드 손글씨</label>
+          <input class="input" id="f-polaroid-cap" type="text">
+        </div>
+        <div class="field">
+          <label for="f-polaroid-cap-sub">폴라로이드 작은 글자</label>
+          <input class="input" id="f-polaroid-cap-sub" type="text">
+        </div>
+        <div class="field">
+          <label for="f-film-title">필름 카드 제목</label>
+          <input class="input" id="f-film-title" type="text">
+        </div>
+        <div class="field">
+          <label for="f-film-quote">필름 카드 문구</label>
+          <input class="input" id="f-film-quote" type="text">
+        </div>
+        <div class="field">
+          <label for="f-film-quote-sub">필름 카드 작은 문구</label>
+          <input class="input" id="f-film-quote-sub" type="text">
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:12px">
+        <div class="field">
+          <label for="f-torn-quote">찢은 종이 인용</label>
+          <textarea class="input" id="f-torn-quote" rows="2"></textarea>
+          <span class="hint">오른쪽 아래 남색 찢은 종이. PC에서만 보여요.</span>
+        </div>
+        <div class="field">
+          <label for="f-torn-quote-sub">찢은 종이 작은 글</label>
+          <textarea class="input" id="f-torn-quote-sub" rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🌱 WHO 카드</h2>
+      <div class="field">
+        <label for="f-who-title">카드 제목</label>
+        <input class="input" id="f-who-title" type="text">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-who-kr">한글 소개</label>
+          <textarea class="input" id="f-who-kr" rows="3"></textarea>
+          <span class="hint">줄바꿈 = 화면 줄바꿈.</span>
+        </div>
+        <div class="field">
+          <label for="f-who-en">영문 소개</label>
+          <textarea class="input" id="f-who-en" rows="3"></textarea>
+          <span class="hint">모바일에서는 숨겨져요.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🖼 캐릭터 이미지</h2>
+      <p class="desc">SOOP 비공개 게시판에 이미지를 올리고 <b>이미지 우클릭 → "이미지 주소 복사"</b>한 URL을 붙여넣으세요 (글 주소 ❌, 이미지 직접 주소 ⭕).<br>비워두면 지금 들어있는 기본 이미지가 그대로 표시됩니다.</p>
+
+      <div class="field">
+        <label for="f-img-main">중앙 캐릭터 (누끼)</label>
+        <input class="input" id="f-img-main" type="text" placeholder="비우면 기본 이미지">
+        <span class="hint">배경 투명 PNG 권장 · 세로형 (기본 비율 1060×1152). 흰색 이중 그림자는 자동으로 붙어요.</span>
+        <img class="imgprv" id="prv-img-main" referrerpolicy="no-referrer" alt="">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-img-snap-top">상단 스냅 (테이프 카드)</label>
+          <input class="input" id="f-img-snap-top" type="text" placeholder="비우면 기본 이미지">
+          <span class="hint">가로형 권장 (자동으로 잘라 맞춰요).</span>
+          <img class="imgprv" id="prv-img-snap-top" referrerpolicy="no-referrer" alt="">
+        </div>
+        <div class="field">
+          <label for="f-img-snap-polaroid">폴라로이드 사진</label>
+          <input class="input" id="f-img-snap-polaroid" type="text" placeholder="비우면 기본 이미지">
+          <img class="imgprv" id="prv-img-snap-polaroid" referrerpolicy="no-referrer" alt="">
+        </div>
+        <div class="field">
+          <label for="f-img-film1">필름 스트립 ①</label>
+          <input class="input" id="f-img-film1" type="text" placeholder="비우면 기본 이미지">
+          <img class="imgprv" id="prv-img-film1" referrerpolicy="no-referrer" alt="">
+        </div>
+        <div class="field">
+          <label for="f-img-film2">필름 스트립 ②</label>
+          <input class="input" id="f-img-film2" type="text" placeholder="비우면 기본 이미지">
+          <img class="imgprv" id="prv-img-film2" referrerpolicy="no-referrer" alt="">
+        </div>
+        <div class="field">
+          <label for="f-img-film3">필름 스트립 ③</label>
+          <input class="input" id="f-img-film3" type="text" placeholder="비우면 기본 이미지">
+          <img class="imgprv" id="prv-img-film3" referrerpolicy="no-referrer" alt="">
+        </div>
+        <div class="field">
+          <label for="f-img-snap-round">원형 사진 (오른쪽 아래)</label>
+          <input class="input" id="f-img-snap-round" type="text" placeholder="비우면 기본 이미지">
+          <span class="hint">동그랗게 잘려요. 인물이 위쪽에 있는 사진 추천.</span>
+          <img class="imgprv" id="prv-img-snap-round" referrerpolicy="no-referrer" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🏷 하단 푸터</h2>
+      <p class="desc">바코드 라벨과 하단 한 줄. 모바일에서는 가운데 항목들이 숨겨져요.</p>
+      <div class="grid2">
+        <div class="field">
+          <label for="f-ft-barcode">바코드 라벨</label>
+          <input class="input" id="f-ft-barcode" type="text">
+        </div>
+        <div class="field">
+          <label for="f-ft-1">푸터 ①</label>
+          <input class="input" id="f-ft-1" type="text">
+        </div>
+        <div class="field">
+          <label for="f-ft-2">푸터 ②</label>
+          <input class="input" id="f-ft-2" type="text">
+        </div>
+        <div class="field">
+          <label for="f-ft-3">푸터 ③</label>
+          <input class="input" id="f-ft-3" type="text">
+        </div>
+        <div class="field">
+          <label for="f-ft-link">오른쪽 링크 글자</label>
+          <input class="input" id="f-ft-link" type="text">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ───────── 🎨 테마 탭 ───────── -->
+  <div class="tab-panel" id="tab-theme">
+    <div class="card">
+      <h2>🎨 색상 팔레트</h2>
+      <p class="desc">저장하면 메인페이지 전체 색이 자동으로 바뀝니다. 형식은 <b>#rrggbb</b> (예: #a2f058). 잘못된 값은 기본색으로 되돌아가요.</p>
+
+      <div class="trow">
+        <label for="f-theme-paper">종이 배경</label>
+        <input type="color" id="c-theme-paper">
+        <input class="input" id="f-theme-paper" type="text">
+        <span class="hint">화면 전체에 깔리는 매트한 종이색.</span>
+      </div>
+      <div class="trow">
+        <label for="f-theme-navy">진남색 (메인)</label>
+        <input type="color" id="c-theme-navy">
+        <input class="input" id="f-theme-navy" type="text">
+        <span class="hint">큰 이름·라벨 테두리·필름 카드 배경 등 핵심 포인트색.</span>
+      </div>
+      <div class="trow">
+        <label for="f-theme-navy-deep">더 진한 남색</label>
+        <input type="color" id="c-theme-navy-deep">
+        <input class="input" id="f-theme-navy-deep" type="text">
+        <span class="hint">팔레트 칩 등 아주 진한 부분.</span>
+      </div>
+      <div class="trow">
+        <label for="f-theme-blue-soft">연한 블루</label>
+        <input type="color" id="c-theme-blue-soft">
+        <input class="input" id="f-theme-blue-soft" type="text">
+        <span class="hint">로고 그림자·배지 배경.</span>
+      </div>
+      <div class="trow">
+        <label for="f-theme-lime">라임 포인트</label>
+        <input type="color" id="c-theme-lime">
+        <input class="input" id="f-theme-lime" type="text">
+        <span class="hint">필기체 이름·팩트 ■ 불릿·드래그 선택색.</span>
+      </div>
+      <div class="trow">
+        <label for="f-theme-ink">본문 잉크색</label>
+        <input type="color" id="c-theme-ink">
+        <input class="input" id="f-theme-ink" type="text">
+        <span class="hint">일반 글자색.</span>
+      </div>
+      <div class="trow">
+        <label for="f-theme-white">흰색 요소</label>
+        <input type="color" id="c-theme-white">
+        <input class="input" id="f-theme-white" type="text">
+        <span class="hint">폴라로이드·스냅 카드 배경 등.</span>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
+        <button class="btn" id="themeReset" type="button">↺ 기본값으로</button>
+        <span class="hint" style="margin:0">기본값을 채워넣기만 해요 — 아래 <b>저장</b>을 눌러야 반영됩니다.</span>
+      </div>
+
+      <div id="themePrev">
+        <div class="pv-title">HAYO</div>
+        <div class="pv-script">Hayo</div>
+        <span class="pv-badge">HAYO</span>
+        <div class="pv-card">본문 텍스트 미리보기 · ONLINE</div>
+        <div class="pv-chips"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 저장 바 -->
+<div class="savebar">
+  <div class="in">
+    <span class="note">빈 칸 = 기본 콘텐츠 표시</span>
+    <button id="saveBtn" type="button">💾 전체 저장</button>
+  </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../supabase.js"></script>
+<script>
+(function(){
+  var ADMIN_PASSWORD = 'Nana@4560';
+
+  /* ── 메인페이지와 동일한 키 목록 (3종 세트 일치: profileKeys ↔ f-{key} ↔ data-hook) ── */
+  var TEXT_DEFAULTS = {
+    'hd-series-en': 'BOKU NO HAYO NO KAWAII YATSU',
+    'hd-series-jp': '僕のハヨのかわいいやつ',
+    'hd-logo': 'HAYO',
+    'hd-logo-sub': 'mag.',
+    'hd-label': 'THE FRESHNESS\nIN MY HEART',
+    'hero-name': 'HAYO',
+    'hero-script': 'Hayo',
+    'facts-jp': 'ハヨ',
+    'facts-en': 'HAYO',
+    'facts-list': 'NAME: HAYO\nCOLOR: #A2F058\nMODE: ONLINE\nTYPE: LOVELY',
+    'facts-keywords': 'POPULAR\nBRIGHT\nLOVELY\nA LITTLE SILLY',
+    'quote-top': '「 오늘도 가장 밝은 순간을. 」',
+    'quote-top-by': '— HAYO',
+    'strip-jp': 'ハヨの\n心の\nきらめき',
+    'polaroid-cap': '「かわいい！」',
+    'polaroid-cap-sub': '(kawaii!)',
+    'film-title': 'FAVORITE MOMENTS.',
+    'film-quote': '「 毎日、君といる時間が特別。 」',
+    'film-quote-sub': 'Every moment with you is special.',
+    'torn-quote': '\u201C きらきらした\n毎日が好き。 \u201D',
+    'torn-quote-sub': 'Because...\nI like bright days, too.',
+    'who-title': 'WHO IS HAYO?',
+    'who-kr': '라임빛처럼 밝고 포근한 분위기.\n반짝이는 순간을 모아\n한 장의 잡지처럼 기록합니다.',
+    'who-en': 'HAYO is bright, lovely and full of fresh energy. Every small moment becomes a favorite page.',
+    'ft-barcode': 'HAYO / 2026',
+    'ft-1': 'HAYO OFFICIAL',
+    'ft-2': '2ND EDITION',
+    'ft-3': 'FRESH & LOVELY',
+    'ft-link': 'SPECIAL GIRL ➤➤➤'
+  };
+  var IMG_KEYS = ['img-main','img-snap-top','img-snap-polaroid','img-film1','img-film2','img-film3','img-snap-round'];
+  var DEFAULT_IMG = {
+    'img-main': '../img/hayo-main-cutout.webp',
+    'img-snap-top': '../img/hayo-snap-heart.webp',
+    'img-snap-polaroid': '../img/hayo-snap-crouch.webp',
+    'img-film1': '../img/hayo-snap-heart.webp',
+    'img-film2': '../img/hayo-snap-pose.webp',
+    'img-film3': '../img/hayo-snap-full.webp',
+    'img-snap-round': '../img/hayo-snap-full.webp'
+  };
+  var THEME_DEFAULTS = {
+    'theme-paper': '#f5f3ed',
+    'theme-navy': '#173351',
+    'theme-navy-deep': '#0f243c',
+    'theme-blue-soft': '#98a8c5',
+    'theme-lime': '#a2f058',
+    'theme-ink': '#14253a',
+    'theme-white': '#fffef9'
+  };
+  var THEME_VARS = {
+    'theme-paper':'--paper', 'theme-navy':'--navy', 'theme-navy-deep':'--navy-deep',
+    'theme-blue-soft':'--blue-soft', 'theme-lime':'--lime', 'theme-ink':'--ink', 'theme-white':'--white'
+  };
+  var profileKeys = Object.keys(TEXT_DEFAULTS).concat(IMG_KEYS, Object.keys(THEME_DEFAULTS));
+
+  function $(id){ return document.getElementById(id); }
+
+  /* 타입 방어 — DB 값이 문자열이 아닐 수도 있음 */
+  function asText(v){
+    if (v == null) return '';
+    if (typeof v === 'string') return v;
+    if (typeof v === 'number') return String(v);
+    if (Array.isArray(v)) return v.join('\n');
+    return '';
+  }
+
+  function normHex(v, fallback){
+    v = asText(v).trim().toLowerCase();
+    if (v && v[0] !== '#') v = '#' + v;
+    return /^#[0-9a-f]{6}$/.test(v) ? v : fallback;
+  }
+
+  /* ── 테마: 컬러피커 ↔ hex 입력 양방향 동기 + 미리보기 ── */
+  function updatePreview(){
+    var pv = $('themePrev');
+    Object.keys(THEME_VARS).forEach(function(k){
+      var v = normHex($('f-' + k).value, THEME_DEFAULTS[k]);
+      pv.style.setProperty(THEME_VARS[k], v);
+    });
+  }
+  function bindThemeRow(k){
+    var t = $('f-' + k), c = $('c-' + k);
+    t.addEventListener('input', function(){
+      var v = normHex(t.value, THEME_DEFAULTS[k]);
+      c.value = v;
+      updatePreview();
+    });
+    c.addEventListener('input', function(){
+      t.value = c.value;
+      updatePreview();
+    });
+  }
+  function fillTheme(saved){
+    Object.keys(THEME_DEFAULTS).forEach(function(k){
+      var v = normHex(saved[k], THEME_DEFAULTS[k]);
+      $('f-' + k).value = v;
+      $('c-' + k).value = v;
+    });
+    updatePreview();
+  }
+
+  /* ── 이미지 미리보기 ── */
+  function refreshPrv(k){
+    var el = $('prv-' + k);
+    var v = $('f-' + k).value.trim();
+    el.style.display = 'block';
+    el.src = v || DEFAULT_IMG[k];
+  }
+  function bindImgRow(k){
+    $('f-' + k).addEventListener('input', function(){ refreshPrv(k); });
+    $('prv-' + k).addEventListener('error', function(){ this.style.display = 'none'; });
+  }
+
+  /* ── 불러오기 ── */
+  async function loadAll(){
+    var saved = {};
+    try{
+      if (typeof db === 'undefined') throw new Error('offline');
+      var res = await db.from('profile').select('data').eq('id', 1);
+      saved = (res.data && res.data[0] && res.data[0].data) || {};
+    }catch(e){
+      showToastSafe('⚠ 불러오기 실패 — 기본값으로 표시 (supabase.js 키 확인)');
+    }
+    Object.keys(TEXT_DEFAULTS).forEach(function(k){
+      var el = $('f-' + k); if (!el) return;
+      var v = asText(saved[k]);
+      el.value = v.trim() !== '' ? v : TEXT_DEFAULTS[k];
+    });
+    IMG_KEYS.forEach(function(k){
+      var el = $('f-' + k); if (!el) return;
+      el.value = asText(saved[k]);
+      refreshPrv(k);
+    });
+    fillTheme(saved);
+  }
+
+  /* ── 저장 (기존 데이터와 병합 → upsert) ── */
+  async function saveAll(){
+    var btn = $('saveBtn');
+    btn.disabled = true;
+    try{
+      if (typeof db === 'undefined') throw new Error('offline');
+      var res = await db.from('profile').select('data').eq('id', 1);
+      var saved = (res.data && res.data[0] && res.data[0].data) || {};
+      profileKeys.forEach(function(k){
+        var el = $('f-' + k);
+        if (el) saved[k] = el.value;
+      });
+      Object.keys(THEME_DEFAULTS).forEach(function(k){
+        saved[k] = normHex(saved[k], THEME_DEFAULTS[k]);
+        $('f-' + k).value = saved[k];
+        $('c-' + k).value = saved[k];
+      });
+      var up = await db.from('profile').upsert({ id: 1, data: saved });
+      if (up.error) throw up.error;
+      showToastSafe('💾 저장 완료 — 메인페이지를 새로고침하면 반영돼요');
+    }catch(e){
+      console.error(e);
+      showToastSafe('❌ 저장 실패 — supabase.js 키/네트워크 확인');
+    }finally{
+      btn.disabled = false;
+    }
+  }
+
+  function showToastSafe(msg){
+    if (typeof showToast === 'function') showToast(msg);
+    else alert(msg);
+  }
+
+  /* ── 탭 ── */
+  document.querySelectorAll('.tabbtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.tabbtn').forEach(function(x){ x.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      $(b.getAttribute('data-tab')).classList.add('active');
+    });
+  });
+
+  /* ── 로그인 ── */
+  function openApp(){
+    $('loginBox').style.display = 'none';
+    $('adminApp').style.display = 'block';
+    loadAll();
+  }
+  function tryLogin(){
+    if ($('pwInput').value === ADMIN_PASSWORD){
+      sessionStorage.setItem('hayo_admin_ok', '1');
+      openApp();
+    } else {
+      showToastSafe('비밀번호가 달라요');
+    }
+  }
+  $('loginBtn').addEventListener('click', tryLogin);
+  $('pwInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') tryLogin(); });
+  $('saveBtn').addEventListener('click', saveAll);
+  $('themeReset').addEventListener('click', function(){ fillTheme({}); showToastSafe('기본색을 채웠어요 — 저장을 눌러야 반영됩니다'); });
+
+  Object.keys(THEME_DEFAULTS).forEach(bindThemeRow);
+  IMG_KEYS.forEach(bindImgRow);
+  fillTheme({});
+
+  if (sessionStorage.getItem('hayo_admin_ok') === '1') openApp();
+})();
+</script>
+</body>
+</html>
