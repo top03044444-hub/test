@@ -148,10 +148,17 @@ async function applyTheme(){
       'theme-blue-soft': '--blue-soft',
       'theme-lime':      '--lime',
       'theme-ink':       '--ink',
-      'theme-white':     '--white'
+      'theme-white':     '--white',
+      'theme-yellow-soft':'--yellow-soft'
     };
     Object.keys(map).forEach(function(k){
-      if(p[k]) document.documentElement.style.setProperty(map[k], p[k]);
+      if(!p[k]) return;
+      document.documentElement.style.setProperty(map[k], p[k]);
+      if(k === 'theme-ink'){
+        var m = String(p[k]).match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+        if(m) document.documentElement.style.setProperty('--ink-rgb',
+          parseInt(m[1],16) + ',' + parseInt(m[2],16) + ',' + parseInt(m[3],16));
+      }
     });
   }catch(e){ /* 실패해도 기본 색 유지 */ }
 }

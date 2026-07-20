@@ -5,26 +5,28 @@
    ========================================================= */
 
 :root{
-  /* ── 매거진 팔레트 (admin/magazine.html 🎨 테마 7키 연동) ── */
-  --paper:#f5f3ed; --navy:#173351; --navy-deep:#0f243c; --blue-soft:#98a8c5;
-  --lime:#a2f058; --ink:#14253a; --white:#fffef9;
+  /* ── 매거진 팔레트 (admin 🎨 테마 8키 연동 · v11 노랑 정본) ── */
+  --paper:#fffaf0; --navy:#fbd776; --navy-deep:#e4aa31; --blue-soft:#cfdc78;
+  --lime:#b8dd71; --ink:#657a3b; --white:#fffef8; --yellow-soft:#ffe9ad;
+  --ink-rgb:101,122,59;
   /* ── 파생 (기존 컴포넌트 호환 + fx.js 로딩커버 필수 변수) ── */
-  --main:var(--lime); --main-dark:var(--navy); --main-light:#ecf6d7;
-  --bg:var(--white); --card:var(--white); --cream:#eef3e0;
-  --logo:var(--white); --text:#2c3c52; --text-mid:#4d5f78; --text-soft:#6d7d95;
-  --rule:#ccd3dd; --backdrop:var(--paper);
-  --shadow-hover:0 10px 26px rgba(23,51,81,.16);
+  --main:var(--lime); --main-dark:var(--navy-deep); --main-light:#eef7d9;
+  --bg:var(--white); --card:var(--white); --cream:#f6f2df;
+  --logo:var(--navy); --text:#5e7038; --text-mid:#7c8a58; --text-soft:#9aa478;
+  --rule:#e8e2cc; --backdrop:var(--paper);
+  --shadow-hover:0 10px 26px rgba(var(--ink-rgb),.16);
   --pen:'Noto Sans KR',sans-serif; --serif:'Nanum Myeongjo',serif;
   --mag:'Playfair Display',serif; --script:'Sacramento',cursive; --katuri:'Jua','Noto Sans KR',sans-serif;
   --mono:'Geist Mono',ui-monospace,'Courier New',monospace;
 }
 body.dark{
-  --paper:#0d1626; --navy:#9fb6dd; --navy-deep:#0a1220; --blue-soft:#5d7396;
-  --lime:#aef26a; --ink:#eef2f8; --white:#152238;
-  --main:var(--lime); --main-dark:var(--navy); --main-light:#22314a;
-  --bg:#0f1a2e; --card:#152238; --cream:#1a2740;
-  --logo:#eef2f8; --text:#dbe4f0; --text-mid:#a9b6c9; --text-soft:#8494ab;
-  --rule:#2a3a52; --backdrop:#0a1220;
+  --paper:#191507; --navy:#fbd776; --navy-deep:#e4aa31; --blue-soft:#6e7346;
+  --lime:#cfe98a; --ink:#f0eddc; --white:#241f10; --yellow-soft:#3a3216;
+  --ink-rgb:240,237,220;
+  --main:var(--lime); --main-dark:var(--navy); --main-light:#2c2a14;
+  --bg:#141105; --card:#1e1a0c; --cream:#262110;
+  --logo:#fbd776; --text:#e6e1cc; --text-mid:#b3ad92; --text-soft:#8e8871;
+  --rule:#3b3620; --backdrop:#0f0d05;
   --shadow-hover:0 10px 26px rgba(0,0,0,.5);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -35,8 +37,8 @@ a{color:inherit}
 
 /* ── 떠있는 시트 ── */
 .wrap{max-width:1120px;margin:30px auto;padding:14px 44px 30px;background:var(--card);
-  border:1px solid rgba(23,51,81,.25);
-  box-shadow:8px 10px 0 rgba(23,51,81,.13);position:relative;z-index:1}
+  border:1px solid rgba(var(--ink-rgb),.25);
+  box-shadow:8px 10px 0 rgba(var(--ink-rgb),.13);position:relative;z-index:1}
 body.dark .wrap{border-color:rgba(255,255,255,.08);box-shadow:8px 10px 0 rgba(0,0,0,.45)}
 @media(max-width:680px){.wrap{margin:12px;padding:8px 18px 24px}}
 
@@ -48,11 +50,11 @@ body.dark .wrap{border-color:rgba(255,255,255,.08);box-shadow:8px 10px 0 rgba(0,
 .cover-nav{display:flex;align-items:center;gap:13px;margin-top:4px;font-size:14px;font-weight:900;letter-spacing:.06em;white-space:nowrap;color:var(--navy)}
 body.dark .cover-nav{color:var(--ink)}
 .cover-nav a{padding:0 1px;text-decoration:none}
-.cover-nav a:hover{color:#42608a}
+.cover-nav a:hover{color:var(--navy);opacity:.68}
 body.dark .cover-nav a:hover{color:var(--main-dark)}
 .cover-nav a.on{background:linear-gradient(180deg,transparent 58%,var(--lime) 58%);padding:0 3px;color:var(--ink)}
 body.dark .cover-nav a.on{background:linear-gradient(180deg,transparent 58%,rgba(162,240,88,.45) 58%)}
-.cover-nav i{font-style:normal;font-weight:400;color:rgba(23,51,81,.35)}
+.cover-nav i{font-style:normal;font-weight:400;color:rgba(var(--ink-rgb),.35)}
 body.dark .cover-nav i{color:rgba(238,242,248,.3)}
 .cover-nav .actions{display:flex;align-items:center;margin-left:4px}
 .issue-logo{margin-top:-10px;color:var(--logo);font-size:clamp(30px,3vw,44px);font-weight:900;font-style:italic;letter-spacing:-.07em;line-height:1;text-shadow:0 2px 0 var(--blue-soft),1px 0 0 var(--blue-soft);transform:rotate(-2deg);text-decoration:none}
@@ -75,7 +77,7 @@ body.dark .tsw{background:#1a2740}body.dark .tsw .kn{top:14px;background:#152238
 .kicker{display:flex;align-items:center;gap:10px;margin-top:30px}
 .kicker .cat{font-family:var(--mono);font-size:12px;letter-spacing:3px;font-weight:800;color:var(--main-dark)}
 .kicker .date{margin-left:auto;background:var(--main-dark);color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;padding:4px 9px}
-body.dark .kicker .date{color:#0f243c}
+body.dark .kicker .date{color:#3f3305}
 .headline{font-family:'Noto Sans KR',Impact,sans-serif;font-weight:900;font-size:clamp(42px,5.4vw,70px);line-height:1;color:var(--navy);margin-top:14px;letter-spacing:-.04em;text-transform:uppercase;text-shadow:1px 1px 0 rgba(255,255,255,.4)}
 body.dark .headline{color:var(--ink);text-shadow:none}
 .headline em{font-style:normal;color:var(--ink);background:linear-gradient(180deg,transparent 55%,var(--lime) 55%);padding:0 5px}
@@ -83,12 +85,12 @@ body.dark .headline em{background:linear-gradient(180deg,transparent 55%,rgba(16
 .byline{font-family:var(--mono);font-size:12px;letter-spacing:.5px;font-weight:600;color:var(--text-mid);margin-top:12px;line-height:1.8}
 .seclabel{display:flex;align-items:center;gap:12px;margin:34px 0 16px}
 .seclabel b{display:inline-block;background:var(--navy);color:var(--white);font-size:12.5px;font-weight:800;letter-spacing:.04em;padding:5px 11px;transform:rotate(-1deg);white-space:nowrap}
-body.dark .seclabel b{background:var(--main-dark);color:#0f243c}
+body.dark .seclabel b{background:var(--main-dark);color:#3f3305}
 .seclabel .ln{flex:1;height:1.5px;background:var(--rule)}
 
 /* ── 콘텐츠 컨테이너/카드 ── */
 .container{margin-top:24px}
-.card{background:var(--card);border:1px solid rgba(23,51,81,.28);border-radius:0;padding:24px 26px;margin-top:20px;box-shadow:8px 10px 0 rgba(23,51,81,.12)}
+.card{background:var(--card);border:1px solid rgba(var(--ink-rgb),.28);border-radius:0;padding:24px 26px;margin-top:20px;box-shadow:8px 10px 0 rgba(var(--ink-rgb),.12)}
 body.dark .card{border-color:rgba(255,255,255,.1);box-shadow:8px 10px 0 rgba(0,0,0,.42)}
 .page-title{font-family:var(--pen);font-weight:800;font-size:26px;color:var(--ink)}
 .page-subtitle{font-size:13px;color:var(--text-soft);margin-top:6px}

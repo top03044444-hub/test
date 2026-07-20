@@ -20,11 +20,11 @@
   .cover-nav{display:flex;align-items:center;gap:13px;margin-top:4px;font-size:14px;font-weight:900;letter-spacing:.06em;white-space:nowrap;color:var(--navy)}
   body.dark .cover-nav{color:var(--ink)}
   .cover-nav a{padding:0 1px}
-  .cover-nav a:hover{color:#42608a}
+  .cover-nav a:hover{color:var(--navy);opacity:.68}
   body.dark .cover-nav a:hover{color:var(--main-dark)}
   .cover-nav a.on{background:linear-gradient(180deg,transparent 58%,var(--lime) 58%);padding:0 3px;color:var(--ink)}
   body.dark .cover-nav a.on{background:linear-gradient(180deg,transparent 58%,rgba(162,240,88,.45) 58%)}
-  .cover-nav i{font-style:normal;font-weight:400;color:rgba(23,51,81,.35)}
+  .cover-nav i{font-style:normal;font-weight:400;color:rgba(var(--ink-rgb),.35)}
   body.dark .cover-nav i{color:rgba(238,242,248,.3)}
   .cover-nav .actions{display:flex;align-items:center;margin-left:4px}
   .issue-logo{margin-top:-10px;color:var(--logo);font-size:clamp(30px,3vw,44px);font-weight:900;font-style:italic;letter-spacing:-.07em;line-height:1;text-shadow:0 2px 0 var(--blue-soft),1px 0 0 var(--blue-soft);transform:rotate(-2deg);text-decoration:none}
@@ -41,10 +41,10 @@
   .spread{max-width:1240px;margin:0 auto;padding:6px 22px 40px;display:grid;grid-template-columns:repeat(12,1fr);gap:30px 26px}
   .kickline{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-top:2px}
   .kickline .cat{font-family:var(--mono);font-size:12px;letter-spacing:3px;font-weight:800;color:var(--main-dark)}
-  .kickline .ln{flex:1;height:2px;background:rgba(23,51,81,.2)}
+  .kickline .ln{flex:1;height:2px;background:rgba(var(--ink-rgb),.2)}
   body.dark .kickline .ln{background:rgba(255,255,255,.14)}
   .kickline .date{font-family:var(--mono);background:var(--main-dark);color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;padding:4px 9px}
-  body.dark .kickline .date{color:#0f243c}
+  body.dark .kickline .date{color:#3f3305}
 
   /* ── 히어로: 좌 초대형 타이틀+팩트 / 우 테이프 스냅 아바타 ── */
   .hero{grid-column:1/-1;position:relative;display:grid;grid-template-columns:1.25fr .85fr;gap:6px 46px;align-items:start;margin-top:4px}
@@ -55,7 +55,7 @@
   .hero-brush{position:absolute;left:4%;top:clamp(58px,7.5vw,110px);width:min(64%,430px);opacity:.9;transform:rotate(-5deg);z-index:1;pointer-events:none}
   .ptag{margin-top:22px;font-size:14.5px;font-weight:700;line-height:1.8;color:var(--text);position:relative;z-index:2}
   .ptag::before{content:"「 "}.ptag::after{content:" 」"}
-  .ptbl{margin-top:16px;padding-top:12px;border-top:2px solid rgba(23,51,81,.23);display:grid;grid-template-columns:1fr 1fr;gap:2px 30px;position:relative;z-index:2}
+  .ptbl{margin-top:16px;padding-top:12px;border-top:2px solid rgba(var(--ink-rgb),.23);display:grid;grid-template-columns:1fr 1fr;gap:2px 30px;position:relative;z-index:2}
   body.dark .ptbl{border-top-color:rgba(255,255,255,.18)}
   .ptbl div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 2px;font-family:var(--mono);font-size:12px}
   .ptbl div::before{content:"■";color:var(--main);margin-right:7px;font-size:10px}
@@ -63,25 +63,25 @@
   .ptbl b{color:var(--navy);font-weight:800}
   body.dark .ptbl b{color:var(--ink)}
   .ptbl .dd{font-size:10px;background:var(--main);color:#2f4d10;padding:1px 7px;margin-right:6px;font-weight:800;font-family:var(--mono)}
-  .pav-card{position:relative;justify-self:end;width:clamp(250px,27vw,340px);margin:14px 4px 0 0;padding:9px;background:var(--white);border:1px solid rgba(23,51,81,.28);box-shadow:8px 10px 0 rgba(23,51,81,.14);transform:rotate(3deg);transition:transform .2s}
+  .pav-card{position:relative;justify-self:end;width:clamp(250px,27vw,340px);margin:14px 4px 0 0;padding:9px;background:var(--white);border:1px solid rgba(var(--ink-rgb),.28);box-shadow:8px 10px 0 rgba(var(--ink-rgb),.14);transform:rotate(3deg);transition:transform .2s}
   .pav-card:hover{transform:rotate(0deg) translateY(-4px)}
   body.dark .pav-card{border-color:rgba(255,255,255,.1);box-shadow:8px 10px 0 rgba(0,0,0,.4)}
   .navy-tape{position:absolute;z-index:3;top:-11px;left:38%;width:56%;height:16px;background:var(--navy);opacity:.9;transform:rotate(4deg)}
   body.dark .navy-tape{background:var(--main-dark)}
   .pav{aspect-ratio:1/1;overflow:hidden;background:var(--blue-soft)}
   .pav img{width:100%;height:100%;object-fit:cover;display:block}
-  .hero-heart{position:absolute;right:-6px;top:-26px;width:clamp(44px,4.4vw,62px);transform:rotate(12deg);pointer-events:none;z-index:4}
+  .hero-heart{position:absolute;right:-6px;top:-26px;width:clamp(44px,4.4vw,62px);aspect-ratio:296/275;transform:rotate(12deg);pointer-events:none;z-index:4;display:block;background:var(--navy);-webkit-mask:url("../img/sticker-heart-line.webp") center/contain no-repeat;mask:url("../img/sticker-heart-line.webp") center/contain no-repeat}
 
   /* ── 카드 공통(종이 위에 직접 얹힘) ── */
-  .mcard{background:var(--card);border:1px solid rgba(23,51,81,.28);box-shadow:8px 10px 0 rgba(23,51,81,.12);padding:22px 26px 26px}
+  .mcard{background:var(--card);border:1px solid rgba(var(--ink-rgb),.28);box-shadow:8px 10px 0 rgba(var(--ink-rgb),.12);padding:22px 26px 26px}
   body.dark .mcard{border-color:rgba(255,255,255,.1);box-shadow:8px 10px 0 rgba(0,0,0,.42)}
   .rot-a{transform:rotate(.7deg)}.rot-b{transform:rotate(-.7deg)}.rot-c{transform:rotate(-.35deg)}
   .sec[hidden]{display:none}
   .seclabel{display:flex;align-items:center;gap:12px;margin:0 0 16px}
   .seclabel b{display:inline-block;background:var(--navy);color:var(--white);font-size:12.5px;font-weight:800;letter-spacing:.04em;padding:5px 11px;transform:rotate(-1deg);white-space:nowrap}
-  body.dark .seclabel b{background:var(--main-dark);color:#0f243c}
+  body.dark .seclabel b{background:var(--main-dark);color:#3f3305}
   .seclabel .en{font-family:var(--mono);font-style:normal;font-size:10px;font-weight:800;letter-spacing:2px;color:var(--text-soft)}
-  .seclabel .ln{flex:1;height:2px;background:rgba(23,51,81,.16)}
+  .seclabel .ln{flex:1;height:2px;background:rgba(var(--ink-rgb),.16)}
   body.dark .seclabel .ln{background:rgba(255,255,255,.12)}
 
   .g12{grid-column:1/-1}
@@ -95,10 +95,10 @@
   .lk2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
   @media(max-width:520px){.lk2{grid-template-columns:1fr}}
   .lk2 .t{font-family:var(--mono);font-size:11px;letter-spacing:2px;font-weight:800;color:var(--text-soft);margin-bottom:10px}
-  .pill{border-radius:0;padding:6px 13px;font-size:12.5px;font-weight:800;letter-spacing:.03em;background:var(--main);color:#2f4d10;display:inline-block;box-shadow:3px 3px 0 rgba(23,51,81,.14)}
+  .pill{border-radius:0;padding:6px 13px;font-size:12.5px;font-weight:800;letter-spacing:.03em;background:var(--main);color:#2f4d10;display:inline-block;box-shadow:3px 3px 0 rgba(var(--ink-rgb),.14)}
   .pill.no{background:var(--navy);color:var(--white)}
   body.dark .pill{color:#16210b}
-  body.dark .pill.no{background:#31435f;color:var(--ink)}
+  body.dark .pill.no{background:#3a3418;color:var(--ink)}
 
   /* 능력치 — 사각 라임 스트라이프 게이지 */
   .stats{display:grid;grid-template-columns:1fr;gap:14px}
@@ -106,14 +106,14 @@
   .stat .sl em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--navy)}
   body.dark .stat .sl em{color:var(--main-dark)}
   .bar{height:12px;background:var(--white);border:1.5px solid var(--navy);overflow:hidden}
-  body.dark .bar{border-color:var(--main-dark);background:#0f1a2e}
-  .bar i{display:block;height:100%;background:repeating-linear-gradient(135deg,var(--main) 0 8px,#8fdc4a 8px 16px)}
+  body.dark .bar{border-color:var(--main-dark);background:#141105}
+  .bar i{display:block;height:100%;background-color:var(--main);background-image:repeating-linear-gradient(135deg,transparent 0 8px,rgba(0,0,0,.12) 8px 16px)}
 
   /* 진행한 컨텐츠 — 매거진 목차 */
   .ctable{width:100%;border-collapse:collapse;border-top:2px solid var(--navy);border-bottom:2px solid var(--navy)}
   body.dark .ctable{border-color:var(--main-dark)}
-  .ctable thead th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:2px;font-weight:800;color:var(--text-soft);padding:9px 10px;border-bottom:1.5px solid rgba(23,51,81,.25)}
-  .ctable td{padding:14px 10px;border-bottom:1px dashed rgba(23,51,81,.22);font-size:14px;vertical-align:middle}
+  .ctable thead th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:2px;font-weight:800;color:var(--text-soft);padding:9px 10px;border-bottom:1.5px solid rgba(var(--ink-rgb),.25)}
+  .ctable td{padding:14px 10px;border-bottom:1px dashed rgba(var(--ink-rgb),.22);font-size:14px;vertical-align:middle}
   body.dark .ctable td{border-bottom-color:rgba(255,255,255,.14)}
   .ctable tbody tr:last-child td{border-bottom:0}
   .ctable tbody tr.lnk{cursor:pointer}
@@ -133,13 +133,13 @@
   /* 이벤트 — navy 필름 카드(스스로 카드) */
   #sec-event{padding:0;background:transparent;border:0;box-shadow:none}
   #sec-event .seclabel{margin-bottom:16px}
-  .evcard{background:var(--navy);color:var(--white);padding:22px 24px;position:relative;box-shadow:8px 10px 0 rgba(23,51,81,.14);transform:rotate(-.6deg)}
-  body.dark .evcard{background:#1d2f4c;box-shadow:8px 10px 0 rgba(0,0,0,.4)}
+  .evcard{background:var(--navy);color:var(--white);padding:22px 24px;position:relative;box-shadow:8px 10px 0 rgba(var(--ink-rgb),.14);transform:rotate(-.6deg)}
+  body.dark .evcard{background:#2a2410;box-shadow:8px 10px 0 rgba(0,0,0,.4)}
   @media(max-width:800px){.evcard{transform:none}}
   .evcard .now{position:absolute;top:-10px;left:16px;background:var(--main);color:#1f3a08;font-size:10px;font-weight:800;letter-spacing:2px;font-family:var(--mono);padding:3px 10px}
   .evcard .evt{font-size:17px;font-weight:800}
   .evcard .evcode{display:inline-block;margin-top:10px;background:var(--white);color:var(--navy);padding:5px 12px;font-weight:800;font-size:13px;letter-spacing:1px;font-family:var(--mono)}
-  body.dark .evcard .evcode{background:#0f1a2e;color:var(--ink)}
+  body.dark .evcard .evcode{background:#141105;color:var(--ink)}
   .evcard .evnote{font-size:13px;opacity:.92;margin-top:12px;line-height:1.7;white-space:pre-wrap}
 
   /* 목표 — 사각 게이지 */
@@ -147,13 +147,13 @@
   .goal .gl span:last-child{font-family:var(--mono);font-size:12px;color:var(--navy)}
   body.dark .goal .gl span:last-child{color:var(--main-dark)}
   .goal .gbar{height:20px;background:var(--white);border:1.5px solid var(--navy);overflow:hidden}
-  body.dark .goal .gbar{border-color:var(--main-dark);background:#0f1a2e}
-  .goal .gbar i{display:block;height:100%;background:repeating-linear-gradient(135deg,var(--main) 0 10px,#8fdc4a 10px 20px);text-align:right;color:#1f3a08;font-size:10px;font-family:var(--mono);font-weight:800;line-height:20px;padding-right:8px}
+  body.dark .goal .gbar{border-color:var(--main-dark);background:#141105}
+  .goal .gbar i{display:block;height:100%;background-color:var(--main);background-image:repeating-linear-gradient(135deg,transparent 0 10px,rgba(0,0,0,.12) 10px 20px);text-align:right;color:#1f3a08;font-size:10px;font-family:var(--mono);font-weight:800;line-height:20px;padding-right:8px}
   .goal .gnext{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--text-soft);margin-top:9px}
 
   /* VOD — navy 필름 그룹(커버 FAVORITE MOMENTS 문법) */
-  #sec-vod{background:var(--navy);border:0;box-shadow:8px 10px 0 rgba(23,51,81,.14);padding:18px 20px 20px}
-  body.dark #sec-vod{background:#1d2f4c;box-shadow:8px 10px 0 rgba(0,0,0,.4)}
+  #sec-vod{background:var(--navy);border:0;box-shadow:8px 10px 0 rgba(var(--ink-rgb),.14);padding:18px 20px 20px}
+  body.dark #sec-vod{background:#2a2410;box-shadow:8px 10px 0 rgba(0,0,0,.4)}
   #sec-vod .seclabel{margin-bottom:14px}
   #sec-vod .seclabel b{background:var(--main);color:#1f3a08;transform:rotate(0)}
   #sec-vod .seclabel .en{color:rgba(255,254,249,.75)}
@@ -210,7 +210,7 @@
     <figure class="pav-card">
       <span class="navy-tape" aria-hidden="true"></span>
       <div class="pav av"><img id="pav" src="" referrerpolicy="no-referrer" alt="하요"></div>
-      <img class="hero-heart" src="../img/sticker-heart-line.webp" alt="" aria-hidden="true">
+      <i class="hero-heart" aria-hidden="true"></i>
     </figure>
   </section>
 
