@@ -217,7 +217,7 @@ body.ready .magazine-shell{opacity:1}
   font-stretch: condensed;
   font-weight: 950;
   line-height: 0.7;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.045em;
   text-transform: uppercase;
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
 }
@@ -226,6 +226,7 @@ body.ready .magazine-shell{opacity:1}
   position: absolute;
   inset: 0;
   color: transparent;
+  text-shadow: none; /* 부모 흰 그림자 상속 차단 — 로고와 동일한 순색 유지 */
   background-image: linear-gradient(105deg, transparent 12%, rgba(255,255,255,0.24) 16%, transparent 19%);
   background-clip: text;
   content: attr(data-shine); /* 이름 수정 시 반짝임 자동 동기화 */
@@ -504,7 +505,7 @@ body.ready .magazine-shell{opacity:1}
   left: 1.5vw;
   width: clamp(270px, 27vw, 420px);
   padding: 8px 10px 7px;
-  background: var(--yellow-soft);
+  background: var(--navy);
   color: var(--ink);
 }
 
@@ -525,7 +526,7 @@ body.ready .magazine-shell{opacity:1}
 .film-strip .snapshot {
   aspect-ratio: 1 / 0.72;
   border: 4px solid var(--white);
-  outline: 1px dashed var(--navy);
+  outline: 1px dashed var(--navy-deep);
 }
 
 .film-strip .snapshot img { object-position: 50% 30%; }
