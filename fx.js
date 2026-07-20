@@ -107,7 +107,7 @@ var FX_TRANS_MS    = 800;    // 커지는 등장 길이(ms). 더 느리게 = 숫
     if (!loaderOn) return;
     var wait = Math.max(0, 450 - (Date.now() - shownAt));   /* 너무 빨리 깜빡이지 않게 최소 표시 */
     setTimeout(function () {
-      var w = document.querySelector('.wrap, .container, main');
+      var w = document.querySelector('.wrap, .pagespread, .spread, .container, main');
       if (w) { w.classList.remove('fx-enter'); void w.offsetWidth; w.classList.add('fx-enter'); }
       if (fxLoadEl) fxLoadEl.classList.add('fx-hide');
     }, wait);
