@@ -140,10 +140,10 @@ body.ready .magazine-shell{opacity:1}
   white-space: nowrap;
   color: var(--navy-deep);
 }
-.cover-nav a { padding: 0 1px; }
+.cover-nav a { padding: 0 1px; -webkit-text-stroke: 0.6px var(--lime); paint-order: stroke fill; }
 .cover-nav a:hover { color: var(--ink); }
 .cover-nav a.on { background: linear-gradient(180deg, transparent 58%, var(--lime) 58%); padding: 0 3px; color: var(--ink); }
-.cover-nav i { font-style: normal; font-weight: 400; color: rgba(var(--ink-rgb), 0.35); }
+.cover-nav i { font-style: normal; font-weight: 400; color: rgba(var(--ink-rgb), 0.35); text-shadow: none; }
 
 .issue-logo {
   margin-top: -12px;
@@ -235,7 +235,7 @@ body.ready .magazine-shell{opacity:1}
 
 .script-name {
   position: absolute;
-  z-index: 6;
+  z-index: 14; /* 브러시·스티커보다 위 */
   top: clamp(126px, 15.8vw, 240px);
   left: 12vw;
   margin: 0;
